@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Livello_2" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.19 16.07">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke-linejoin: round;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #e84b17;
+        stroke-linecap: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <g id="Livello_1-2" data-name="Livello 1">
+    <g id="Group_44727" data-name="Group 44727">
+      <line id="Line_153" data-name="Line 153" class="cls-2" x1="1.5" y1="8.03" x2="16.45" y2="8.03"/>
+      <path id="Path_19577" data-name="Path 19577" class="cls-1" d="M9.84,1.5l6.85,6.53-6.85,6.54"/>
+    </g>
+  </g>
+</svg>

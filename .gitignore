@@ -1,0 +1,11 @@
+*
+!/.gitignore
+!/site-ilpra.com-20260403030500/
+/site-ilpra.com-20260403030500/*
+!/site-ilpra.com-20260403030500/wp-content/
+/site-ilpra.com-20260403030500/wp-content/*
+!/site-ilpra.com-20260403030500/wp-content/themes/
+/site-ilpra.com-20260403030500/wp-content/themes/*
+!/site-ilpra.com-20260403030500/wp-content/themes/ilpra-2026/
+!/site-ilpra.com-20260403030500/wp-content/themes/ilpra-2026/**
+**/.DS_Store

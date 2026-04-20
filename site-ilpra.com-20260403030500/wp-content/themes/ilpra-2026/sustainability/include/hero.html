@@ -1,0 +1,86 @@
+<!--begin intro -->
+<div id="intro"> 
+
+  <!--begin home section -->
+  <section id="home">
+    <div class="home_box bounce_fade">
+      <span class="slider_text1">
+        A Concrete Approach to Sustainability
+      </span>
+      <span class="slider_text2">
+        <b>
+              In a constantly evolving industrial context, ILPRA adopts a pragmatic approach to sustainability by integrating solutions that improve energy efficiency, reduce the environmental impact of production processes, and promote people’s well-being.
+        </b>      
+      </span>
+
+    </div>
+  </section>
+  <!--end home section -->
+</div>
+<!--end intro -->
+
+<!-- 🔽 Pulsantiera Sticky (sotto la hero) -->
+<div id="tabs_wrapper" class="tabs-wrapper">
+  <div class="sustainability-tabs">
+    <ul class="sustainability-tabs-list">
+      <li class="active"><a href="#sustainability">Sustainability</a></li>
+      <li><a href="#environmental">Environmental</a></li>
+      <li><a href="#social">Social</a></li>
+      <li><a href="#governance">Governance</a></li>
+    </ul>
+  </div>
+</div>
+<!-- end pulsantiera -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const tabs = document.querySelectorAll(".sustainability-tabs-list li a");
+
+  const sections = {
+    sustainability: document.getElementById("sostenibile"),
+    environmental: document.getElementById("environmental"),
+    social: document.getElementById("social"),
+    governance: document.getElementById("governance")
+  };
+
+  function hideAllSections() {
+    Object.values(sections).forEach(section => {
+      if (section) section.style.display = "none";
+    });
+  }
+
+  function showSection(key) {
+    const section = sections[key];
+    if (!section) return;
+
+    section.style.display = "block";
+
+    // 🔜 QUI agganceremo GSAP nel prossimo step
+    // initGsapImages(section);
+  }
+
+  // Stato iniziale
+  hideAllSections();
+  showSection("sustainability");
+
+  // Click sui pulsanti
+  tabs.forEach(tab => {
+    tab.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      tabs.forEach(t => t.parentElement.classList.remove("active"));
+      this.parentElement.classList.add("active");
+
+      const targetKey = this
+        .getAttribute("href")
+        .replace("#", "")
+        .toLowerCase();
+
+      hideAllSections();
+      showSection(targetKey);
+    });
+  });
+
+});
+</script>
