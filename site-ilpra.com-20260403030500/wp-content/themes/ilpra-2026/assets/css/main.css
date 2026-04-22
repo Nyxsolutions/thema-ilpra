@@ -1904,9 +1904,14 @@ body.is-header-at-top .site-search-panel {
 }
 
 .bi-contact__form {
-  padding: 42px;
-  border-radius: 28px 28px 0 0;
-  background: linear-gradient(135deg, #201818 0%, #101820 100%);
+  padding: 0;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #9f3b2d 0%, #101820 62%);
+  overflow: hidden;
+}
+
+.bi-contact__form > .elementor {
+  width: 100%;
 }
 
 .pm-page {
@@ -2438,6 +2443,15 @@ body.is-header-at-top .site-search-panel {
   cursor: pointer;
 }
 
+.pm-contact-form .elementor-field-group input[type="file"] {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.pm-contact-form .elementor-field-group input[type="file"]::file-selector-text {
+  color: #ffffff !important;
+}
+
 .pm-contact-form .elementor-upload-field::file-selector-button {
   margin-right: 28px;
   padding: 20px 34px;
@@ -2460,6 +2474,13 @@ body.is-header-at-top .site-search-panel {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+.bi-contact__form .elementor-field-group input[type="file"],
+.pm-career-apply-form .elementor-field-group input[type="file"],
+.pm-career-single-form .elementor-field-group input[type="file"] {
+  color: #ffffff !important;
+  background: transparent !important;
 }
 
 .home-fair-card {
@@ -3025,7 +3046,7 @@ body.is-header-at-top .site-search-panel {
   }
 
   .bi-contact__form {
-    padding: 28px;
+    padding: 0;
   }
 
   .home-hero__panel {
