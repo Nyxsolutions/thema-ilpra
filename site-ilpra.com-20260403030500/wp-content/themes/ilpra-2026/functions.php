@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 $ilpra_theme_includes = [
     '/inc/setup.php',
     '/inc/enqueue.php',
+    '/inc/careers.php',
     '/inc/helpers.php',
     '/inc/integrations.php',
     '/inc/home-data.php',

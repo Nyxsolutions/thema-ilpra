@@ -1,0 +1,138 @@
+.pm-careers,
+.pm-career-extra {
+  width: min(calc(100% - 32px), 1520px);
+  margin: 0 auto;
+  padding: 30px 0;
+}
+
+.container-career {
+  width: 100%;
+}
+
+.title-careers {
+  margin: 0 0 12px;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.pm-careers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 30px;
+  width: 100%;
+}
+
+.pm-career-card {
+  width: 100%;
+  border-radius: 12px;
+  background: #d9d9d9;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.pm-career-card:hover {
+  transform: translateY(-4px);
+  background: #e3e3e3;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.08),
+    0 18px 36px rgba(0, 0, 0, 0.1);
+}
+
+.pm-career-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 24px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.pm-career-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-career-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.pm-career-meta {
+  color: #ea560c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pm-career-arrow {
+  margin-left: 20px;
+  color: #ea560c;
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.pm-career-card:hover .pm-career-arrow {
+  transform: translateX(8px);
+}
+
+.pm-career-apply {
+  padding: 40px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #9f3b2d 0%, #0c0f12 60%);
+}
+
+.pm-career-apply-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.pm-career-apply-text {
+  padding-top: 12px;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.pm-career-apply-form {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.pm-career-apply-form .elementor-upload-field {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 900px) {
+  .pm-careers,
+  .pm-career-extra {
+    width: min(calc(100% - 24px), 1520px);
+  }
+
+  .pm-careers-grid,
+  .pm-career-apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-career-extra {
+    padding-top: 10px;
+  }
+
+  .pm-career-apply {
+    padding: 12px;
+  }
+
+  .title-careers {
+    font-size: 36px;
+  }
+}
