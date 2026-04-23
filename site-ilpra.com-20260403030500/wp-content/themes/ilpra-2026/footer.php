@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
         <div class="site-footer__middle">
             <div class="site-footer__inner site-footer__inner--middle">
                 <div class="site-footer__brand-column">
-                    <a class="site-footer__brand" href="<?php echo esc_url(home_url('/')); ?>">
+                    <a class="site-footer__brand" href="<?php echo esc_url(home_url('/')); ?>" target="_blank" rel="noreferrer">
                         <img src="<?php echo esc_url(ilpra_2026_get_logo_url(true)); ?>" alt="<?php echo esc_attr(ilpra_2026_get_logo_alt()); ?>">
                     </a>
                     <?php ilpra_2026_render_footer_sidebar('footer-widget-1'); ?>
@@ -60,9 +60,9 @@ if (!defined('ABSPATH')) {
             <div class="site-footer__inner site-footer__inner--bottom">
                 <p class="site-footer__copyright">All Rights Reserved © Ilpra spa <?php echo esc_html(date('Y')); ?> Partita Iva IT 01054200157</p>
                 <nav class="site-footer__legal" aria-label="<?php esc_attr_e('Footer Navigation', 'ilpra-2026'); ?>">
-                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Privacy Policy</a>
-                    <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>">Cookie Policy</a>
-                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/02/Quality-Policy_firmata.pdf')); ?>">Politica di Qualita'</a>
+                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" rel="noreferrer">Privacy Policy</a>
+                    <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>" target="_blank" rel="noreferrer">Cookie Policy</a>
+                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/02/Quality-Policy_firmata.pdf')); ?>" target="_blank" rel="noreferrer">Politica di Qualita'</a>
                 </nav>
                 <div class="site-footer__socials">
                     <a href="https://www.linkedin.com/company/ilpra-s-p-a-/" target="_blank" rel="noreferrer" aria-label="LinkedIn">

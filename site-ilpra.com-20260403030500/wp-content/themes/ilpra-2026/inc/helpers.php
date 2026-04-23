@@ -78,15 +78,34 @@ function ilpra_2026_render_legacy_custom_html_widget(int $widget_id): void
 
     echo '<section class="widget widget_custom_html widget_custom_html--legacy">';
     echo '<div class="textwidget custom-html-widget">';
-    echo do_shortcode((string) $widgets[$widget_id]['content']);
+    echo ilpra_2026_prepare_footer_links(do_shortcode((string) $widgets[$widget_id]['content']));
     echo '</div>';
     echo '</section>';
+}
+
+function ilpra_2026_prepare_footer_links(string $html): string
+{
+    return preg_replace_callback('/<a\b([^>]*)>/i', static function (array $matches): string {
+        $attributes = $matches[1];
+
+        if (!preg_match('/\starget\s*=/i', $attributes)) {
+            $attributes .= ' target="_blank"';
+        }
+
+        if (!preg_match('/\srel\s*=/i', $attributes)) {
+            $attributes .= ' rel="noreferrer"';
+        }
+
+        return '<a' . $attributes . '>';
+    }, $html) ?? $html;
 }
 
 function ilpra_2026_render_footer_sidebar(string $sidebar_id): void
 {
     if (is_active_sidebar($sidebar_id)) {
+        ob_start();
         dynamic_sidebar($sidebar_id);
+        echo ilpra_2026_prepare_footer_links((string) ob_get_clean());
     }
 
     $map = ilpra_2026_get_legacy_footer_widget_map();
