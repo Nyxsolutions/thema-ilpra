@@ -282,6 +282,12 @@
     padding-top: 18px;
   }
 
+  #intro,
+  #home,
+  #tabs_wrapper {
+    border-radius: 0;
+  }
+
   #home {
     min-height: 420px;
   }
@@ -292,6 +298,8 @@
 
   #tabs_wrapper {
     width: calc(100% - 24px);
+    height: auto;
+    overflow: visible;
   }
 
   .home_box {
@@ -305,11 +313,13 @@
   .sustainability-tabs-list {
     grid-template-columns: 1fr;
     border-left: 0;
+    height: auto;
   }
 
   .sustainability-tabs-list li {
     border-right: 0;
     border-top: 1px solid #dde2e7;
+    min-height: 62px;
   }
 
   .sustainability-tabs-list li:first-child {
