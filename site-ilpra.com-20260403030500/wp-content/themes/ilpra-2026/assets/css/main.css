@@ -2555,10 +2555,18 @@ body.is-header-at-top .site-search-panel {
 }
 
 .home-fair-card__footer {
-  padding: 16px 20px;
-  background: #e84b17;
+  display: grid;
+  align-content: center;
+  min-height: 70px;
+  padding: 12px 20px;
+  background: var(--ilpra-color-accent);
   color: #fff;
   text-align: center;
+}
+
+.home-fair-card__stand,
+.home-fair-card__hall {
+  min-height: 1.2em;
 }
 
 .site-footer {

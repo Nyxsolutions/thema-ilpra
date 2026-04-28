@@ -150,18 +150,31 @@ $news = new WP_Query([
             <!-- Trade Fairs -->
             <div class="home-fairs-grid">
                 <?php foreach ($home['fairs'] as $fair) : ?>
-                    <a class="home-fair-card" href="<?php echo esc_url($fair['url']); ?>" target="<?php echo esc_attr($fair['target']); ?>" rel="noreferrer">
+                    <?php
+                    $is_clickable = !empty($fair['is_clickable']);
+                    $tag = $is_clickable ? 'a' : 'article';
+                    $attributes = $is_clickable
+                        ? ' href="' . esc_url($fair['url']) . '" target="' . esc_attr($fair['target']) . '" rel="noreferrer"'
+                        : '';
+                    ?>
+                    <<?php echo $tag; ?> class="home-fair-card"<?php echo $attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
                         <div class="home-fair-card__top">
                             <div class="home-fair-card__date"><?php echo esc_html($fair['city_date']); ?></div>
                             <div class="home-fair-card__image">
-                                <?php echo wp_get_attachment_image((int) $fair['image_id'], 'medium'); ?>
+                                <?php if (!empty($fair['image_id'])) : ?>
+                                    <?php echo wp_get_attachment_image((int) $fair['image_id'], 'medium'); ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="home-fair-card__footer">
-                            <div class="home-fair-card__stand"><?php echo esc_html($fair['stand']); ?></div>
-                            <div class="home-fair-card__hall"><?php echo esc_html($fair['hall']); ?></div>
+                            <?php if (!empty($fair['stand'])) : ?>
+                                <div class="home-fair-card__stand"><?php echo esc_html($fair['stand']); ?></div>
+                            <?php endif; ?>
+                            <?php if (!empty($fair['hall'])) : ?>
+                                <div class="home-fair-card__hall"><?php echo esc_html($fair['hall']); ?></div>
+                            <?php endif; ?>
                         </div>
-                    </a>
+                    </<?php echo $tag; ?>>
                 <?php endforeach; ?>
             </div>
         </div>
