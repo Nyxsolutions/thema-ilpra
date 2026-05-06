@@ -126,6 +126,57 @@ get_header();
             </div>
         </section>
 
+        <?php if (!empty($details) && ($details_title = (string) get_field('titolo_sezione_dettagli')) !== '') : ?>
+            <!-- Details Section -->
+            <section class="pm-details" data-pm-details>
+                <div class="pm-inner">
+                    <h2 class="pm-section-title"><?php echo esc_html($details_title); ?></h2>
+
+                    <div class="pm-details__grid">
+                        <div class="pm-details__rail" data-pm-details-list>
+                            <?php foreach ($details as $index => $detail) : ?>
+                                <article class="pm-detail-card<?php echo $index === 0 ? ' is-active' : ''; ?>" id="<?php echo esc_attr($detail['id']); ?>" data-detail-target="<?php echo esc_attr($detail['id']); ?>">
+                                    <div class="pm-detail-card__marker" aria-hidden="true">
+                                        <span class="pm-detail-card__marker-inner"></span>
+                                    </div>
+
+                                    <div class="pm-detail-card__body">
+                                        <?php if ($detail['image_id']) : ?>
+                                            <div class="pm-detail-card__image pm-detail-card__image--mobile">
+                                                <?php echo wp_get_attachment_image($detail['image_id'], 'large'); ?>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <div class="pm-detail-card__words">
+                                            <?php if ($detail['title'] !== '') : ?>
+                                                <h3 class="pm-detail-card__title"><?php echo esc_html($detail['title']); ?></h3>
+                                            <?php endif; ?>
+
+                                            <?php if ($detail['description'] !== '') : ?>
+                                                <div class="pm-detail-card__description">
+                                                    <?php echo wp_kses_post($detail['description']); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="pm-details__sticky">
+                            <?php foreach ($details as $index => $detail) : ?>
+                                <?php if ($detail['image_id']) : ?>
+                                    <div class="pm-detail-preview<?php echo $index === 0 ? ' is-active' : ''; ?>" data-detail-preview="<?php echo esc_attr($detail['id']); ?>">
+                                        <?php echo wp_get_attachment_image($detail['image_id'], 'large'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <?php endif; ?>
+
         <!-- Machine Accordion -->
         <section class="pm-accordion">
             <div class="pm-inner">
@@ -307,57 +358,6 @@ get_header();
                         <button class="pm-gallery__arrow pm-gallery__arrow--next" type="button" aria-label="Next gallery items" data-pm-gallery-next>
                             <span>&rsaquo;</span>
                         </button>
-                    </div>
-                </div>
-            </section>
-        <?php endif; ?>
-
-        <?php if (!empty($details) && ($details_title = (string) get_field('titolo_sezione_dettagli')) !== '') : ?>
-            <!-- Details Section -->
-            <section class="pm-details" data-pm-details>
-                <div class="pm-inner">
-                    <h2 class="pm-section-title"><?php echo esc_html($details_title); ?></h2>
-
-                    <div class="pm-details__grid">
-                        <div class="pm-details__rail" data-pm-details-list>
-                            <?php foreach ($details as $index => $detail) : ?>
-                                <article class="pm-detail-card<?php echo $index === 0 ? ' is-active' : ''; ?>" id="<?php echo esc_attr($detail['id']); ?>" data-detail-target="<?php echo esc_attr($detail['id']); ?>">
-                                    <div class="pm-detail-card__marker" aria-hidden="true">
-                                        <span class="pm-detail-card__marker-inner"></span>
-                                    </div>
-
-                                    <div class="pm-detail-card__body">
-                                        <?php if ($detail['image_id']) : ?>
-                                            <div class="pm-detail-card__image pm-detail-card__image--mobile">
-                                                <?php echo wp_get_attachment_image($detail['image_id'], 'large'); ?>
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <div class="pm-detail-card__words">
-                                            <?php if ($detail['title'] !== '') : ?>
-                                                <h3 class="pm-detail-card__title"><?php echo esc_html($detail['title']); ?></h3>
-                                            <?php endif; ?>
-
-                                            <?php if ($detail['description'] !== '') : ?>
-                                                <div class="pm-detail-card__description">
-                                                    <?php echo wp_kses_post($detail['description']); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </article>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <div class="pm-details__sticky">
-                            <?php foreach ($details as $index => $detail) : ?>
-                                <?php if ($detail['image_id']) : ?>
-                                    <div class="pm-detail-preview<?php echo $index === 0 ? ' is-active' : ''; ?>" data-detail-preview="<?php echo esc_attr($detail['id']); ?>">
-                                        <?php echo wp_get_attachment_image($detail['image_id'], 'large'); ?>
-                                    </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
                     </div>
                 </div>
             </section>
