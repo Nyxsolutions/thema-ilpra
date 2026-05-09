@@ -535,3 +535,35 @@ document.querySelectorAll('[data-pm-gallery]').forEach((gallery) => {
 
   track.addEventListener('touchend', stopDrag);
 });
+
+const pmMobileCta = document.querySelector('[data-pm-mobile-cta]');
+const pmQuoteTrigger = document.querySelector('[data-pm-quote-trigger]');
+const pmQuoteSection = document.getElementById('request-quote');
+const pmPage = document.querySelector('.pm-page');
+
+if (pmMobileCta && pmQuoteTrigger && pmQuoteSection && pmPage) {
+  const mobileQuery = window.matchMedia('(max-width: 991px)');
+
+  const syncMobileQuoteCta = () => {
+    if (!mobileQuery.matches) {
+      pmMobileCta.hidden = true;
+      pmMobileCta.classList.remove('is-visible');
+      pmPage.classList.remove('has-mobile-cta');
+      return;
+    }
+
+    const quoteRect = pmQuoteSection.getBoundingClientRect();
+    const scrolledEnough = window.scrollY > 220;
+    const formReached = quoteRect.top < window.innerHeight * 0.35;
+    const shouldShow = scrolledEnough && !formReached;
+
+    pmMobileCta.hidden = false;
+    pmMobileCta.classList.toggle('is-visible', shouldShow);
+    pmPage.classList.toggle('has-mobile-cta', shouldShow);
+  };
+
+  syncMobileQuoteCta();
+  window.addEventListener('scroll', syncMobileQuoteCta, { passive: true });
+  window.addEventListener('resize', syncMobileQuoteCta);
+  mobileQuery.addEventListener('change', syncMobileQuoteCta);
+}

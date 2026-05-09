@@ -120,11 +120,17 @@ get_header();
                             <div class="pm-hero__description"><?php echo wp_kses_post($mid_description); ?></div>
                         <?php endif; ?>
 
-                        <a href="#request-quote" class="pm-button">Request a Quote</a>
+                        <a href="#request-quote" class="pm-button" data-pm-quote-trigger>Request a Quote</a>
                     </div>
                 </div>
             </div>
         </section>
+
+        <div class="pm-mobile-cta" hidden data-pm-mobile-cta>
+            <div class="pm-mobile-cta__inner">
+                <a href="#request-quote" class="pm-button pm-mobile-cta__button">Request a Quote</a>
+            </div>
+        </div>
 
         <?php if (!empty($details) && ($details_title = (string) get_field('titolo_sezione_dettagli')) !== '') : ?>
             <!-- Details Section -->

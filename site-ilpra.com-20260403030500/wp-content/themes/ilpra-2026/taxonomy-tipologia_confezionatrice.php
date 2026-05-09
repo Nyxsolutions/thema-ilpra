@@ -167,6 +167,10 @@ $machines_query = new WP_Query([
                         $tech_term = $tech_id ? get_term($tech_id, 'tecnologia_confezionatrice') : null;
                         $excerpt = (string) get_field('descrizione_breve_confezionatrice');
                         $is_active_card = $active_technology && (int) $tech_id === (int) $active_technology->term_id;
+                        $external_product_url = trim((string) get_field('external_product_url'));
+                        $product_button_url = $external_product_url !== '' ? $external_product_url : get_permalink();
+                        $product_button_target = $external_product_url !== '' ? '_blank' : '_self';
+                        $product_button_rel = $external_product_url !== '' ? 'noreferrer' : '';
                         ?>
                         <article
                             class="tm-product-card"
@@ -197,7 +201,12 @@ $machines_query = new WP_Query([
                                 <?php endif; ?>
 
                                 <div class="tm-product-footer">
-                                    <a href="<?php the_permalink(); ?>" class="tm-product-button"><?php esc_html_e('View Product', 'ilpra-2026'); ?></a>
+                                    <a
+                                        href="<?php echo esc_url($product_button_url); ?>"
+                                        class="tm-product-button"
+                                        target="<?php echo esc_attr($product_button_target); ?>"
+                                        <?php if ($product_button_rel !== '') : ?>rel="<?php echo esc_attr($product_button_rel); ?>"<?php endif; ?>
+                                    ><?php esc_html_e('View Product', 'ilpra-2026'); ?></a>
                                 </div>
                             </div>
                         </article>

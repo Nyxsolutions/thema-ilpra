@@ -256,6 +256,10 @@ function ilpra_2026_render_menu_level(array $items, int $depth = 0): void
             ilpra_2026_render_language_menu_item($item, $classes);
         } else {
             $label_classes = ['site-nav__link'];
+            $link_attributes = [
+                'class="' . esc_attr(implode(' ', $label_classes)) . '"',
+                'href="' . esc_url($item->url ?: '#') . '"',
+            ];
 
             if ($is_group) {
                 $label_classes[] = 'site-nav__link--group';
@@ -265,7 +269,23 @@ function ilpra_2026_render_menu_level(array $items, int $depth = 0): void
                 $label_classes[] = 'site-nav__link--search';
             }
 
-            echo '<a class="' . esc_attr(implode(' ', $label_classes)) . '" href="' . esc_url($item->url ?: '#') . '">';
+            $link_attributes[0] = 'class="' . esc_attr(implode(' ', $label_classes)) . '"';
+
+            if (!empty($item->target)) {
+                $link_attributes[] = 'target="' . esc_attr($item->target) . '"';
+            }
+
+            if (!empty($item->xfn)) {
+                $link_attributes[] = 'rel="' . esc_attr($item->xfn) . '"';
+            } elseif (!empty($item->target) && $item->target === '_blank') {
+                $link_attributes[] = 'rel="noreferrer"';
+            }
+
+            if (!empty($item->attr_title)) {
+                $link_attributes[] = 'title="' . esc_attr($item->attr_title) . '"';
+            }
+
+            echo '<a ' . implode(' ', $link_attributes) . '>';
 
             if ($is_search) {
                 echo '<span class="site-nav__search-icon" aria-hidden="true"></span>';

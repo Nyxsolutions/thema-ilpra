@@ -98,9 +98,12 @@ if ($hero_image_url === '') {
                         <h1 class="bi-intro__title"><?php echo esc_html($current_term->name); ?> Packaging</h1>
 
                         <?php if ($description !== '') : ?>
-                            <div class="bi-intro__description">
+                            <div class="bi-intro__description" data-bi-description>
                                 <?php echo wp_kses_post($description); ?>
                             </div>
+                            <button type="button" class="bi-read-more" data-bi-read-more aria-expanded="false">
+                                <?php esc_html_e('Read more', 'ilpra-2026'); ?>
+                            </button>
                         <?php endif; ?>
 
                         <a href="#bi-contact" class="bi-button"><?php esc_html_e('Need Help? Talk with us', 'ilpra-2026'); ?></a>
@@ -169,5 +172,38 @@ if ($hero_image_url === '') {
         </div>
     </section>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const mediaQuery = window.matchMedia("(max-width: 920px)");
+  const description = document.querySelector("[data-bi-description]");
+  const toggle = document.querySelector("[data-bi-read-more]");
+
+  if (!description || !toggle) {
+    return;
+  }
+
+  const updateVisibility = () => {
+    if (!mediaQuery.matches) {
+      description.removeAttribute("data-expanded");
+      toggle.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "Read more";
+      return;
+    }
+
+    toggle.hidden = false;
+  };
+
+  toggle.addEventListener("click", function () {
+    const expanded = description.getAttribute("data-expanded") === "true";
+    description.setAttribute("data-expanded", expanded ? "false" : "true");
+    toggle.setAttribute("aria-expanded", expanded ? "false" : "true");
+    toggle.textContent = expanded ? "Read more" : "Read less";
+  });
+
+  updateVisibility();
+  mediaQuery.addEventListener("change", updateVisibility);
+});
+</script>
 <?php
 get_footer();

@@ -279,7 +279,7 @@
 
 @media (max-width: 920px) {
   .page-template-sustainability .site-main {
-    padding-top: 18px;
+    padding-top: 12px;
   }
 
   #intro,
@@ -289,7 +289,7 @@
   }
 
   #home {
-    min-height: 420px;
+    min-height: 284px;
   }
 
   #intro {
@@ -300,35 +300,75 @@
     width: calc(100% - 24px);
     height: auto;
     overflow: visible;
+    position: relative;
+    top: 0;
+    z-index: 1;
+    margin-top: 0;
   }
 
   .home_box {
-    padding: 100px 0 92px;
+    padding: 56px 0 34px;
   }
 
-  #tabs_wrapper {
-    top: calc(74px + 1px);
+  .slider_text1 {
+    margin-bottom: 10px;
+    font-size: 22px;
+    line-height: 1.02;
+  }
+
+  .slider_text2 {
+    max-width: 320px;
+    font-size: 12px;
+    line-height: 1.22;
   }
 
   .sustainability-tabs-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     border-left: 0;
     height: auto;
   }
 
   .sustainability-tabs-list li {
-    border-right: 0;
+    border-right: 1px solid #dde2e7;
     border-top: 1px solid #dde2e7;
-    min-height: 62px;
+    min-height: 36px;
   }
 
   .sustainability-tabs-list li:first-child {
     border-top: 0;
   }
 
+  .sustainability-tabs-list li:nth-child(2) {
+    border-top: 0;
+  }
+
+  .sustainability-tabs-list li:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .sustainability-tabs-list a {
+    padding: 6px 8px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+    text-align: center;
+  }
+
   .twelvecol {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .features_title {
+    font-size: 16px;
+    line-height: 1.04;
+  }
+
+  .sustainability-page p,
+  .sustainability-page li {
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.45;
   }
 
   .sixcol,
@@ -340,7 +380,8 @@
   }
 
   .sustainability-panel {
-    padding-top: 48px;
+    padding-top: 28px;
+    scroll-margin-top: 0;
   }
 
   .nine_section_wrapper,
