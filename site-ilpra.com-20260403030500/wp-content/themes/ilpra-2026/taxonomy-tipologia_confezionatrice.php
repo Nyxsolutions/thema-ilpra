@@ -14,7 +14,7 @@ if (!$current_term instanceof WP_Term || $current_term->taxonomy !== 'tipologia_
 
 $all_terms = get_terms([
     'taxonomy' => 'tipologia_confezionatrice',
-    'orderby' => 'menu_order',
+    'orderby' => 'term_order',
     'order' => 'ASC',
     'hide_empty' => true,
 ]);
@@ -35,7 +35,7 @@ $machine_ids = get_posts([
 $technology_terms = get_terms([
     'taxonomy' => 'tecnologia_confezionatrice',
     'hide_empty' => true,
-    'orderby' => 'menu_order',
+    'orderby' => 'term_order',
     'order' => 'ASC',
 ]);
 
@@ -62,7 +62,20 @@ foreach ($technology_terms as $index => $term) {
     $technology_descriptions[$term->term_id] = (string) get_field($field_key, 'term_' . $current_term->term_id);
 }
 
-$active_technology = $technology_terms[0] ?? null;
+$requested_technology_slug = isset($_GET['tech']) ? sanitize_title(wp_unslash((string) $_GET['tech'])) : '';
+$requested_technology = null;
+
+if ($requested_technology_slug !== '') {
+    foreach ($technology_terms as $technology_term) {
+        if ($technology_term->slug === $requested_technology_slug) {
+            $requested_technology = $technology_term;
+            break;
+        }
+    }
+}
+
+$active_technology = $requested_technology ?: ($technology_terms[0] ?? null);
+$is_ilpra_group_overview = $current_term->slug === 'ilpragroup-packagingequipment' && !$requested_technology;
 
 $machines_query = new WP_Query([
     'post_type' => 'packaging_machine',
@@ -116,6 +129,85 @@ $machines_query = new WP_Query([
     <!-- Products -->
     <section class="tm-section tm-section--products">
         <div class="tm-inner">
+            <?php if ($is_ilpra_group_overview) : ?>
+                <?php
+                $overview_description = trim((string) term_description($current_term->term_id, 'tipologia_confezionatrice'));
+                $group_cards = [];
+
+                foreach ($technology_terms as $technology_term) {
+                    $technology_machine_query = new WP_Query([
+                        'post_type' => 'packaging_machine',
+                        'posts_per_page' => 1,
+                        'orderby' => 'menu_order',
+                        'order' => 'ASC',
+                        'tax_query' => [
+                            [
+                                'taxonomy' => 'tipologia_confezionatrice',
+                                'field' => 'term_id',
+                                'terms' => $current_term->term_id,
+                            ],
+                            [
+                                'taxonomy' => 'tecnologia_confezionatrice',
+                                'field' => 'term_id',
+                                'terms' => $technology_term->term_id,
+                            ],
+                        ],
+                    ]);
+
+                    if (!$technology_machine_query->have_posts()) {
+                        wp_reset_postdata();
+                        continue;
+                    }
+
+                    $technology_machine_query->the_post();
+
+                    $group_cards[] = [
+                        'name' => $technology_term->name,
+                        'subtitle' => trim(wp_strip_all_tags(term_description($technology_term->term_id, 'tecnologia_confezionatrice'))),
+                        'image_html' => has_post_thumbnail() ? get_the_post_thumbnail(get_the_ID(), 'large') : '',
+                        'url' => add_query_arg('tech', $technology_term->slug, get_term_link($current_term)),
+                    ];
+
+                    wp_reset_postdata();
+                }
+                ?>
+
+                <div class="tm-group-header">
+                    <h1 class="tm-group-title">
+                        <span class="tm-title-text"><?php echo esc_html($current_term->name); ?></span>
+                        <button
+                            class="tm-info-trigger"
+                            type="button"
+                            aria-label="<?php esc_attr_e('Open technology information', 'ilpra-2026'); ?>"
+                            data-title="<?php echo esc_attr($current_term->name); ?>"
+                            data-description="<?php echo esc_attr($overview_description); ?>"
+                        >
+                            i
+                        </button>
+                    </h1>
+                </div>
+
+                <?php if (!empty($group_cards)) : ?>
+                    <div class="tm-product-grid tm-product-grid--group">
+                        <?php foreach ($group_cards as $group_card) : ?>
+                            <a href="<?php echo esc_url($group_card['url']); ?>" class="tm-product-card tm-product-card--group">
+                                <span class="tm-product-image tm-product-image--group">
+                                    <?php echo $group_card['image_html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                </span>
+                                <span class="tm-product-content tm-product-content--group">
+                                    <span class="tm-product-title tm-product-title--group"><?php echo esc_html($group_card['name']); ?></span>
+                                    <?php if ($group_card['subtitle'] !== '') : ?>
+                                        <span class="tm-product-excerpt tm-product-excerpt--group"><?php echo esc_html($group_card['subtitle']); ?></span>
+                                    <?php endif; ?>
+                                    <span class="tm-product-footer tm-product-footer--group">
+                                        <span class="tm-product-button" aria-hidden="true"><?php esc_html_e('View Product', 'ilpra-2026'); ?></span>
+                                    </span>
+                                </span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            <?php else : ?>
             <?php if ($active_technology) : ?>
                 <div class="tm-products-header">
                     <h1 class="tm-products-title">
@@ -135,7 +227,7 @@ $machines_query = new WP_Query([
                         <nav class="tm-tech-nav" aria-label="<?php esc_attr_e('Machine technologies', 'ilpra-2026'); ?>">
                             <?php foreach ($technology_terms as $term_index => $term) : ?>
                                 <button
-                                    class="tm-tech-button<?php echo $term_index === 0 ? ' active' : ''; ?>"
+                                    class="tm-tech-button<?php echo ($active_technology && (int) $term->term_id === (int) $active_technology->term_id) ? ' active' : ''; ?>"
                                     type="button"
                                     data-tech="<?php echo esc_attr($term->term_id); ?>"
                                     data-name="<?php echo esc_attr($term->name); ?>"
@@ -214,6 +306,7 @@ $machines_query = new WP_Query([
                     <?php wp_reset_postdata(); ?>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
         </div>
     </section>
 
