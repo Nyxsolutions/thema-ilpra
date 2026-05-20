@@ -56,10 +56,12 @@ $technology_terms = array_values(array_filter($technology_terms, static function
 }));
 
 $technology_descriptions = [];
+$technology_modal_descriptions = [];
 
 foreach ($technology_terms as $index => $term) {
     $field_key = 'description_for_tab_' . ($index + 1);
     $technology_descriptions[$term->term_id] = (string) get_field($field_key, 'term_' . $current_term->term_id);
+    $technology_modal_descriptions[$term->term_id] = (string) get_field('technology_modal_description', 'term_' . $term->term_id);
 }
 
 $requested_technology_slug = isset($_GET['tech']) ? sanitize_title(wp_unslash((string) $_GET['tech'])) : '';
@@ -131,7 +133,8 @@ $machines_query = new WP_Query([
         <div class="tm-inner">
             <?php if ($is_ilpra_group_overview) : ?>
                 <?php
-                $overview_description = trim((string) term_description($current_term->term_id, 'tipologia_confezionatrice'));
+                $overview_modal_description = (string) get_field('category_modal_description', 'term_' . $current_term->term_id);
+                $overview_description = trim((string) ($overview_modal_description !== '' ? $overview_modal_description : term_description($current_term->term_id, 'tipologia_confezionatrice')));
                 $group_cards = [];
 
                 foreach ($technology_terms as $technology_term) {
@@ -180,7 +183,7 @@ $machines_query = new WP_Query([
                             type="button"
                             aria-label="<?php esc_attr_e('Open technology information', 'ilpra-2026'); ?>"
                             data-title="<?php echo esc_attr($current_term->name); ?>"
-                            data-description="<?php echo esc_attr($overview_description); ?>"
+                            data-description="<?php echo esc_attr(wp_kses_post($overview_description)); ?>"
                         >
                             i
                         </button>
@@ -217,7 +220,7 @@ $machines_query = new WP_Query([
                             type="button"
                             aria-label="<?php esc_attr_e('Open technology information', 'ilpra-2026'); ?>"
                             data-title="<?php echo esc_attr($active_technology->name . ' - ' . $current_term->name); ?>"
-                            data-description="<?php echo esc_attr($technology_descriptions[$active_technology->term_id] ?? ''); ?>"
+                            data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$active_technology->term_id] ?: ($technology_descriptions[$active_technology->term_id] ?? ''))); ?>"
                         >
                             i
                         </button>
@@ -231,7 +234,7 @@ $machines_query = new WP_Query([
                                     type="button"
                                     data-tech="<?php echo esc_attr($term->term_id); ?>"
                                     data-name="<?php echo esc_attr($term->name); ?>"
-                                    data-description="<?php echo esc_attr($technology_descriptions[$term->term_id] ?? ''); ?>"
+                                    data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$term->term_id] ?: ($technology_descriptions[$term->term_id] ?? ''))); ?>"
                                 >
                                     <?php echo esc_html($term->name); ?>
                                 </button>

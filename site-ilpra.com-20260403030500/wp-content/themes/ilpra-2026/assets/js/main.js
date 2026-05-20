@@ -315,7 +315,7 @@ if (taxonomyModal) {
       }
 
       if (modalDescription) {
-        modalDescription.textContent = trigger.dataset.description || '';
+        modalDescription.innerHTML = trigger.dataset.description || '';
       }
 
       taxonomyModal.hidden = false;
