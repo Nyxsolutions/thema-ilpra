@@ -43,3 +43,15 @@ add_action('widgets_init', function (): void {
         ]);
     }
 });
+
+add_filter('register_post_type_args', static function (array $args, string $post_type): array {
+    if ($post_type !== 'packaging_machine') {
+        return $args;
+    }
+
+    // Il CPT arriva da una registrazione esterna con una vecchia URL remota come icona.
+    // Forziamo una dashicon locale stabile per evitare menu senza icona nel backend.
+    $args['menu_icon'] = 'dashicons-hammer';
+
+    return $args;
+}, 20, 2);

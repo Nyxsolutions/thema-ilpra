@@ -55,13 +55,41 @@ $technology_terms = array_values(array_filter($technology_terms, static function
     return false;
 }));
 
-$technology_descriptions = [];
 $technology_modal_descriptions = [];
+$category_technology_modal_rows = get_field('category_technology_modal_items', 'term_' . $current_term->term_id);
+$category_technology_modal_descriptions = [];
 
-foreach ($technology_terms as $index => $term) {
-    $field_key = 'description_for_tab_' . ($index + 1);
-    $technology_descriptions[$term->term_id] = (string) get_field($field_key, 'term_' . $current_term->term_id);
-    $technology_modal_descriptions[$term->term_id] = (string) get_field('technology_modal_description', 'term_' . $term->term_id);
+if (is_array($category_technology_modal_rows)) {
+    foreach ($category_technology_modal_rows as $row) {
+        $technology_term_id = 0;
+        $technology_term_value = $row['technology_term'] ?? null;
+
+        if (is_array($technology_term_value) && isset($technology_term_value['term_id'])) {
+            $technology_term_id = (int) $technology_term_value['term_id'];
+        } elseif (is_object($technology_term_value) && isset($technology_term_value->term_id)) {
+            $technology_term_id = (int) $technology_term_value->term_id;
+        } else {
+            $technology_term_id = (int) $technology_term_value;
+        }
+
+        if ($technology_term_id <= 0) {
+            continue;
+        }
+
+        $category_technology_modal_descriptions[$technology_term_id] = trim((string) ($row['modal_description'] ?? ''));
+    }
+}
+
+foreach ($technology_terms as $term) {
+    $technology_modal_description = (string) get_field('technology_modal_description', 'term_' . $term->term_id);
+    $technology_term_description = trim((string) term_description($term->term_id, 'tecnologia_confezionatrice'));
+    $category_specific_modal_description = $category_technology_modal_descriptions[$term->term_id] ?? '';
+
+    $technology_modal_descriptions[$term->term_id] = trim((string) (
+        $category_specific_modal_description !== ''
+            ? $category_specific_modal_description
+            : ($technology_modal_description !== '' ? $technology_modal_description : $technology_term_description)
+    ));
 }
 
 $requested_technology_slug = isset($_GET['tech']) ? sanitize_title(wp_unslash((string) $_GET['tech'])) : '';
@@ -220,7 +248,7 @@ $machines_query = new WP_Query([
                             type="button"
                             aria-label="<?php esc_attr_e('Open technology information', 'ilpra-2026'); ?>"
                             data-title="<?php echo esc_attr($active_technology->name . ' - ' . $current_term->name); ?>"
-                            data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$active_technology->term_id] ?: ($technology_descriptions[$active_technology->term_id] ?? ''))); ?>"
+                            data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$active_technology->term_id] ?? '')); ?>"
                         >
                             i
                         </button>
@@ -234,7 +262,7 @@ $machines_query = new WP_Query([
                                     type="button"
                                     data-tech="<?php echo esc_attr($term->term_id); ?>"
                                     data-name="<?php echo esc_attr($term->name); ?>"
-                                    data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$term->term_id] ?: ($technology_descriptions[$term->term_id] ?? ''))); ?>"
+                                    data-description="<?php echo esc_attr(wp_kses_post($technology_modal_descriptions[$term->term_id] ?? '')); ?>"
                                 >
                                     <?php echo esc_html($term->name); ?>
                                 </button>

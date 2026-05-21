@@ -5,7 +5,9 @@ if (!defined('ABSPATH')) {
 
 $ilpra_theme_includes = [
     '/inc/acf-fields.php',
+    '/inc/production-cleanup.php',
     '/inc/setup.php',
+    '/inc/admin-cleanup.php',
     '/inc/enqueue.php',
     '/inc/careers.php',
     '/inc/helpers.php',

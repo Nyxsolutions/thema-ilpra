@@ -20,6 +20,9 @@ get_header();
         $technology_name = ($technology_term && !is_wp_error($technology_term)) ? $technology_term->name : '';
     }
 
+    $details = [];
+    $details_section_title = (string) get_field('titolo_sezione_dettagli');
+
     $detail_fields = [
         [
             'image' => 'immagine_dettaglio_uno',
@@ -42,8 +45,6 @@ get_header();
             'description' => 'descrizione_dettaglio_quattro',
         ],
     ];
-
-    $details = [];
 
     foreach ($detail_fields as $detail_index => $detail_field) {
         $detail_image = get_field($detail_field['image']);
@@ -132,11 +133,11 @@ get_header();
             </div>
         </div>
 
-        <?php if (!empty($details) && ($details_title = (string) get_field('titolo_sezione_dettagli')) !== '') : ?>
+        <?php if (!empty($details) && $details_section_title !== '') : ?>
             <!-- Details Section -->
             <section class="pm-details" data-pm-details>
                 <div class="pm-inner">
-                    <h2 class="pm-section-title"><?php echo esc_html($details_title); ?></h2>
+                    <h2 class="pm-section-title"><?php echo esc_html($details_section_title); ?></h2>
 
                     <div class="pm-details__grid">
                         <div class="pm-details__rail" data-pm-details-list>
