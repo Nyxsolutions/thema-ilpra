@@ -168,11 +168,19 @@ add_filter('acf/prepare_field', static function ($field) {
 add_action('admin_head', static function (): void {
     $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
-    if (!$screen || $screen->post_type !== 'packaging_machine') {
+    if (!$screen) {
+        return;
+    }
+
+    $is_packaging_machine_screen = $screen->post_type === 'packaging_machine';
+    $is_taxonomy_edit_screen = $screen->base === 'term' && !empty($screen->taxonomy);
+
+    if (!$is_packaging_machine_screen && !$is_taxonomy_edit_screen) {
         return;
     }
     ?>
     <style>
+      <?php if ($is_packaging_machine_screen) : ?>
       .post-type-packaging_machine .acf-tab-wrap.-top .acf-hl.acf-tab-group {
         gap: 4px;
       }
@@ -182,6 +190,42 @@ add_action('admin_head', static function (): void {
         font-size: 13px;
         line-height: 1.15;
       }
+      <?php endif; ?>
+
+      <?php if ($is_taxonomy_edit_screen) : ?>
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .wrap > form,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> #edittag,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-wrap,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .term-notes-wrap {
+        max-width: none;
+      }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table {
+        width: min(100%, 1320px);
+      }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table th {
+        width: 220px;
+      }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-fields,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-field,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-input,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-input-wrap,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td input[type="text"],
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td input[type="url"],
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td input[type="number"],
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td textarea,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td select {
+        max-width: none;
+      }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td textarea,
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-editor-wrap iframe {
+        min-height: 180px;
+      }
+      <?php endif; ?>
     </style>
     <?php
 });

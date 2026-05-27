@@ -1520,14 +1520,19 @@ body.is-header-at-top .site-search-panel {
   z-index: 15;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 24px;
-  padding: 8px 0 22px;
+  padding: 12px 0 18px;
   background: #ffffff;
 }
 
 .admin-bar .tm-products-header {
   top: 120px;
+}
+
+.tm-products-heading {
+  max-width: 720px;
+  min-width: 0;
 }
 
 .tm-products-title {
@@ -1561,10 +1566,32 @@ body.is-header-at-top .site-search-panel {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 10px 18px;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.tm-group-description {
+  max-width: 860px;
+  margin-top: 18px;
+  color: #444444;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.tm-group-description p {
+  margin: 0 0 14px;
+}
+
+.tm-group-description p:last-child {
+  margin-bottom: 0;
+}
+
+.tm-group-description--detail {
+  margin-top: 16px;
 }
 
 .tm-tech-button {
+  display: inline-flex;
   position: relative;
   padding: 0 4px;
   border: 0;
@@ -1574,6 +1601,7 @@ body.is-header-at-top .site-search-panel {
   font-weight: 600;
   cursor: pointer;
   line-height: 1.3;
+  text-decoration: none;
 }
 
 .tm-tech-button::after {
@@ -1791,6 +1819,34 @@ a.tm-product-card {
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;
+}
+
+.tm-faq {
+  margin-top: 56px;
+}
+
+.tm-faq__header {
+  margin-bottom: 18px;
+}
+
+.tm-faq__title {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.3vw, 2.4rem);
+  line-height: 1.1;
+}
+
+.tm-faq__answer {
+  color: #444444;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.tm-faq__answer p {
+  margin: 0 0 14px;
+}
+
+.tm-faq__answer p:last-child {
+  margin-bottom: 0;
 }
 
 .by-industry-page {
@@ -3820,6 +3876,11 @@ a.tm-product-card {
     position: static;
     flex-direction: column;
     padding-bottom: 10px;
+  }
+
+  .tm-products-heading,
+  .tm-group-description {
+    max-width: none;
   }
 
   .tm-tech-nav {

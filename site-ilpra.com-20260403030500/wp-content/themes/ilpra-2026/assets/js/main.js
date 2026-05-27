@@ -250,51 +250,6 @@ if (byIndustryTrack && byIndustryPrev && byIndustryNext) {
   }
 }
 
-const techButtons = document.querySelectorAll('.tm-tech-button');
-const productCards = document.querySelectorAll('.tm-product-card');
-const taxonomyTitleText = document.querySelector('.tm-title-text');
-const infoTrigger = document.querySelector('.tm-info-trigger');
-
-if (techButtons.length && productCards.length) {
-  const parentName = taxonomyTitleText ? (taxonomyTitleText.textContent.split(' - ')[1] || '').trim() : '';
-
-  const filterCards = (technologyId) => {
-    productCards.forEach((card) => {
-      card.hidden = card.dataset.tech !== technologyId;
-    });
-  };
-
-  const syncHeader = (button) => {
-    if (!button || !taxonomyTitleText) {
-      return;
-    }
-
-    const nextTitle = parentName ? `${button.dataset.name} - ${parentName}` : button.dataset.name;
-    taxonomyTitleText.textContent = nextTitle;
-
-    if (infoTrigger) {
-      infoTrigger.dataset.title = nextTitle;
-      infoTrigger.dataset.description = button.dataset.description || '';
-    }
-  };
-
-  const activeButton = document.querySelector('.tm-tech-button.active');
-
-  if (activeButton) {
-    filterCards(activeButton.dataset.tech);
-    syncHeader(activeButton);
-  }
-
-  techButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      techButtons.forEach((item) => item.classList.remove('active'));
-      button.classList.add('active');
-      filterCards(button.dataset.tech);
-      syncHeader(button);
-    });
-  });
-}
-
 const taxonomyModal = document.querySelector('[data-tm-modal]');
 
 if (taxonomyModal) {

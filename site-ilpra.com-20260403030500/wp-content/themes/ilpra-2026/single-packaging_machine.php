@@ -66,6 +66,7 @@ get_header();
     $full_description = (string) get_field('descrizione_estesa_confezionatrice');
     $packaging_types = get_field('tipi_di_confezione');
     $technical_rows = get_field('dati_tecnici');
+    $machine_faq_items = get_field('machine_faq_items');
     $videos = [];
     $modules = get_field('repeter_moduli');
     $gallery_images = get_field('gallery_immagini_confezioni');
@@ -85,6 +86,7 @@ get_header();
     $header_row = is_array($technical_rows) && !empty($technical_rows) ? $technical_rows[0] : null;
     $data_rows = is_array($technical_rows) && count($technical_rows) > 1 ? array_slice($technical_rows, 1) : [];
     $column_count = 1;
+    $has_machine_faq_items = false;
 
     if (!empty($header_row['dato_colonna_2'])) {
         $column_count = 2;
@@ -94,6 +96,18 @@ get_header();
     }
     if (!empty($header_row['dato_colonna_4'])) {
         $column_count = 4;
+    }
+
+    if (is_array($machine_faq_items)) {
+        foreach ($machine_faq_items as $faq_item) {
+            $question = trim((string) ($faq_item['question'] ?? ''));
+            $answer = trim((string) ($faq_item['answer'] ?? ''));
+
+            if ($question !== '' && $answer !== '') {
+                $has_machine_faq_items = true;
+                break;
+            }
+        }
     }
     ?>
 
@@ -332,6 +346,44 @@ get_header();
                                                 <?php endif; ?>
                                             </div>
                                         </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php endif; ?>
+
+                <?php if ($has_machine_faq_items) : ?>
+                    <article class="pm-accordion__item">
+                        <button class="pm-accordion__header" type="button" aria-expanded="false">
+                            <span class="pm-accordion__title">FAQ</span>
+                            <span class="pm-accordion__icon"></span>
+                        </button>
+
+                        <div class="pm-accordion__content">
+                            <div class="pm-accordion__inner">
+                                <div class="tm-faq">
+                                    <?php foreach ($machine_faq_items as $faq_item) : ?>
+                                        <?php
+                                        $question = trim((string) ($faq_item['question'] ?? ''));
+                                        $answer = trim((string) ($faq_item['answer'] ?? ''));
+
+                                        if ($question === '' || $answer === '') {
+                                            continue;
+                                        }
+                                        ?>
+                                        <article class="pm-accordion__item">
+                                            <button class="pm-accordion__header" type="button" aria-expanded="false">
+                                                <span class="pm-accordion__title"><?php echo esc_html($question); ?></span>
+                                                <span class="pm-accordion__icon"></span>
+                                            </button>
+
+                                            <div class="pm-accordion__content">
+                                                <div class="pm-accordion__inner">
+                                                    <div class="tm-faq__answer"><?php echo wp_kses_post($answer); ?></div>
+                                                </div>
+                                            </div>
+                                        </article>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
