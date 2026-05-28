@@ -62,7 +62,7 @@ if (!defined('ABSPATH')) {
                 <nav class="site-footer__legal" aria-label="<?php esc_attr_e('Footer Navigation', 'ilpra-2026'); ?>">
                     <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" rel="noreferrer">Privacy Policy</a>
                     <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>" target="_blank" rel="noreferrer">Cookie Policy</a>
-                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/02/Quality-Policy_firmata.pdf')); ?>" target="_blank" rel="noreferrer">Politica di Qualita'</a>
+                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')); ?>" target="_blank" rel="noreferrer">Politica di Qualita'</a>
                 </nav>
                 <div class="site-footer__socials">
                     <a href="https://www.linkedin.com/company/ilpra-s-p-a-/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
