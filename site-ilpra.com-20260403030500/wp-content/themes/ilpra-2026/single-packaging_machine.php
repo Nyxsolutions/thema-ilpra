@@ -87,6 +87,15 @@ get_header();
     $data_rows = is_array($technical_rows) && count($technical_rows) > 1 ? array_slice($technical_rows, 1) : [];
     $column_count = 1;
     $has_machine_faq_items = false;
+    $quote_button_label = ilpra_2026_get_theme_string('string_quote_button_label', 'Request a Quote', 'Richiedi un preventivo');
+    $full_description_label = ilpra_2026_get_theme_string('string_full_description_label', 'Full Description', 'Descrizione completa');
+    $technical_data_label = ilpra_2026_get_theme_string('string_technical_data_label', 'Technical Data', 'Dati tecnici');
+    $videos_label = ilpra_2026_get_theme_string('string_videos_label', 'Videos', 'Video');
+    $technology_label = ilpra_2026_get_theme_string('string_technology_label', 'Technology', 'Tecnologia');
+    $faq_label = ilpra_2026_get_theme_string('string_faq_label', 'FAQ', 'FAQ');
+    $product_gallery_label = ilpra_2026_get_theme_string('string_product_gallery_label', 'Product Gallery', 'Galleria prodotto');
+    $previous_gallery_items_label = ilpra_2026_get_theme_string('string_previous_gallery_items_label', 'Previous gallery items', 'Elementi galleria precedenti');
+    $next_gallery_items_label = ilpra_2026_get_theme_string('string_next_gallery_items_label', 'Next gallery items', 'Elementi galleria successivi');
 
     if (!empty($header_row['dato_colonna_2'])) {
         $column_count = 2;
@@ -135,7 +144,7 @@ get_header();
                             <div class="pm-hero__description"><?php echo wp_kses_post($mid_description); ?></div>
                         <?php endif; ?>
 
-                        <a href="#request-quote" class="pm-button" data-pm-quote-trigger>Request a Quote</a>
+                        <a href="#request-quote" class="pm-button" data-pm-quote-trigger><?php echo esc_html($quote_button_label); ?></a>
                     </div>
                 </div>
             </div>
@@ -143,7 +152,7 @@ get_header();
 
         <div class="pm-mobile-cta" hidden data-pm-mobile-cta>
             <div class="pm-mobile-cta__inner">
-                <a href="#request-quote" class="pm-button pm-mobile-cta__button">Request a Quote</a>
+                <a href="#request-quote" class="pm-button pm-mobile-cta__button"><?php echo esc_html($quote_button_label); ?></a>
             </div>
         </div>
 
@@ -204,7 +213,7 @@ get_header();
                 <?php if ($full_description !== '' || !empty($packaging_types)) : ?>
                     <article class="pm-accordion__item">
                         <button class="pm-accordion__header" type="button" aria-expanded="false">
-                            <span class="pm-accordion__title">Full Description</span>
+                            <span class="pm-accordion__title"><?php echo esc_html($full_description_label); ?></span>
                             <span class="pm-accordion__icon"></span>
                         </button>
 
@@ -254,7 +263,7 @@ get_header();
                 <?php if ($header_row && !empty($data_rows)) : ?>
                     <article class="pm-accordion__item">
                         <button class="pm-accordion__header" type="button" aria-expanded="false">
-                            <span class="pm-accordion__title">Technical Data</span>
+                            <span class="pm-accordion__title"><?php echo esc_html($technical_data_label); ?></span>
                             <span class="pm-accordion__icon"></span>
                         </button>
 
@@ -285,7 +294,7 @@ get_header();
                 <?php if (!empty($videos)) : ?>
                     <article class="pm-accordion__item">
                         <button class="pm-accordion__header" type="button" aria-expanded="false">
-                            <span class="pm-accordion__title">Videos</span>
+                            <span class="pm-accordion__title"><?php echo esc_html($videos_label); ?></span>
                             <span class="pm-accordion__icon"></span>
                         </button>
 
@@ -311,7 +320,7 @@ get_header();
                 <?php if (!empty($modules) && is_array($modules)) : ?>
                     <article class="pm-accordion__item">
                         <button class="pm-accordion__header" type="button" aria-expanded="false">
-                            <span class="pm-accordion__title">Technology</span>
+                            <span class="pm-accordion__title"><?php echo esc_html($technology_label); ?></span>
                             <span class="pm-accordion__icon"></span>
                         </button>
 
@@ -356,7 +365,7 @@ get_header();
                 <?php if ($has_machine_faq_items) : ?>
                     <article class="pm-accordion__item">
                         <button class="pm-accordion__header" type="button" aria-expanded="false">
-                            <span class="pm-accordion__title">FAQ</span>
+                            <span class="pm-accordion__title"><?php echo esc_html($faq_label); ?></span>
                             <span class="pm-accordion__icon"></span>
                         </button>
 
@@ -397,10 +406,10 @@ get_header();
             <!-- Product Gallery -->
             <section class="pm-gallery">
                 <div class="pm-inner">
-                    <h2 class="pm-section-title">Product Gallery</h2>
+                    <h2 class="pm-section-title"><?php echo esc_html($product_gallery_label); ?></h2>
 
                     <div class="pm-gallery__slider" data-pm-gallery>
-                        <button class="pm-gallery__arrow pm-gallery__arrow--prev" type="button" aria-label="Previous gallery items" data-pm-gallery-prev>
+                        <button class="pm-gallery__arrow pm-gallery__arrow--prev" type="button" aria-label="<?php echo esc_attr($previous_gallery_items_label); ?>" data-pm-gallery-prev>
                             <span>&lsaquo;</span>
                         </button>
 
@@ -414,7 +423,7 @@ get_header();
                             </div>
                         </div>
 
-                        <button class="pm-gallery__arrow pm-gallery__arrow--next" type="button" aria-label="Next gallery items" data-pm-gallery-next>
+                        <button class="pm-gallery__arrow pm-gallery__arrow--next" type="button" aria-label="<?php echo esc_attr($next_gallery_items_label); ?>" data-pm-gallery-next>
                             <span>&rsaquo;</span>
                         </button>
                     </div>

@@ -125,6 +125,18 @@ $is_overview_mode = $has_technology_groups && !$requested_technology;
 $active_technology = $requested_technology;
 $active_technology_description = $active_technology ? ($technology_modal_descriptions[$active_technology->term_id] ?? '') : '';
 $active_machine_ids = [];
+$previous_category_label = ilpra_2026_get_theme_string('string_previous_category_label', 'Previous category', 'Categoria precedente');
+$next_category_label = ilpra_2026_get_theme_string('string_next_category_label', 'Next category', 'Categoria successiva');
+$view_product_label = ilpra_2026_get_theme_string('string_view_product_label', 'View Product', 'Scopri prodotto');
+$faq_label = ilpra_2026_get_theme_string('string_faq_label', 'FAQ', 'FAQ');
+$open_technology_information_label = ilpra_2026_get_theme_string('string_open_technology_information_label', 'Open technology information', 'Apri informazioni tecnologia');
+$machine_technologies_label = ilpra_2026_get_theme_string('string_machine_technologies_label', 'Machine technologies', 'Tecnologie macchina');
+$cta_eyebrow = ilpra_2026_get_theme_string('string_cta_eyebrow', 'Get in touch', 'Contattaci');
+$cta_title = ilpra_2026_get_theme_string('string_cta_title', 'Speak to one of our experts', 'Parla con uno dei nostri esperti');
+$cta_text = ilpra_2026_get_theme_string('string_cta_text', 'Get in touch with our team for tailored advice on which packaging solution is right for your products.', 'Contatta il nostro team per ricevere un consiglio su misura e trovare la soluzione di confezionamento piu adatta ai tuoi prodotti.');
+$contact_button_label = ilpra_2026_get_theme_string('string_contact_button_label', 'Contact Us', 'Contattaci');
+$close_dialog_label = ilpra_2026_get_theme_string('string_close_dialog_label', 'Close dialog', 'Chiudi finestra');
+$modal_confirm_label = ilpra_2026_get_theme_string('string_modal_confirm_label', 'Got it', 'Ho capito');
 
 if ($active_technology) {
     foreach ($machine_ids as $machine_id) {
@@ -204,7 +216,7 @@ if ($is_overview_mode) {
     <section class="tm-section tm-section--slider">
         <div class="tm-inner">
             <div class="tm-pills-nav">
-                <button class="tm-arrow tm-arrow-prev" type="button" aria-label="<?php esc_attr_e('Previous category', 'ilpra-2026'); ?>">
+                <button class="tm-arrow tm-arrow-prev" type="button" aria-label="<?php echo esc_attr($previous_category_label); ?>">
                     <span>&lsaquo;</span>
                 </button>
 
@@ -226,7 +238,7 @@ if ($is_overview_mode) {
                     <?php endforeach; ?>
                 </div>
 
-                <button class="tm-arrow tm-arrow-next" type="button" aria-label="<?php esc_attr_e('Next category', 'ilpra-2026'); ?>">
+                <button class="tm-arrow tm-arrow-next" type="button" aria-label="<?php echo esc_attr($next_category_label); ?>">
                     <span>&rsaquo;</span>
                 </button>
             </div>
@@ -261,7 +273,7 @@ if ($is_overview_mode) {
                                         <span class="tm-product-excerpt tm-product-excerpt--group"><?php echo esc_html($group_card['subtitle']); ?></span>
                                     <?php endif; ?>
                                     <span class="tm-product-footer tm-product-footer--group">
-                                        <span class="tm-product-button" aria-hidden="true"><?php esc_html_e('View Product', 'ilpra-2026'); ?></span>
+                                        <span class="tm-product-button" aria-hidden="true"><?php echo esc_html($view_product_label); ?></span>
                                     </span>
                                 </span>
                             </a>
@@ -288,7 +300,7 @@ if ($is_overview_mode) {
                 <?php if ($has_category_faq_items) : ?>
                     <section class="tm-faq">
                         <div class="tm-faq__header">
-                            <h2 class="tm-faq__title"><?php esc_html_e('FAQ', 'ilpra-2026'); ?></h2>
+                            <h2 class="tm-faq__title"><?php echo esc_html($faq_label); ?></h2>
                         </div>
 
                         <div class="pm-accordion">
@@ -333,7 +345,7 @@ if ($is_overview_mode) {
                             <button
                                 class="tm-info-trigger"
                                 type="button"
-                                aria-label="<?php esc_attr_e('Open technology information', 'ilpra-2026'); ?>"
+                                aria-label="<?php echo esc_attr($open_technology_information_label); ?>"
                                 data-title="<?php echo esc_attr($active_technology ? ($active_technology->name . ' - ' . $current_term->name) : $current_term->name); ?>"
                                 data-description="<?php echo esc_attr(wp_kses_post($active_technology ? $active_technology_description : $category_description)); ?>"
                             >
@@ -344,7 +356,7 @@ if ($is_overview_mode) {
                     </div>
 
                     <?php if (!empty($technology_terms)) : ?>
-                        <nav class="tm-tech-nav" aria-label="<?php esc_attr_e('Machine technologies', 'ilpra-2026'); ?>">
+                        <nav class="tm-tech-nav" aria-label="<?php echo esc_attr($machine_technologies_label); ?>">
                             <?php foreach ($technology_terms as $term) : ?>
                                 <a
                                     href="<?php echo esc_url(add_query_arg('tech', $term->slug, get_term_link($current_term))); ?>"
@@ -403,7 +415,7 @@ if ($is_overview_mode) {
                                             class="tm-product-button"
                                             target="<?php echo esc_attr($product_button_target); ?>"
                                             <?php if ($product_button_rel !== '') : ?>rel="<?php echo esc_attr($product_button_rel); ?>"<?php endif; ?>
-                                        ><?php esc_html_e('View Product', 'ilpra-2026'); ?></a>
+                                        ><?php echo esc_html($view_product_label); ?></a>
                                     </div>
                                 </div>
                             </article>
@@ -418,10 +430,10 @@ if ($is_overview_mode) {
     <section class="packaging-page__cta">
         <div class="packaging-page__inner packaging-page__inner--narrow">
             <div class="packaging-page__cta-card">
-                <p class="packaging-page__eyebrow">Get in touch</p>
-                <h2 class="packaging-page__cta-title">Speak to one of our experts</h2>
-                <p class="packaging-page__cta-text">Get in touch with our team for tailored advice on which packaging solution is right for your products.</p>
-                <a class="home-button packaging-page__cta-button" href="<?php echo esc_url(home_url('/contact-us/')); ?>">Contact Us</a>
+                <p class="packaging-page__eyebrow"><?php echo esc_html($cta_eyebrow); ?></p>
+                <h2 class="packaging-page__cta-title"><?php echo esc_html($cta_title); ?></h2>
+                <p class="packaging-page__cta-text"><?php echo esc_html($cta_text); ?></p>
+                <a class="home-button packaging-page__cta-button" href="<?php echo esc_url(home_url('/contact-us/')); ?>"><?php echo esc_html($contact_button_label); ?></a>
             </div>
         </div>
     </section>
@@ -430,10 +442,10 @@ if ($is_overview_mode) {
 <div class="tm-modal" hidden data-tm-modal>
     <div class="tm-modal__backdrop" data-tm-modal-close></div>
     <div class="tm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="tm-modal-title">
-        <button class="tm-modal__close" type="button" aria-label="<?php esc_attr_e('Close dialog', 'ilpra-2026'); ?>" data-tm-modal-close>×</button>
+        <button class="tm-modal__close" type="button" aria-label="<?php echo esc_attr($close_dialog_label); ?>" data-tm-modal-close>×</button>
         <h2 class="tm-modal__title" id="tm-modal-title" data-tm-modal-title></h2>
         <div class="tm-modal__description" data-tm-modal-description></div>
-        <button class="tm-modal__button" type="button" data-tm-modal-close><?php esc_html_e('Got it', 'ilpra-2026'); ?></button>
+        <button class="tm-modal__button" type="button" data-tm-modal-close><?php echo esc_html($modal_confirm_label); ?></button>
     </div>
 </div>
 

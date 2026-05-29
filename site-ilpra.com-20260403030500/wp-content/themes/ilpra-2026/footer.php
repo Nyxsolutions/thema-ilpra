@@ -2,6 +2,15 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+$footer_other_information_heading = ilpra_2026_get_theme_string('string_footer_other_information_heading', 'Other information', 'Altre informazioni');
+$footer_welcome_heading = ilpra_2026_get_theme_string('string_footer_welcome_heading', 'Welcome to ILPRA', 'Benvenuti in ILPRA');
+$footer_branches_heading = ilpra_2026_get_theme_string('string_footer_branches_heading', 'Our Global Branches', 'Le nostre sedi nel mondo');
+$footer_accreditations_heading = ilpra_2026_get_theme_string('string_footer_accreditations_heading', 'Accreditations', 'Accreditamenti');
+$footer_navigation_label = ilpra_2026_get_theme_string('string_footer_navigation_label', 'Footer Navigation', 'Navigazione footer');
+$privacy_policy_label = ilpra_2026_get_theme_string('string_privacy_policy_label', 'Privacy Policy', 'Privacy Policy');
+$cookie_policy_label = ilpra_2026_get_theme_string('string_cookie_policy_label', 'Cookie Policy', 'Cookie Policy');
+$quality_policy_label = ilpra_2026_get_theme_string('string_quality_policy_label', 'Quality Policy', 'Politica della Qualita');
 ?>
     </main>
     <footer class="site-footer">
@@ -18,7 +27,7 @@ if (!defined('ABSPATH')) {
                 <div class="site-footer__widgets">
                     <section class="site-footer__widget-group">
                         <button class="site-footer__accordion-toggle" type="button" aria-expanded="false">
-                            <span class="site-footer__heading">Other information</span>
+                            <span class="site-footer__heading"><?php echo esc_html($footer_other_information_heading); ?></span>
                             <span class="site-footer__accordion-icon" aria-hidden="true"></span>
                         </button>
                         <div class="site-footer__accordion-panel">
@@ -27,7 +36,7 @@ if (!defined('ABSPATH')) {
                     </section>
                     <section class="site-footer__widget-group">
                         <button class="site-footer__accordion-toggle" type="button" aria-expanded="false">
-                            <span class="site-footer__heading">Welcome to ILPRA</span>
+                            <span class="site-footer__heading"><?php echo esc_html($footer_welcome_heading); ?></span>
                             <span class="site-footer__accordion-icon" aria-hidden="true"></span>
                         </button>
                         <div class="site-footer__accordion-panel">
@@ -36,7 +45,7 @@ if (!defined('ABSPATH')) {
                     </section>
                     <section class="site-footer__widget-group">
                         <button class="site-footer__accordion-toggle" type="button" aria-expanded="false">
-                            <span class="site-footer__heading">Our Global Branches</span>
+                            <span class="site-footer__heading"><?php echo esc_html($footer_branches_heading); ?></span>
                             <span class="site-footer__accordion-icon" aria-hidden="true"></span>
                         </button>
                         <div class="site-footer__accordion-panel">
@@ -45,7 +54,7 @@ if (!defined('ABSPATH')) {
                     </section>
                     <section class="site-footer__widget-group">
                         <button class="site-footer__accordion-toggle" type="button" aria-expanded="false">
-                            <span class="site-footer__heading">Accreditations</span>
+                            <span class="site-footer__heading"><?php echo esc_html($footer_accreditations_heading); ?></span>
                             <span class="site-footer__accordion-icon" aria-hidden="true"></span>
                         </button>
                         <div class="site-footer__accordion-panel">
@@ -59,10 +68,10 @@ if (!defined('ABSPATH')) {
         <div class="site-footer__bottom">
             <div class="site-footer__inner site-footer__inner--bottom">
                 <p class="site-footer__copyright">All Rights Reserved © Ilpra spa <?php echo esc_html(date('Y')); ?> Partita Iva IT 01054200157</p>
-                <nav class="site-footer__legal" aria-label="<?php esc_attr_e('Footer Navigation', 'ilpra-2026'); ?>">
-                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" rel="noreferrer">Privacy Policy</a>
-                    <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>" target="_blank" rel="noreferrer">Cookie Policy</a>
-                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')); ?>" target="_blank" rel="noreferrer">Politica di Qualita'</a>
+                <nav class="site-footer__legal" aria-label="<?php echo esc_attr($footer_navigation_label); ?>">
+                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($privacy_policy_label); ?></a>
+                    <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($cookie_policy_label); ?></a>
+                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($quality_policy_label); ?></a>
                 </nav>
                 <div class="site-footer__socials">
                     <a href="https://www.linkedin.com/company/ilpra-s-p-a-/" target="_blank" rel="noreferrer" aria-label="LinkedIn">

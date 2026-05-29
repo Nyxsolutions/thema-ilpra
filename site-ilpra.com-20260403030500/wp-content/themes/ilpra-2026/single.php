@@ -7,8 +7,9 @@ get_header();
 ?>
 <?php while (have_posts()) : the_post(); ?>
     <?php if (get_post_type() === 'post') : ?>
-        <?php
+    <?php
         $current_id = get_the_ID();
+        $more_ilpra_news_label = ilpra_2026_get_theme_string('string_more_ilpra_news_label', 'More ILPRA News', 'Altre notizie ILPRA');
         $fallback_image = get_template_directory_uri() . '/assets/img/placeholder-industrial.png';
         $image_url = get_the_post_thumbnail_url($current_id, 'large') ?: $fallback_image;
         $more_news_args = [
@@ -48,7 +49,7 @@ get_header();
 
                 <?php if ($more_news->have_posts()) : ?>
                     <section class="news-single__more">
-                        <h2 class="news-single__more-title"><?php esc_html_e('More ILPRA News', 'ilpra-2026'); ?></h2>
+                        <h2 class="news-single__more-title"><?php echo esc_html($more_ilpra_news_label); ?></h2>
                         <div class="news-single__more-grid">
                             <?php while ($more_news->have_posts()) : $more_news->the_post(); ?>
                                 <?php

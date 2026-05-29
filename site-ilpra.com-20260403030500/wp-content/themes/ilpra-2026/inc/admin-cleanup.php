@@ -225,6 +225,17 @@ add_action('admin_head', static function (): void {
       .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .form-table td .acf-editor-wrap iframe {
         min-height: 180px;
       }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .acf-tab-wrap.-top .acf-hl.acf-tab-group {
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+
+      .taxonomy-<?php echo esc_html($screen->taxonomy); ?> .acf-tab-wrap.-top .acf-tab-button {
+        padding: 10px 14px;
+        font-size: 13px;
+        line-height: 1.15;
+      }
       <?php endif; ?>
     </style>
     <?php

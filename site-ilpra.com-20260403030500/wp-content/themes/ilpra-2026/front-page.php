@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 
 get_header();
 $home = ilpra_2026_get_homepage_data();
+$read_more_label = ilpra_2026_get_theme_string('string_read_more_label', 'Read more', 'Leggi di piu');
 $featured = new WP_Query([
     'post_type' => 'post',
     'category_name' => 'news',
@@ -125,7 +126,7 @@ $news = new WP_Query([
                                         echo esc_html(wp_trim_words($content, 80, '…'));
                                         ?>
                                     </p>
-                                    <a class="home-button home-button--news" href="<?php the_permalink(); ?>" target="_blank" rel="noreferrer">Read more</a>
+                                    <a class="home-button home-button--news" href="<?php the_permalink(); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($read_more_label); ?></a>
                                 </div>
                             </div>
                         </div>

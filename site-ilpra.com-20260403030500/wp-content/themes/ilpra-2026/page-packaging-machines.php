@@ -11,6 +11,8 @@ get_header();
     $hero = null;
     $cta = null;
     $legacy_machine_sections = [];
+    $product_range_button_label = ilpra_2026_get_theme_string('string_product_range_label', 'View Product Range', 'Scopri la gamma');
+    $contact_button_label = ilpra_2026_get_theme_string('string_contact_button_label', 'Contact Us', 'Contattaci');
 
     if (is_array($rows)) {
         foreach ($rows as $row) {
@@ -84,7 +86,7 @@ get_header();
         }
     }
 
-    $build_series_card = static function (WP_Term $term, ?array $legacy_section = null) use ($resolve_image_id, $normalize_url_path_slug): ?array {
+    $build_series_card = static function (WP_Term $term, ?array $legacy_section = null) use ($resolve_image_id, $normalize_url_path_slug, $product_range_button_label): ?array {
         $term_key = 'term_' . $term->term_id;
         $overview_title = trim((string) get_field('category_overview_title', $term_key));
         $overview_subtitle = trim((string) get_field('category_overview_subtitle', $term_key));
@@ -167,7 +169,7 @@ get_header();
             $button_label = trim((string) ($legacy_section['link']['title'] ?? ''));
         }
 
-        $button_label = $button_label !== '' ? $button_label : __('View Product Range', 'ilpra-2026');
+        $button_label = $button_label !== '' ? $button_label : $product_range_button_label;
 
         return [
             'title' => $overview_title !== '' ? $overview_title : $term->name,
@@ -310,7 +312,7 @@ get_header();
                                 class="home-button packaging-page__cta-button"
                                 href="<?php echo esc_url(home_url('/contact-us/')); ?>"
                             >
-                                <?php echo esc_html($cta['link']['title']); ?>
+                                <?php echo esc_html($cta['link']['title'] ?: $contact_button_label); ?>
                             </a>
                         <?php endif; ?>
                     </div>

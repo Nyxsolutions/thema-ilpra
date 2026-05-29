@@ -6,12 +6,13 @@ if (!defined('ABSPATH')) {
 get_header();
 
 $posts_page_id = (int) get_option('page_for_posts');
-$archive_title = $posts_page_id ? get_the_title($posts_page_id) : __('Latest news', 'ilpra-2026');
+$latest_news_label = ilpra_2026_get_theme_string('string_latest_news_label', 'Latest news', 'Ultime notizie');
+$archive_title = $posts_page_id ? get_the_title($posts_page_id) : $latest_news_label;
 ?>
 <section class="content-frame">
     <div class="content-frame__inner">
         <header class="archive-header archive-header--news">
-            <h1 class="archive-header__title"><?php echo esc_html($archive_title ?: __('Latest news', 'ilpra-2026')); ?></h1>
+            <h1 class="archive-header__title"><?php echo esc_html($archive_title ?: $latest_news_label); ?></h1>
         </header>
 
         <?php if (have_posts()) : ?>

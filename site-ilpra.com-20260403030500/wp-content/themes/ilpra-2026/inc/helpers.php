@@ -24,6 +24,30 @@ function ilpra_2026_get_logo_alt(): string
     return get_bloginfo('name');
 }
 
+function ilpra_2026_is_italian_locale(): bool
+{
+    $locale = function_exists('determine_locale') ? determine_locale() : get_locale();
+
+    return is_string($locale) && stripos($locale, 'it') === 0;
+}
+
+function ilpra_2026_get_theme_string(string $field_name, string $fallback_en, string $fallback_it = ''): string
+{
+    if (function_exists('get_field')) {
+        $value = trim((string) get_field($field_name, 'option'));
+
+        if ($value !== '') {
+            return $value;
+        }
+    }
+
+    if ($fallback_it !== '' && ilpra_2026_is_italian_locale()) {
+        return $fallback_it;
+    }
+
+    return $fallback_en;
+}
+
 function ilpra_2026_render_primary_navigation(): void
 {
     $locations = get_nav_menu_locations();
