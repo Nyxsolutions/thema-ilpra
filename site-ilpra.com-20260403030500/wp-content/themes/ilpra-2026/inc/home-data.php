@@ -85,10 +85,13 @@ function ilpra_2026_get_homepage_fairs(): array
     return ilpra_2026_normalize_homepage_fairs_from_acf(get_field('homepage_fairs', $front_page_id));
 }
 
-function ilpra_2026_get_homepage_data(): array
+function ilpra_2026_get_homepage_front_page_id(): int
 {
-    $fairs = ilpra_2026_get_homepage_fairs();
+    return function_exists('get_option') ? (int) get_option('page_on_front') : 0;
+}
 
+function ilpra_2026_get_homepage_default_data(): array
+{
     return [
         'hero' => [
             'kicker' => 'More Than Machinery',
@@ -165,6 +168,119 @@ function ilpra_2026_get_homepage_data(): array
         ],
         'news_intro' => [
             'title' => 'News & Exhibitions',
+        ],
+    ];
+}
+
+function ilpra_2026_get_acf_link_value($value, array $fallback = []): array
+{
+    $link = is_array($fallback) ? $fallback : [];
+
+    if (!is_array($value)) {
+        return $link;
+    }
+
+    $url = trim((string) ($value['url'] ?? ''));
+
+    if ($url === '') {
+        return $link;
+    }
+
+    return [
+        'label' => trim((string) ($value['title'] ?? '')) ?: (string) ($link['label'] ?? ''),
+        'url' => $url,
+        'target' => trim((string) ($value['target'] ?? '')) ?: (string) ($link['target'] ?? '_self'),
+    ];
+}
+
+function ilpra_2026_get_homepage_cards_from_acf($rows, array $fallback_items): array
+{
+    if (!is_array($rows)) {
+        return $fallback_items;
+    }
+
+    $items = [];
+
+    foreach ($rows as $index => $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $fallback = $fallback_items[$index] ?? [];
+        $title = trim((string) ($row['title'] ?? ''));
+        $content = trim((string) ($row['content'] ?? ''));
+        $image_id = (int) ($row['image'] ?? 0);
+        $link = ilpra_2026_get_acf_link_value($row['link'] ?? null, $fallback['button'] ?? ['url' => $fallback['url'] ?? '', 'label' => '']);
+
+        if ($title === '' && $content === '' && !$image_id && empty($link['url'])) {
+            continue;
+        }
+
+        $items[] = [
+            'image_id' => $image_id ?: (int) ($fallback['image_id'] ?? 0),
+            'title' => $title !== '' ? $title : (string) ($fallback['title'] ?? ''),
+            'content' => $content !== '' ? $content : (string) ($fallback['content'] ?? ''),
+            'url' => !empty($fallback['url']) ? (string) $fallback['url'] : '',
+            'button' => $link ?: ($fallback['button'] ?? []),
+        ];
+    }
+
+    return !empty($items) ? $items : $fallback_items;
+}
+
+function ilpra_2026_get_homepage_data(): array
+{
+    $front_page_id = ilpra_2026_get_homepage_front_page_id();
+    $defaults = ilpra_2026_get_homepage_default_data();
+    $fairs = ilpra_2026_get_homepage_fairs();
+
+    if (!function_exists('get_field') || $front_page_id <= 0) {
+        return array_merge($defaults, [
+            'fairs' => $fairs,
+            'search_template_id' => 5061,
+        ]);
+    }
+
+    $hero = [
+        'kicker' => trim((string) get_field('home_hero_kicker', $front_page_id)) ?: $defaults['hero']['kicker'],
+        'title' => trim((string) get_field('home_hero_title', $front_page_id)) ?: $defaults['hero']['title'],
+        'content' => trim((string) get_field('home_hero_content', $front_page_id)) ?: $defaults['hero']['content'],
+        'video_mp4' => trim((string) get_field('home_hero_video_mp4', $front_page_id)) ?: $defaults['hero']['video_mp4'],
+        'video_webm' => trim((string) get_field('home_hero_video_webm', $front_page_id)) ?: $defaults['hero']['video_webm'],
+        'poster' => trim((string) get_field('home_hero_poster', $front_page_id)) ?: $defaults['hero']['poster'],
+    ];
+
+    $industries = ilpra_2026_get_homepage_cards_from_acf(
+        get_field('home_industry_items', $front_page_id),
+        $defaults['industries']
+    );
+
+    $machines = ilpra_2026_get_homepage_cards_from_acf(
+        get_field('home_machine_items', $front_page_id),
+        $defaults['machines']
+    );
+
+    foreach ($industries as $index => $industry) {
+        if (isset($industry['button'])) {
+            continue;
+        }
+
+        $industries[$index]['button'] = $defaults['industries'][$index]['button'] ?? ['label' => '', 'url' => ''];
+    }
+
+    return [
+        'hero' => $hero,
+        'industry_intro' => [
+            'title' => trim((string) get_field('home_industry_title', $front_page_id)) ?: $defaults['industry_intro']['title'],
+        ],
+        'industries' => $industries,
+        'machines_intro' => [
+            'title' => trim((string) get_field('home_machines_title', $front_page_id)) ?: $defaults['machines_intro']['title'],
+            'content' => trim((string) get_field('home_machines_content', $front_page_id)) ?: $defaults['machines_intro']['content'],
+        ],
+        'machines' => $machines,
+        'news_intro' => [
+            'title' => trim((string) get_field('home_news_title', $front_page_id)) ?: $defaults['news_intro']['title'],
         ],
         'fairs' => $fairs,
         'search_template_id' => 5061,

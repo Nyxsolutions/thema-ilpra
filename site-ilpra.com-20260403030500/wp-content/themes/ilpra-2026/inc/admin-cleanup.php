@@ -76,6 +76,29 @@ function ilpra_2026_get_current_admin_post_type(): string
     return '';
 }
 
+function ilpra_2026_is_front_page_edit_screen(): bool
+{
+    if (!is_admin()) {
+        return false;
+    }
+
+    $front_page_id = (int) get_option('page_on_front');
+
+    if ($front_page_id <= 0) {
+        return false;
+    }
+
+    if (isset($_GET['post']) && (int) $_GET['post'] === $front_page_id) {
+        return true;
+    }
+
+    if (isset($_POST['post_ID']) && (int) $_POST['post_ID'] === $front_page_id) {
+        return true;
+    }
+
+    return false;
+}
+
 add_action('admin_menu', static function (): void {
     $parent_slug = 'edit.php?post_type=packaging_machine';
 
@@ -174,8 +197,9 @@ add_action('admin_head', static function (): void {
 
     $is_packaging_machine_screen = $screen->post_type === 'packaging_machine';
     $is_taxonomy_edit_screen = $screen->base === 'term' && !empty($screen->taxonomy);
+    $is_front_page_edit_screen = $screen->base === 'post' && ilpra_2026_is_front_page_edit_screen();
 
-    if (!$is_packaging_machine_screen && !$is_taxonomy_edit_screen) {
+    if (!$is_packaging_machine_screen && !$is_taxonomy_edit_screen && !$is_front_page_edit_screen) {
         return;
     }
     ?>
@@ -235,6 +259,18 @@ add_action('admin_head', static function (): void {
         padding: 10px 14px;
         font-size: 13px;
         line-height: 1.15;
+      }
+      <?php endif; ?>
+
+      <?php if ($is_front_page_edit_screen) : ?>
+      #postdivrich,
+      .block-editor-block-list__layout,
+      .editor-styles-wrapper .is-root-container {
+        display: none !important;
+      }
+
+      [data-key="group_65c63a77cc8b4"] {
+        display: none !important;
       }
       <?php endif; ?>
     </style>

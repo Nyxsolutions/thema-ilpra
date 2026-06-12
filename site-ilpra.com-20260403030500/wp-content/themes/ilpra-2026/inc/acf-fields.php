@@ -1683,3 +1683,1093 @@ add_action('admin_notices', static function (): void {
     </div>
     <?php
 });
+
+function ilpra_2026_get_homepage_link_subfield(string $key, string $label, string $name): array
+{
+    return [
+        'key' => $key,
+        'label' => $label,
+        'name' => $name,
+        'type' => 'link',
+        'required' => 0,
+        'wrapper' => [
+            'width' => '',
+            'class' => '',
+            'id' => '',
+        ],
+        'return_format' => 'array',
+    ];
+}
+
+function ilpra_2026_get_homepage_acf_defaults(): array
+{
+    return [
+        'home_hero_kicker' => 'More Than Machinery',
+        'home_hero_title' => 'A global partner for your packaging needs',
+        'home_hero_content' => 'Complete packaging systems designed, manufactured and supported by ILPRA since 1955',
+        'home_hero_video_mp4' => home_url('/wp-content/uploads/2024/11/video_homepage.mp4'),
+        'home_hero_video_webm' => home_url('/wp-content/uploads/2024/11/video_homepage.webm'),
+        'home_hero_poster' => home_url('/wp-content/uploads/2024/11/videoplayback.svg'),
+        'home_industry_title' => 'What product do you need to pack?',
+        'home_industry_items' => [
+            [
+                'image' => 12859,
+                'title' => 'Food',
+                'content' => 'Efficient and reliable solutions for fresh, ready and processed food packaging.',
+                'link' => [
+                    'title' => 'View solutions',
+                    'url' => home_url('/packaging/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 12860,
+                'title' => 'Medical & Cosmetics',
+                'content' => 'Safe and precise packaging technologies for medical, cosmetic and personal care products.',
+                'link' => [
+                    'title' => 'View solutions',
+                    'url' => home_url('/packaging/'),
+                    'target' => '_self',
+                ],
+            ],
+        ],
+        'home_machines_title' => 'A wide range of packaging machines',
+        'home_machines_content' => "ILPRA designs and manufactures complete packaging machines for the food, medical, cosmetic and non-food sectors.\nSince 1955, we support companies worldwide with reliable systems for tray sealing, thermoforming, filling, forming & filling and automated handling.",
+        'home_machine_items' => [
+            [
+                'image' => 15491,
+                'title' => 'Tray sealers',
+                'content' => 'Semi-automatic - Automatic - In Line',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/foodpack-traysealers/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 15507,
+                'title' => 'Fill Sealers',
+                'content' => 'Rotary - In Line',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/fill-seal-pot-fillers/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 15494,
+                'title' => 'Thermoformers',
+                'content' => 'Compact - Customisable',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/formpack-thermoformers/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 15500,
+                'title' => 'Form Fill Seal Machines',
+                'content' => 'Automatic',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/form-fill-seal/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 15496,
+                'title' => 'End of Line Machinery',
+                'content' => 'Picking & Palletization',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/end-of-line/'),
+                    'target' => '_self',
+                ],
+            ],
+            [
+                'image' => 15686,
+                'title' => 'ILPRA Group - Packaging Equipment',
+                'content' => 'ILPRA Group - Packaging Equipment',
+                'link' => [
+                    'title' => '',
+                    'url' => home_url('/packaging-machines/ilpragroup-packagingequipment/'),
+                    'target' => '_self',
+                ],
+            ],
+        ],
+        'home_news_title' => 'News & Exhibitions',
+    ];
+}
+
+function ilpra_2026_get_sustainability_acf_defaults(): array
+{
+    return [
+        'sustainability_hero_title' => 'A Concrete Approach to Sustainability',
+        'sustainability_hero_text' => 'In a constantly evolving industrial context, ILPRA adopts a pragmatic approach to sustainability by integrating solutions that improve energy efficiency, reduce the environmental impact of production processes, and promote people’s well-being.',
+        'sustainability_tab_label_sustainability' => 'Sustainability',
+        'sustainability_tab_label_environmental' => 'Environmental',
+        'sustainability_tab_label_social' => 'Social',
+        'sustainability_tab_label_governance' => 'Governance',
+        'sustainability_quote_text' => "“Sustainability is not an abstract goal, but a series of concrete choices made every day.<br>\nThrough responsible innovation, efficiency, and respect for people and the environment, we build\nlong-term value for industry and society.”",
+        'sustainability_sections' => [
+            [
+                'title' => 'A Concrete Approach to Sustainability',
+                'image_position' => 'right',
+                'image_asset' => '1_approach.jpg',
+                'image_alt' => 'Concrete sustainability approach',
+                'content' => '<p>In a constantly evolving industrial context, ILPRA adopts a pragmatic approach to sustainability by integrating solutions that improve energy efficiency, reduce the environmental impact of production processes, and promote people’s well-being.</p><p>Our focus on quality, safety, and innovation translates into conscious choices aimed at responsible, long-term growth, aligned with today’s needs and tomorrow’s challenges.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Our Sustainability Policy',
+                'image_position' => 'left',
+                'image_asset' => '3_ecovadis.jpg',
+                'image_alt' => 'EcoVadis sustainability assessment',
+                'content' => '<p>Our Corporate Sustainability Policy stems from the commitment to integrate environmental, social, and economic responsibility into all activities.</p><p><strong>Certifications and Assessments</strong><br>We participate in the EcoVadis Corporate Assessment. <a href="https://ecovadis.com" target="_blank" rel="noopener" style="color:#89af1e;">ecovadis.com</a></p>',
+                'note' => '',
+                'link' => null,
+            ],
+        ],
+        'environmental_sections' => [
+            [
+                'title' => 'Energy Efficiency and Space Upgrades',
+                'image_position' => 'right',
+                'image_asset' => '4_pannelli solari.jpg',
+                'image_alt' => 'Energy efficiency',
+                'content' => '<p>We invest in modernizing our facilities by replacing outdated systems with high-efficiency solutions.</p><p>We constantly monitor consumption through smart control systems to optimize every intervention.</p><p>Thanks to photovoltaic panels, a significant portion of our energy needs is covered by green energy, delivering tangible benefits for both the environment and the community.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Sustainable Mobility',
+                'image_position' => 'left',
+                'image_asset' => '5_veicoli.jpg',
+                'image_alt' => 'Sustainable mobility',
+                'content' => '<p>We are converting our corporate fleet to electric and hybrid vehicles, helping reduce emissions.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Low-Emission Logistics',
+                'image_position' => 'right',
+                'image_asset' => '6_dhl.jpg',
+                'image_alt' => 'Low-emission logistics',
+                'content' => '<p>ILPRA is committed to reducing CO₂ emissions from shipments by using sustainable aviation fuel (SAF). For this reason, we have chosen DHL Express as our partner, sharing the goal of making more sustainable choices. Our shipments use the DHL GoGreen Plus service, which employs SAF blended with conventional fuel to cut emissions by up to 80%*.</p>',
+                'note' => '*Jet fuel based on CORSIA baseline prescribed by SBTi. SAF LCA values based on ICCT data, assuming full lifecycle emissions from Used cooking oils, and vegetable oils derived from plants.',
+                'link' => null,
+            ],
+            [
+                'title' => 'Responsible Building Expansion',
+                'image_position' => 'left',
+                'image_asset' => '7_terzo.jpg',
+                'image_alt' => 'Building expansion',
+                'content' => '<p>Our new third floor will be built on a stilt-like structure with seismic resistance and minimal impact on the existing building—an example of safe and sustainable growth.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+        ],
+        'social_sections' => [
+            [
+                'title' => 'Corporate Welfare',
+                'image_position' => 'right',
+                'image_asset' => '8_corporate welfare.jpg',
+                'image_alt' => 'Corporate welfare',
+                'content' => '<p>We promote welfare initiatives to improve the quality of life for our employees and their families, fostering a healthy work-life balance.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Wellness Desk',
+                'image_position' => 'left',
+                'image_asset' => '9_sportello benessere.jpg',
+                'image_alt' => 'Wellness desk',
+                'content' => '<p>At ILPRA, we believe well-being is not a privilege but an essential part of everyday life. That’s why we created the “Taking Care of Ourselves” Wellness Desk, offering confidential sessions with a psychologist and psychotherapist for emotional support.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Career Development',
+                'image_position' => 'right',
+                'image_asset' => '10_career dev.jpg',
+                'image_alt' => 'Career development',
+                'content' => '<p>We believe in continuous learning and invest in developing technical and leadership skills to build a dynamic, future-oriented workplace.</p>',
+                'note' => '',
+                'link' => [
+                    'title' => 'Work with Us',
+                    'url' => 'https://ilpra.com/work-with-us/',
+                    'target' => '_blank',
+                ],
+            ],
+            [
+                'title' => 'Sponsorships',
+                'image_position' => 'left',
+                'image_asset' => '11_fisrace.jpg',
+                'image_alt' => 'Sponsorships',
+                'content' => '<p>We proudly support social and sports initiatives, such as our official sponsorship of <a href="https://en.corporate.ilpra.com/ilpra-sponsor-ufficiale-di-fisip-federazione-italianasport-invernali-paralimpici/" target="_blank" rel="noopener" style="color:#89af1e;">FISIP – Italian Federation of Paralympic Winter Sports</a>.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Diversity and Inclusion',
+                'image_position' => 'right',
+                'image_asset' => '12_diversity.jpg',
+                'image_alt' => 'Diversity and inclusion',
+                'content' => '<p>We foster an inclusive environment where every individual is respected and valued. Diversity is a resource that drives innovation and creativity.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+            [
+                'title' => 'Academic Partnerships',
+                'image_position' => 'left',
+                'image_asset' => '13_academic.jpg',
+                'image_alt' => 'Academic partnerships',
+                'content' => '<p>To attract top talent, we maintain active collaborations with universities, offering curricular internships and delivering courses to share our expertise.</p>',
+                'note' => '',
+                'link' => null,
+            ],
+        ],
+        'governance_sections' => [
+            [
+                'title' => 'Code of Ethics',
+                'image_position' => 'right',
+                'image_asset' => '14_ethics.jpg',
+                'image_alt' => 'Code of ethics',
+                'content' => '<p>Our Code of Ethics guides every action, promoting integrity, legality, and social responsibility. It is the foundation of our relationships with all stakeholders. To ensure transparency and alignment with our values, we require suppliers and customers to share our commitment. We provide a dedicated form for accepting the Code of Ethics and corporate policies, building strong and transparent relationships.</p>',
+                'note' => '',
+                'link' => [
+                    'title' => 'Code of Ethics',
+                    'url' => '/wp-content/uploads/2026/04/codice_etico.pdf',
+                    'target' => '_blank',
+                ],
+            ],
+            [
+                'title' => 'D.Lgs. 231/2001',
+                'image_position' => 'left',
+                'image_asset' => '1_approach.jpg',
+                'image_alt' => 'D.Lgs. 231/2001',
+                'content' => '<p>Within its Governance system, ILPRA S.p.A. has adopted an Organization, Management and Control Model pursuant to Legislative Decree 231/2001, aimed at ensuring corporate management based on transparency, integrity, and full regulatory compliance.</p>',
+                'note' => '',
+                'link' => [
+                    'title' => 'Organization, Management and Control Model',
+                    'url' => '/wp-content/uploads/2026/04/modello_di_organizzazione_gestione_e_controllo.pdf',
+                    'target' => '_blank',
+                ],
+            ],
+            [
+                'title' => 'Whistleblowing System',
+                'image_position' => 'left',
+                'image_asset' => '15_whistleblowing.jpg',
+                'image_alt' => 'Whistleblowing system',
+                'content' => '<p>We offer a secure and accessible channel for reporting non-compliant behavior, ensuring confidentiality and transparency.</p>',
+                'note' => '',
+                'link' => [
+                    'title' => 'Whistleblowing',
+                    'url' => 'https://digitalroom.bdo.it/Ilpra/home.aspx',
+                    'target' => '_blank',
+                ],
+            ],
+        ],
+        'sustainability_quote_logo' => 'ilpra-70.svg',
+    ];
+}
+
+function ilpra_2026_import_theme_asset_attachment(string $relative_path, string $alt = ''): int
+{
+    $relative_path = ltrim($relative_path, '/');
+
+    if ($relative_path === '') {
+        return 0;
+    }
+
+    $existing_query = new WP_Query([
+        'post_type' => 'attachment',
+        'post_status' => 'inherit',
+        'posts_per_page' => 1,
+        'meta_key' => '_ilpra_2026_theme_asset_path',
+        'meta_value' => $relative_path,
+        'fields' => 'ids',
+    ]);
+
+    if (!empty($existing_query->posts)) {
+        return (int) $existing_query->posts[0];
+    }
+
+    $source_path = get_template_directory() . '/sustainability/lib/images/' . $relative_path;
+
+    if (!file_exists($source_path)) {
+        return 0;
+    }
+
+    $uploads = wp_upload_dir();
+
+    if (!empty($uploads['error'])) {
+        return 0;
+    }
+
+    $filename = wp_unique_filename($uploads['path'], basename($source_path));
+    $destination = trailingslashit($uploads['path']) . $filename;
+
+    if (!wp_mkdir_p($uploads['path']) || !copy($source_path, $destination)) {
+        return 0;
+    }
+
+    $filetype = wp_check_filetype($filename, null);
+    $attachment_id = wp_insert_attachment([
+        'post_mime_type' => $filetype['type'] ?? '',
+        'post_title' => sanitize_file_name(pathinfo($filename, PATHINFO_FILENAME)),
+        'post_status' => 'inherit',
+    ], $destination);
+
+    if (!$attachment_id || is_wp_error($attachment_id)) {
+        return 0;
+    }
+
+    if (!function_exists('wp_generate_attachment_metadata')) {
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+    }
+
+    $metadata = wp_generate_attachment_metadata($attachment_id, $destination);
+
+    if (!empty($metadata) && !is_wp_error($metadata)) {
+        wp_update_attachment_metadata($attachment_id, $metadata);
+    }
+
+    update_post_meta($attachment_id, '_ilpra_2026_theme_asset_path', $relative_path);
+
+    if ($alt !== '') {
+        update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt);
+    }
+
+    return (int) $attachment_id;
+}
+
+function ilpra_2026_prepare_seed_default_value(string $field_name, $default_value)
+{
+    if (!is_array($default_value)) {
+        if ($field_name === 'sustainability_quote_logo' && is_string($default_value) && $default_value !== '') {
+            return ilpra_2026_import_theme_asset_attachment($default_value);
+        }
+
+        return $default_value;
+    }
+
+    if (!in_array($field_name, ilpra_2026_get_seeded_repeater_field_names(), true)) {
+        return $default_value;
+    }
+
+    foreach ($default_value as $index => $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $asset = trim((string) ($row['image_asset'] ?? ''));
+        $alt = trim((string) ($row['image_alt'] ?? ''));
+
+        if ($asset !== '') {
+            $default_value[$index]['image'] = ilpra_2026_import_theme_asset_attachment($asset, $alt);
+        }
+
+        unset($default_value[$index]['image_asset']);
+    }
+
+    return $default_value;
+}
+
+function ilpra_2026_get_homepage_card_repeater(string $key, string $label, string $name, string $button_label): array
+{
+    return [
+        'key' => $key,
+        'label' => $label,
+        'name' => $name,
+        'type' => 'repeater',
+        'required' => 0,
+        'wrapper' => [
+            'width' => '',
+            'class' => '',
+            'id' => '',
+        ],
+        'layout' => 'row',
+        'button_label' => $button_label,
+        'sub_fields' => [
+            [
+                'key' => $key . '_image',
+                'label' => 'Image',
+                'name' => 'image',
+                'type' => 'image',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '20',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
+                'key' => $key . '_title',
+                'label' => 'Title',
+                'name' => 'title',
+                'type' => 'text',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '25',
+                    'class' => '',
+                    'id' => '',
+                ],
+            ],
+            [
+                'key' => $key . '_content',
+                'label' => 'Content',
+                'name' => 'content',
+                'type' => 'textarea',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '35',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'rows' => 3,
+                'new_lines' => 'br',
+            ],
+            ilpra_2026_get_homepage_link_subfield($key . '_link', 'Link', 'link'),
+        ],
+    ];
+}
+
+function ilpra_2026_get_sustainability_section_repeater(string $key, string $label, string $name, string $button_label): array
+{
+    return [
+        'key' => $key,
+        'label' => $label,
+        'name' => $name,
+        'type' => 'repeater',
+        'required' => 0,
+        'wrapper' => [
+            'width' => '',
+            'class' => '',
+            'id' => '',
+        ],
+        'layout' => 'block',
+        'button_label' => $button_label,
+        'sub_fields' => [
+            [
+                'key' => $key . '_title',
+                'label' => 'Title',
+                'name' => 'title',
+                'type' => 'text',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+            ],
+            [
+                'key' => $key . '_image_position',
+                'label' => 'Image Position',
+                'name' => 'image_position',
+                'type' => 'select',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '20',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'choices' => [
+                    'right' => 'Image Right',
+                    'left' => 'Image Left',
+                ],
+                'default_value' => 'right',
+                'allow_null' => 0,
+                'multiple' => 0,
+                'ui' => 0,
+                'return_format' => 'value',
+            ],
+            [
+                'key' => $key . '_image',
+                'label' => 'Image',
+                'name' => 'image',
+                'type' => 'image',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '30',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
+                'key' => $key . '_image_alt',
+                'label' => 'Image Alt',
+                'name' => 'image_alt',
+                'type' => 'text',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+            ],
+            [
+                'key' => $key . '_content',
+                'label' => 'Content',
+                'name' => 'content',
+                'type' => 'wysiwyg',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'tabs' => 'visual',
+                'toolbar' => 'basic',
+                'media_upload' => 0,
+                'delay' => 0,
+            ],
+            [
+                'key' => $key . '_note',
+                'label' => 'Note',
+                'name' => 'note',
+                'type' => 'textarea',
+                'required' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'rows' => 2,
+                'new_lines' => 'br',
+            ],
+            ilpra_2026_get_homepage_link_subfield($key . '_link', 'Button Link', 'link'),
+        ],
+    ];
+}
+
+add_action('acf/init', static function (): void {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+
+    acf_add_local_field_group([
+        'key' => 'group_ilpra_2026_homepage_content',
+        'title' => 'Homepage Content',
+        'fields' => [
+            [
+                'key' => 'field_ilpra_2026_homepage_content_tab_hero',
+                'label' => 'Hero',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_kicker',
+                'label' => 'Hero Kicker',
+                'name' => 'home_hero_kicker',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'home_hero_title',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_content',
+                'label' => 'Hero Content',
+                'name' => 'home_hero_content',
+                'type' => 'textarea',
+                'rows' => 3,
+                'new_lines' => 'br',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_video_mp4',
+                'label' => 'Hero Video MP4 URL',
+                'name' => 'home_hero_video_mp4',
+                'type' => 'url',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_video_webm',
+                'label' => 'Hero Video WEBM URL',
+                'name' => 'home_hero_video_webm',
+                'type' => 'url',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_hero_poster',
+                'label' => 'Hero Poster URL',
+                'name' => 'home_hero_poster',
+                'type' => 'url',
+            ],
+            [
+                'key' => 'field_ilpra_2026_homepage_content_tab_industries',
+                'label' => 'Industries',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_industry_title',
+                'label' => 'Industries Title',
+                'name' => 'home_industry_title',
+                'type' => 'text',
+            ],
+            ilpra_2026_get_homepage_card_repeater(
+                'field_ilpra_2026_home_industry_items',
+                'Industry Cards',
+                'home_industry_items',
+                'Add Industry Card'
+            ),
+            [
+                'key' => 'field_ilpra_2026_homepage_content_tab_machines',
+                'label' => 'Machines',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_machines_title',
+                'label' => 'Machines Title',
+                'name' => 'home_machines_title',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_machines_content',
+                'label' => 'Machines Intro Content',
+                'name' => 'home_machines_content',
+                'type' => 'textarea',
+                'rows' => 4,
+                'new_lines' => 'br',
+            ],
+            ilpra_2026_get_homepage_card_repeater(
+                'field_ilpra_2026_home_machine_items',
+                'Machine Cards',
+                'home_machine_items',
+                'Add Machine Card'
+            ),
+            [
+                'key' => 'field_ilpra_2026_homepage_content_tab_news',
+                'label' => 'News',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_home_news_title',
+                'label' => 'News Section Title',
+                'name' => 'home_news_title',
+                'type' => 'text',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_type',
+                    'operator' => '==',
+                    'value' => 'front_page',
+                ],
+            ],
+        ],
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+        'show_in_rest' => 0,
+    ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_ilpra_2026_sustainability_content',
+        'title' => 'Sustainability Content',
+        'fields' => [
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_hero',
+                'label' => 'Hero',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'sustainability_hero_title',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_hero_text',
+                'label' => 'Hero Text',
+                'name' => 'sustainability_hero_text',
+                'type' => 'textarea',
+                'rows' => 4,
+                'new_lines' => 'br',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_tabs',
+                'label' => 'Tabs',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_label_sustainability',
+                'label' => 'Sustainability Tab Label',
+                'name' => 'sustainability_tab_label_sustainability',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_label_environmental',
+                'label' => 'Environmental Tab Label',
+                'name' => 'sustainability_tab_label_environmental',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_label_social',
+                'label' => 'Social Tab Label',
+                'name' => 'sustainability_tab_label_social',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_label_governance',
+                'label' => 'Governance Tab Label',
+                'name' => 'sustainability_tab_label_governance',
+                'type' => 'text',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_sustainability',
+                'label' => 'Sustainability',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            ilpra_2026_get_sustainability_section_repeater(
+                'field_ilpra_2026_sustainability_sections',
+                'Sustainability Sections',
+                'sustainability_sections',
+                'Add Sustainability Section'
+            ),
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_environmental',
+                'label' => 'Environmental',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            ilpra_2026_get_sustainability_section_repeater(
+                'field_ilpra_2026_environmental_sections',
+                'Environmental Sections',
+                'environmental_sections',
+                'Add Environmental Section'
+            ),
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_social',
+                'label' => 'Social',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            ilpra_2026_get_sustainability_section_repeater(
+                'field_ilpra_2026_social_sections',
+                'Social Sections',
+                'social_sections',
+                'Add Social Section'
+            ),
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_governance',
+                'label' => 'Governance',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            ilpra_2026_get_sustainability_section_repeater(
+                'field_ilpra_2026_governance_sections',
+                'Governance Sections',
+                'governance_sections',
+                'Add Governance Section'
+            ),
+            [
+                'key' => 'field_ilpra_2026_sustainability_tab_quote',
+                'label' => 'Quote',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_quote_text',
+                'label' => 'Quote Text',
+                'name' => 'sustainability_quote_text',
+                'type' => 'textarea',
+                'rows' => 4,
+                'new_lines' => 'br',
+            ],
+            [
+                'key' => 'field_ilpra_2026_sustainability_quote_logo',
+                'label' => 'Quote Logo',
+                'name' => 'sustainability_quote_logo',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'sustainability.php',
+                ],
+            ],
+        ],
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+        'show_in_rest' => 0,
+    ]);
+}, 30);
+
+function ilpra_2026_get_acf_default_value_by_name(string $field_name, $post_id = 0)
+{
+    $post_id = is_numeric($post_id) ? (int) $post_id : 0;
+    $front_page_id = function_exists('get_option') ? (int) get_option('page_on_front') : 0;
+    $is_front_page = $post_id > 0 && $post_id === $front_page_id;
+    $is_sustainability_page = $post_id > 0 && get_page_template_slug($post_id) === 'sustainability.php';
+
+    if ($is_front_page) {
+        $home_defaults = ilpra_2026_get_homepage_acf_defaults();
+
+        if (array_key_exists($field_name, $home_defaults)) {
+            return $home_defaults[$field_name];
+        }
+    }
+
+    if ($is_sustainability_page) {
+        $sustainability_defaults = ilpra_2026_get_sustainability_acf_defaults();
+
+        if (array_key_exists($field_name, $sustainability_defaults)) {
+            return $sustainability_defaults[$field_name];
+        }
+    }
+
+    return null;
+}
+
+function ilpra_2026_is_effectively_empty_repeater_row(string $field_name, array $row): bool
+{
+    $checks_map = [
+        'home_industry_items' => ['image', 'title', 'content', 'link'],
+        'home_machine_items' => ['image', 'title', 'content', 'link'],
+        'sustainability_sections' => ['title', 'image', 'image_alt', 'content', 'note', 'link'],
+        'environmental_sections' => ['title', 'image', 'image_alt', 'content', 'note', 'link'],
+        'social_sections' => ['title', 'image', 'image_alt', 'content', 'note', 'link'],
+        'governance_sections' => ['title', 'image', 'image_alt', 'content', 'note', 'link'],
+    ];
+
+    $keys_to_check = $checks_map[$field_name] ?? [];
+
+    if (empty($keys_to_check)) {
+        return false;
+    }
+
+    foreach ($keys_to_check as $key) {
+        $value = $row[$key] ?? null;
+
+        if (is_array($value)) {
+            $url = trim((string) ($value['url'] ?? ''));
+
+            if ($url !== '') {
+                return false;
+            }
+
+            continue;
+        }
+
+        if (is_string($value) && trim($value) !== '') {
+            return false;
+        }
+
+        if (is_numeric($value) && (int) $value > 0) {
+            return false;
+        }
+
+        if (is_bool($value) && $value) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function ilpra_2026_is_effectively_empty_repeater_value(string $field_name, $value): bool
+{
+    if (!is_array($value) || empty($value)) {
+        return true;
+    }
+
+    foreach ($value as $row) {
+        if (!is_array($row)) {
+            return false;
+        }
+
+        if (!ilpra_2026_is_effectively_empty_repeater_row($field_name, $row)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function ilpra_2026_get_seeded_repeater_field_names(): array
+{
+    return [
+        'home_industry_items',
+        'home_machine_items',
+        'sustainability_sections',
+        'environmental_sections',
+        'social_sections',
+        'governance_sections',
+    ];
+}
+
+add_filter('acf/load_value', static function ($value, $post_id, $field) {
+    if (!is_array($field) || empty($field['name'])) {
+        return $value;
+    }
+
+    $default_value = ilpra_2026_get_acf_default_value_by_name((string) $field['name'], $post_id);
+
+    if ($default_value === null) {
+        return $value;
+    }
+
+    if ((string) $field['name'] === 'sustainability_quote_logo') {
+        return $value;
+    }
+
+    if (in_array((string) $field['name'], ilpra_2026_get_seeded_repeater_field_names(), true)) {
+        return $value;
+    }
+
+    if (is_array($value)) {
+        if (ilpra_2026_is_effectively_empty_repeater_value((string) $field['name'], $value)) {
+            return $default_value;
+        }
+
+        return !empty($value) ? $value : $default_value;
+    }
+
+    if (is_string($value)) {
+        return trim($value) !== '' ? $value : $default_value;
+    }
+
+    return empty($value) ? $default_value : $value;
+}, 20, 3);
+
+function ilpra_2026_get_homepage_seed_field_keys(): array
+{
+    return [
+        'home_hero_kicker' => 'field_ilpra_2026_home_hero_kicker',
+        'home_hero_title' => 'field_ilpra_2026_home_hero_title',
+        'home_hero_content' => 'field_ilpra_2026_home_hero_content',
+        'home_hero_video_mp4' => 'field_ilpra_2026_home_hero_video_mp4',
+        'home_hero_video_webm' => 'field_ilpra_2026_home_hero_video_webm',
+        'home_hero_poster' => 'field_ilpra_2026_home_hero_poster',
+        'home_industry_title' => 'field_ilpra_2026_home_industry_title',
+        'home_industry_items' => 'field_ilpra_2026_home_industry_items',
+        'home_machines_title' => 'field_ilpra_2026_home_machines_title',
+        'home_machines_content' => 'field_ilpra_2026_home_machines_content',
+        'home_machine_items' => 'field_ilpra_2026_home_machine_items',
+        'home_news_title' => 'field_ilpra_2026_home_news_title',
+    ];
+}
+
+function ilpra_2026_get_sustainability_seed_field_keys(): array
+{
+    return [
+        'sustainability_hero_title' => 'field_ilpra_2026_sustainability_hero_title',
+        'sustainability_hero_text' => 'field_ilpra_2026_sustainability_hero_text',
+        'sustainability_tab_label_sustainability' => 'field_ilpra_2026_sustainability_tab_label_sustainability',
+        'sustainability_tab_label_environmental' => 'field_ilpra_2026_sustainability_tab_label_environmental',
+        'sustainability_tab_label_social' => 'field_ilpra_2026_sustainability_tab_label_social',
+        'sustainability_tab_label_governance' => 'field_ilpra_2026_sustainability_tab_label_governance',
+        'sustainability_sections' => 'field_ilpra_2026_sustainability_sections',
+        'environmental_sections' => 'field_ilpra_2026_environmental_sections',
+        'social_sections' => 'field_ilpra_2026_social_sections',
+        'governance_sections' => 'field_ilpra_2026_governance_sections',
+        'sustainability_quote_text' => 'field_ilpra_2026_sustainability_quote_text',
+        'sustainability_quote_logo' => 'field_ilpra_2026_sustainability_quote_logo',
+    ];
+}
+
+function ilpra_2026_seed_acf_defaults_if_needed(int $post_id, array $defaults, array $field_keys, string $flag_meta_key): void
+{
+    if (
+        $post_id <= 0 ||
+        !function_exists('get_field') ||
+        !function_exists('update_field') ||
+        get_post_meta($post_id, $flag_meta_key, true) === 'done'
+    ) {
+        return;
+    }
+
+    foreach ($defaults as $field_name => $default_value) {
+        $field_key = $field_keys[$field_name] ?? '';
+
+        if ($field_key === '') {
+            continue;
+        }
+
+        $current_value = get_field($field_name, $post_id);
+
+        if (is_array($default_value)) {
+            if (!ilpra_2026_is_effectively_empty_repeater_value($field_name, $current_value)) {
+                continue;
+            }
+        } elseif (is_string($current_value) && trim($current_value) !== '') {
+            continue;
+        } elseif (!is_string($current_value) && !empty($current_value)) {
+            continue;
+        }
+
+        update_field($field_key, ilpra_2026_prepare_seed_default_value($field_name, $default_value), $post_id);
+    }
+
+    update_post_meta($post_id, $flag_meta_key, 'done');
+}
+
+add_action('current_screen', static function ($screen): void {
+    if (!is_admin() || !is_object($screen) || ($screen->base ?? '') !== 'post') {
+        return;
+    }
+
+    $post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+
+    if ($post_id <= 0) {
+        return;
+    }
+
+    $front_page_id = function_exists('get_option') ? (int) get_option('page_on_front') : 0;
+
+    if ($post_id === $front_page_id) {
+        ilpra_2026_seed_acf_defaults_if_needed(
+            $post_id,
+            ilpra_2026_get_homepage_acf_defaults(),
+            ilpra_2026_get_homepage_seed_field_keys(),
+            '_ilpra_2026_homepage_defaults_seeded'
+        );
+    }
+
+    if (get_page_template_slug($post_id) === 'sustainability.php') {
+        ilpra_2026_seed_acf_defaults_if_needed(
+            $post_id,
+            ilpra_2026_get_sustainability_acf_defaults(),
+            ilpra_2026_get_sustainability_seed_field_keys(),
+            '_ilpra_2026_sustainability_defaults_seeded'
+        );
+    }
+});
