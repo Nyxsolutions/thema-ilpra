@@ -20,7 +20,8 @@ function ilpra_2026_is_careers_virtual_page(): bool
 
 function ilpra_2026_register_careers_route(): void
 {
-    add_rewrite_rule('^career/?$', 'index.php?ilpra_careers_page=1', 'top');
+    $listing_slug = trim(ilpra_2026_get_careers_listing_slug(), '/');
+    add_rewrite_rule('^' . preg_quote($listing_slug, '#') . '/?$', 'index.php?ilpra_careers_page=1', 'top');
 }
 add_action('init', 'ilpra_2026_register_careers_route', 5);
 
@@ -85,7 +86,7 @@ function ilpra_2026_enqueue_careers_assets(): void
 add_action('wp_enqueue_scripts', 'ilpra_2026_enqueue_careers_assets', 20);
 
 add_action('init', static function (): void {
-    $rewrite_version = 'ilpra-2026-careers-route-v1';
+    $rewrite_version = 'ilpra-2026-careers-route-' . ilpra_2026_get_slug_config_hash();
 
     if (get_option('ilpra_2026_rewrite_version') === $rewrite_version) {
         return;

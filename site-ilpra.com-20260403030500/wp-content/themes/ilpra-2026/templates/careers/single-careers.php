@@ -15,7 +15,7 @@ get_header();
         <div class="container">
             <div class="pm-career-single-grid">
                 <div class="pm-career-single-content">
-                    <a href="<?php echo esc_url(home_url('/career/')); ?>" class="pm-career-back">
+                    <a href="<?php echo esc_url(ilpra_2026_get_careers_listing_url()); ?>" class="pm-career-back">
                         <span aria-hidden="true">&lsaquo;</span>
                         <span><?php esc_html_e('Back to open positions', 'ilpra-2026'); ?></span>
                     </a>

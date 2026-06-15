@@ -3,6 +3,153 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function ilpra_2026_get_post_type_slug_settings(): array
+{
+    $defaults = [
+        'packaging_machine' => [
+            'rewrite_slug' => 'packaging_machine',
+            'archive_slug' => 'packaging_machine',
+        ],
+        'careers' => [
+            'rewrite_slug' => 'careers',
+            'archive_slug' => 'careers',
+            'listing_slug' => 'career',
+        ],
+    ];
+
+    $overrides = ilpra_2026_get_slug_override_config()['post_types'] ?? [];
+
+    foreach ($overrides as $post_type => $settings) {
+        if (!is_string($post_type) || !is_array($settings)) {
+            continue;
+        }
+
+        $existing_settings = $defaults[$post_type] ?? [];
+        $defaults[$post_type] = array_merge($existing_settings, array_filter($settings, 'is_string'));
+    }
+
+    return $defaults;
+}
+
+function ilpra_2026_get_taxonomy_slug_settings(): array
+{
+    $defaults = [
+        'categoria_confezionatrice' => 'categorie-confezionatrici',
+        'categorie_confezionatrici' => 'categorie-confezionatrici',
+        'tipologia_confezionatrice' => 'packaging-machines',
+        'tipologie_confezionatrici' => 'packaging-machines',
+        'confezioni' => 'confezioni',
+        'tecnologie' => 'tecnologie',
+        'gruppo_confezionatrici' => 'gruppi-confezionatrici',
+        'gruppo_confezionatrice' => 'gruppi-confezionatrici',
+        'confezionamento' => 'packaging',
+    ];
+
+    $overrides = ilpra_2026_get_slug_override_config()['taxonomies'] ?? [];
+
+    foreach ($overrides as $taxonomy => $slug) {
+        if (!is_string($taxonomy) || !is_string($slug) || $slug === '') {
+            continue;
+        }
+
+        $defaults[$taxonomy] = $slug;
+    }
+
+    return $defaults;
+}
+
+function ilpra_2026_get_slug_override_config(): array
+{
+    if (!defined('ILPRA_2026_SLUG_OVERRIDES')) {
+        return [];
+    }
+
+    $config = constant('ILPRA_2026_SLUG_OVERRIDES');
+
+    return is_array($config) ? $config : [];
+}
+
+function ilpra_2026_use_custom_post_type_slugs(): bool
+{
+    $config = ilpra_2026_get_slug_override_config();
+
+    if (array_key_exists('enabled', $config)) {
+        return !empty($config['enabled']);
+    }
+
+    return !empty($config['post_types']) || !empty($config['taxonomies']);
+}
+
+function ilpra_2026_get_taxonomy_rewrite_slug(string $taxonomy, string $fallback): string
+{
+    $settings = ilpra_2026_get_taxonomy_slug_settings();
+    $slug = $settings[$taxonomy] ?? $fallback;
+
+    return is_string($slug) && $slug !== '' ? $slug : $fallback;
+}
+
+function ilpra_2026_get_machine_series_taxonomy_slug(): string
+{
+    return ilpra_2026_get_taxonomy_rewrite_slug('tipologia_confezionatrice', 'packaging-machines');
+}
+
+function ilpra_2026_get_slug_config_hash(): string
+{
+    $payload = [
+        'enabled' => ilpra_2026_use_custom_post_type_slugs(),
+        'post_types' => ilpra_2026_get_post_type_slug_settings(),
+        'taxonomies' => ilpra_2026_get_taxonomy_slug_settings(),
+    ];
+
+    return md5(wp_json_encode($payload) ?: 'ilpra-2026-default-slugs');
+}
+
+function ilpra_2026_get_post_type_rewrite_slug(string $post_type, string $fallback): string
+{
+    $settings = ilpra_2026_get_post_type_slug_settings();
+    $slug = $settings[$post_type]['rewrite_slug'] ?? $fallback;
+
+    return is_string($slug) && $slug !== '' ? $slug : $fallback;
+}
+
+function ilpra_2026_get_post_type_archive_slug(string $post_type, string $fallback): string
+{
+    $settings = ilpra_2026_get_post_type_slug_settings();
+    $slug = $settings[$post_type]['archive_slug'] ?? $fallback;
+
+    return is_string($slug) && $slug !== '' ? $slug : $fallback;
+}
+
+function ilpra_2026_get_careers_listing_slug(): string
+{
+    $settings = ilpra_2026_get_post_type_slug_settings();
+    $slug = $settings['careers']['listing_slug'] ?? 'career';
+
+    return is_string($slug) && $slug !== '' ? $slug : 'career';
+}
+
+function ilpra_2026_get_careers_listing_url(): string
+{
+    return home_url('/' . trim(ilpra_2026_get_careers_listing_slug(), '/') . '/');
+}
+
+function ilpra_2026_get_packaging_machine_post_type_aliases(): array
+{
+    $aliases = [
+        'packaging_machine',
+        'packaging-machines',
+    ];
+
+    if (ilpra_2026_use_custom_post_type_slugs()) {
+        $aliases[] = ilpra_2026_get_post_type_rewrite_slug('packaging_machine', 'packaging-machines');
+        $aliases[] = ilpra_2026_get_post_type_archive_slug('packaging_machine', 'packaging-machines');
+    }
+
+    $aliases = array_filter(array_map('sanitize_key', $aliases));
+
+    return array_values(array_unique($aliases));
+}
+
 function ilpra_2026_site_header_classes(): string
 {
     $classes = ['site-header'];
@@ -414,7 +561,7 @@ function ilpra_2026_is_machine_search_request(): bool
 
     $requested_post_type = sanitize_key(wp_unslash((string) $requested_post_type));
 
-    return in_array($requested_post_type, ['packaging_machine', 'packaging-machines'], true);
+    return in_array($requested_post_type, ilpra_2026_get_packaging_machine_post_type_aliases(), true);
 }
 
 function ilpra_2026_get_current_search_term(): string
