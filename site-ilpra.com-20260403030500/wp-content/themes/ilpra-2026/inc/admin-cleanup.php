@@ -99,6 +99,33 @@ function ilpra_2026_is_front_page_edit_screen(): bool
     return false;
 }
 
+function ilpra_2026_is_packaging_machines_edit_screen(): bool
+{
+    if (!is_admin()) {
+        return false;
+    }
+
+    $post_id = 0;
+
+    if (isset($_GET['post'])) {
+        $post_id = (int) $_GET['post'];
+    } elseif (isset($_POST['post_ID'])) {
+        $post_id = (int) $_POST['post_ID'];
+    }
+
+    if ($post_id <= 0) {
+        return false;
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post instanceof WP_Post || $post->post_type !== 'page') {
+        return false;
+    }
+
+    return $post->post_name === 'packaging-machines';
+}
+
 add_action('admin_menu', static function (): void {
     $parent_slug = 'edit.php?post_type=packaging_machine';
 
@@ -186,6 +213,24 @@ add_filter('acf/prepare_field', static function ($field) {
     $field['label'] = $compact_labels[$field['key']];
 
     return $field;
+}, 99);
+
+add_filter('acf/prepare_field', static function ($field) {
+    if (!is_array($field) || empty($field['name'])) {
+        return $field;
+    }
+
+    $packaging_machines_fields = [
+        'packaging_machines_hero_eyebrow',
+        'packaging_machines_hero_title',
+        'packaging_machines_hero_text',
+    ];
+
+    if (!in_array($field['name'], $packaging_machines_fields, true)) {
+        return $field;
+    }
+
+    return ilpra_2026_is_packaging_machines_edit_screen() ? $field : false;
 }, 99);
 
 add_action('admin_head', static function (): void {

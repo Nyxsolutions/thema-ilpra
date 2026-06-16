@@ -1974,6 +1974,55 @@ function ilpra_2026_get_sustainability_acf_defaults(): array
     ];
 }
 
+function ilpra_2026_is_packaging_machines_page(int $post_id): bool
+{
+    if ($post_id <= 0) {
+        return false;
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post instanceof WP_Post || $post->post_type !== 'page') {
+        return false;
+    }
+
+    return $post->post_name === 'packaging-machines';
+}
+
+function ilpra_2026_get_packaging_machines_acf_defaults(int $post_id = 0): array
+{
+    $defaults = [
+        'packaging_machines_hero_eyebrow' => '',
+        'packaging_machines_hero_title' => '',
+        'packaging_machines_hero_text' => '',
+    ];
+
+    if ($post_id <= 0) {
+        return $defaults;
+    }
+
+    $rows_count = (int) get_post_meta($post_id, 'nw_flexible_content', true);
+
+    if ($rows_count <= 0) {
+        return $defaults;
+    }
+
+    for ($index = 0; $index < $rows_count; $index++) {
+        $layout = (string) get_post_meta($post_id, 'nw_flexible_content_' . $index . '_acf_fc_layout', true);
+
+        if ($layout !== 'header-1') {
+            continue;
+        }
+
+        $defaults['packaging_machines_hero_eyebrow'] = trim((string) get_post_meta($post_id, 'nw_flexible_content_' . $index . '_subheading', true));
+        $defaults['packaging_machines_hero_title'] = trim((string) get_post_meta($post_id, 'nw_flexible_content_' . $index . '_heading', true));
+        $defaults['packaging_machines_hero_text'] = trim((string) get_post_meta($post_id, 'nw_flexible_content_' . $index . '_content', true));
+        break;
+    }
+
+    return $defaults;
+}
+
 function ilpra_2026_import_theme_asset_attachment(string $relative_path, string $alt = ''): int
 {
     $relative_path = ltrim($relative_path, '/');
@@ -2531,6 +2580,59 @@ add_action('acf/init', static function (): void {
         'active' => true,
         'show_in_rest' => 0,
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_ilpra_2026_packaging_machines_page_content',
+        'title' => 'Packaging Machines Page Content',
+        'fields' => [
+            [
+                'key' => 'field_ilpra_2026_packaging_machines_tab_hero',
+                'label' => 'Hero',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ],
+            [
+                'key' => 'field_ilpra_2026_packaging_machines_hero_eyebrow',
+                'label' => 'Hero Eyebrow',
+                'name' => 'packaging_machines_hero_eyebrow',
+                'type' => 'text',
+                'instructions' => 'Testo piccolo sopra al titolo principale.',
+            ],
+            [
+                'key' => 'field_ilpra_2026_packaging_machines_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'packaging_machines_hero_title',
+                'type' => 'text',
+                'instructions' => 'Titolo principale della pagina.',
+            ],
+            [
+                'key' => 'field_ilpra_2026_packaging_machines_hero_text',
+                'label' => 'Hero Text',
+                'name' => 'packaging_machines_hero_text',
+                'type' => 'textarea',
+                'rows' => 3,
+                'new_lines' => 'br',
+                'instructions' => 'Sottotitolo/testo introduttivo sotto al titolo.',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'page',
+                ],
+            ],
+        ],
+        'menu_order' => 1,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+        'show_in_rest' => 0,
+    ]);
 }, 30);
 
 function ilpra_2026_get_acf_default_value_by_name(string $field_name, $post_id = 0)
@@ -2553,6 +2655,14 @@ function ilpra_2026_get_acf_default_value_by_name(string $field_name, $post_id =
 
         if (array_key_exists($field_name, $sustainability_defaults)) {
             return $sustainability_defaults[$field_name];
+        }
+    }
+
+    if ($post_id > 0 && ilpra_2026_is_packaging_machines_page($post_id)) {
+        $packaging_machines_defaults = ilpra_2026_get_packaging_machines_acf_defaults($post_id);
+
+        if (array_key_exists($field_name, $packaging_machines_defaults)) {
+            return $packaging_machines_defaults[$field_name];
         }
     }
 
@@ -2706,6 +2816,15 @@ function ilpra_2026_get_sustainability_seed_field_keys(): array
     ];
 }
 
+function ilpra_2026_get_packaging_machines_seed_field_keys(): array
+{
+    return [
+        'packaging_machines_hero_eyebrow' => 'field_ilpra_2026_packaging_machines_hero_eyebrow',
+        'packaging_machines_hero_title' => 'field_ilpra_2026_packaging_machines_hero_title',
+        'packaging_machines_hero_text' => 'field_ilpra_2026_packaging_machines_hero_text',
+    ];
+}
+
 function ilpra_2026_seed_acf_defaults_if_needed(int $post_id, array $defaults, array $field_keys, string $flag_meta_key): void
 {
     if (
@@ -2770,6 +2889,15 @@ add_action('current_screen', static function ($screen): void {
             ilpra_2026_get_sustainability_acf_defaults(),
             ilpra_2026_get_sustainability_seed_field_keys(),
             '_ilpra_2026_sustainability_defaults_seeded'
+        );
+    }
+
+    if (ilpra_2026_is_packaging_machines_page($post_id)) {
+        ilpra_2026_seed_acf_defaults_if_needed(
+            $post_id,
+            ilpra_2026_get_packaging_machines_acf_defaults($post_id),
+            ilpra_2026_get_packaging_machines_seed_field_keys(),
+            '_ilpra_2026_packaging_machines_defaults_seeded'
         );
     }
 });

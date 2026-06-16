@@ -36,6 +36,16 @@ get_header();
         }
     }
 
+    $hero_eyebrow = function_exists('get_field') ? trim((string) get_field('packaging_machines_hero_eyebrow')) : '';
+    $hero_title = function_exists('get_field') ? trim((string) get_field('packaging_machines_hero_title')) : '';
+    $hero_text = function_exists('get_field') ? trim((string) get_field('packaging_machines_hero_text')) : '';
+
+    if ($hero && is_array($hero)) {
+        $hero_eyebrow = $hero_eyebrow !== '' ? $hero_eyebrow : trim((string) ($hero['subheading'] ?? ''));
+        $hero_title = $hero_title !== '' ? $hero_title : trim((string) ($hero['heading'] ?? ''));
+        $hero_text = $hero_text !== '' ? $hero_text : trim((string) ($hero['content'] ?? ''));
+    }
+
     $series_terms = get_terms([
         'taxonomy' => 'tipologia_confezionatrice',
         'hide_empty' => false,
@@ -226,20 +236,20 @@ get_header();
     ?>
 
     <section class="packaging-page">
-        <?php if ($hero) : ?>
+        <?php if ($hero_eyebrow !== '' || $hero_title !== '' || $hero_text !== '') : ?>
             <section class="packaging-page__hero">
                 <div class="packaging-page__inner packaging-page__inner--narrow">
                     <div class="packaging-page__hero-copy">
-                        <?php if (!empty($hero['subheading'])) : ?>
-                            <p class="packaging-page__eyebrow"><?php echo esc_html($hero['subheading']); ?></p>
+                        <?php if ($hero_eyebrow !== '') : ?>
+                            <p class="packaging-page__eyebrow"><?php echo esc_html($hero_eyebrow); ?></p>
                         <?php endif; ?>
 
-                        <?php if (!empty($hero['heading'])) : ?>
-                            <h1 class="packaging-page__hero-title"><?php echo esc_html($hero['heading']); ?></h1>
+                        <?php if ($hero_title !== '') : ?>
+                            <h1 class="packaging-page__hero-title"><?php echo esc_html($hero_title); ?></h1>
                         <?php endif; ?>
 
-                        <?php if (!empty($hero['content'])) : ?>
-                            <p class="packaging-page__hero-text"><?php echo esc_html($hero['content']); ?></p>
+                        <?php if ($hero_text !== '') : ?>
+                            <p class="packaging-page__hero-text"><?php echo esc_html($hero_text); ?></p>
                         <?php endif; ?>
                     </div>
                 </div>

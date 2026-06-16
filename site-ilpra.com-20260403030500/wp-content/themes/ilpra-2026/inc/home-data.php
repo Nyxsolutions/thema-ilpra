@@ -220,7 +220,7 @@ function ilpra_2026_get_homepage_cards_from_acf($rows, array $fallback_items): a
             'image_id' => $image_id ?: (int) ($fallback['image_id'] ?? 0),
             'title' => $title !== '' ? $title : (string) ($fallback['title'] ?? ''),
             'content' => $content !== '' ? $content : (string) ($fallback['content'] ?? ''),
-            'url' => !empty($fallback['url']) ? (string) $fallback['url'] : '',
+            'url' => !empty($link['url']) ? (string) $link['url'] : (!empty($fallback['url']) ? (string) $fallback['url'] : ''),
             'button' => $link ?: ($fallback['button'] ?? []),
         ];
     }
