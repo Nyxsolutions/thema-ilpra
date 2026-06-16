@@ -61,7 +61,6 @@ $read_more_label = ilpra_2026_get_theme_string('string_read_more_label', 'Read m
 $read_less_label = ilpra_2026_get_theme_string('string_read_less_label', 'Read less', 'Leggi meno');
 $support_button_label = ilpra_2026_get_theme_string('string_support_button_label', 'Need Help? Talk with us', 'Hai bisogno di aiuto? Parla con noi');
 $available_packaging_solutions_label = ilpra_2026_get_theme_string('string_available_packaging_solutions_label', 'Available Packaging Solutions', 'Soluzioni di confezionamento disponibili');
-$packaging_suffix_label = ilpra_2026_get_theme_string('string_packaging_suffix_label', 'Packaging', 'Confezionamento');
 $by_industry_navigation_label = ilpra_2026_get_theme_string('string_by_industry_navigation_label', 'By industry navigation', 'Navigazione per settore');
 $previous_industries_label = ilpra_2026_get_theme_string('string_previous_industries_label', 'Previous industries', 'Settori precedenti');
 $next_industries_label = ilpra_2026_get_theme_string('string_next_industries_label', 'Next industries', 'Settori successivi');
@@ -88,7 +87,7 @@ $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label
                                     <?php if ($term_icon_url !== '') : ?>
                                         <img src="<?php echo esc_url($term_icon_url); ?>" alt="" aria-hidden="true">
                                     <?php endif; ?>
-                                    <span><?php echo esc_html($term->name . ' ' . $packaging_suffix_label); ?></span>
+                                    <span><?php echo esc_html(ilpra_2026_format_packaging_term_label($term->name)); ?></span>
                                 </a>
                             <?php endforeach; ?>
                         </div>
@@ -105,7 +104,7 @@ $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label
             <section class="bi-intro">
                 <div class="bi-intro__grid">
                     <div class="bi-intro__body">
-                        <h1 class="bi-intro__title"><?php echo esc_html($current_term->name . ' ' . $packaging_suffix_label); ?></h1>
+                        <h1 class="bi-intro__title"><?php echo esc_html(ilpra_2026_format_packaging_term_label($current_term->name)); ?></h1>
 
                         <?php if ($description !== '') : ?>
                             <div class="bi-intro__description" data-bi-description>
@@ -121,7 +120,7 @@ $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label
 
                     <div class="bi-intro__media">
                         <?php if ($hero_image_url !== '') : ?>
-                            <img src="<?php echo esc_url($hero_image_url); ?>" alt="<?php echo esc_attr($current_term->name . ' ' . $packaging_suffix_label); ?>">
+                            <img src="<?php echo esc_url($hero_image_url); ?>" alt="<?php echo esc_attr(ilpra_2026_format_packaging_term_label($current_term->name)); ?>">
                         <?php else : ?>
                             <div class="bi-intro__placeholder" aria-hidden="true"></div>
                         <?php endif; ?>

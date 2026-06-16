@@ -195,6 +195,33 @@ function ilpra_2026_get_theme_string(string $field_name, string $fallback_en, st
     return $fallback_en;
 }
 
+function ilpra_2026_format_packaging_term_label(string $term_name): string
+{
+    $term_name = trim($term_name);
+
+    if ($term_name === '') {
+        return '';
+    }
+
+    $format = ilpra_2026_get_theme_string(
+        'string_packaging_term_format_label',
+        '%s Packaging',
+        'Confezionamento %s'
+    );
+
+    $format = trim($format);
+
+    if ($format === '') {
+        return $term_name;
+    }
+
+    if (strpos($format, '%s') === false) {
+        return trim($format . ' ' . $term_name);
+    }
+
+    return trim(sprintf($format, $term_name));
+}
+
 function ilpra_2026_render_primary_navigation(): void
 {
     $locations = get_nav_menu_locations();
