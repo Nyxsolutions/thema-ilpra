@@ -23,6 +23,80 @@ add_action('acf/init', static function (): void {
 
     }
 
+    if (!function_exists('ilpra_2026_make_seed_footer_link_row')) {
+        function ilpra_2026_make_seed_footer_link_row(string $title, string $url, string $target = '_blank'): array
+        {
+            return [
+                'link' => [
+                    'title' => trim($title),
+                    'url' => trim($url),
+                    'target' => trim($target) !== '' ? trim($target) : '_blank',
+                ],
+            ];
+        }
+    }
+
+    if (!function_exists('ilpra_2026_extract_footer_widget_links')) {
+        function ilpra_2026_extract_footer_widget_links(int $widget_id): array
+        {
+            $widgets = get_option('widget_custom_html');
+            $html = (string) ($widgets[$widget_id]['content'] ?? '');
+
+            if ($html === '') {
+                return [];
+            }
+
+            if (!preg_match_all('/<a\b([^>]*)href=(["\'])(.*?)\2([^>]*)>(.*?)<\/a>/is', $html, $matches, PREG_SET_ORDER)) {
+                return [];
+            }
+
+            $rows = [];
+
+            foreach ($matches as $match) {
+                $before = (string) ($match[1] ?? '');
+                $url = trim((string) ($match[3] ?? ''));
+                $after = (string) ($match[4] ?? '');
+                $label = trim(wp_strip_all_tags((string) ($match[5] ?? '')));
+
+                if ($label === '' || $url === '') {
+                    continue;
+                }
+
+                if (strpos($url, '/') === 0) {
+                    $url = home_url($url);
+                }
+
+                $attributes = $before . ' ' . $after;
+                $target = '_blank';
+
+                if (preg_match('/target=(["\'])(.*?)\1/i', $attributes, $target_match) && trim((string) ($target_match[2] ?? '')) !== '') {
+                    $target = trim((string) $target_match[2]);
+                }
+
+                $rows[] = ilpra_2026_make_seed_footer_link_row($label, $url, $target);
+            }
+
+            return $rows;
+        }
+    }
+
+    if (!function_exists('ilpra_2026_seed_footer_option_repeater')) {
+        function ilpra_2026_seed_footer_option_repeater(string $field_name, string $field_key, array $rows): void
+        {
+            if (empty($rows) || !function_exists('get_field') || !function_exists('update_field')) {
+                return;
+            }
+
+            $existing_rows = get_field($field_name, 'option');
+
+            if (is_array($existing_rows) && !empty($existing_rows)) {
+                return;
+            }
+
+            update_field($field_key, $rows, 'option');
+        }
+    }
+
     acf_add_local_field_group([
         'key' => 'group_ilpra_2026_packaging_machine_links',
         'title' => 'Packaging Machine Links',
@@ -965,6 +1039,130 @@ add_action('acf/init', static function (): void {
                 'maxlength' => '',
             ],
             [
+                'key' => 'field_ilpra_2026_footer_other_information_links',
+                'label' => 'Footer Other Information Links',
+                'name' => 'footer_other_information_links',
+                'type' => 'repeater',
+                'instructions' => 'Voci e link della colonna "Other information". Se compilato, sostituisce il widget legacy.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'layout' => 'row',
+                'button_label' => 'Aggiungi voce',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_footer_other_information_link',
+                        'label' => 'Link',
+                        'name' => 'link',
+                        'type' => 'link',
+                        'required' => 0,
+                        'wrapper' => [
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ],
+                        'return_format' => 'array',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_ilpra_2026_footer_welcome_links',
+                'label' => 'Footer Welcome Links',
+                'name' => 'footer_welcome_links',
+                'type' => 'repeater',
+                'instructions' => 'Voci e link della colonna "Welcome to ILPRA". Se compilato, sostituisce il widget legacy.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'layout' => 'row',
+                'button_label' => 'Aggiungi voce',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_footer_welcome_link',
+                        'label' => 'Link',
+                        'name' => 'link',
+                        'type' => 'link',
+                        'required' => 0,
+                        'wrapper' => [
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ],
+                        'return_format' => 'array',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_ilpra_2026_footer_branches_links',
+                'label' => 'Footer Branches Links',
+                'name' => 'footer_branches_links',
+                'type' => 'repeater',
+                'instructions' => 'Voci e link della colonna "Our Global Branches". Se compilato, sostituisce il widget legacy.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'layout' => 'row',
+                'button_label' => 'Aggiungi voce',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_footer_branches_link',
+                        'label' => 'Link',
+                        'name' => 'link',
+                        'type' => 'link',
+                        'required' => 0,
+                        'wrapper' => [
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ],
+                        'return_format' => 'array',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_ilpra_2026_footer_accreditations_links',
+                'label' => 'Footer Accreditations Links',
+                'name' => 'footer_accreditations_links',
+                'type' => 'repeater',
+                'instructions' => 'Voci e link della colonna "Accreditations". Se compilato, sostituisce il widget legacy.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'layout' => 'row',
+                'button_label' => 'Aggiungi voce',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_footer_accreditations_link',
+                        'label' => 'Link',
+                        'name' => 'link',
+                        'type' => 'link',
+                        'required' => 0,
+                        'wrapper' => [
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ],
+                        'return_format' => 'array',
+                    ],
+                ],
+            ],
+            [
                 'key' => 'field_ilpra_2026_string_privacy_policy_label',
                 'label' => 'Privacy Policy Label',
                 'name' => 'string_privacy_policy_label',
@@ -1021,6 +1219,37 @@ add_action('acf/init', static function (): void {
                 'append' => '',
                 'maxlength' => '',
             ],
+            [
+                'key' => 'field_ilpra_2026_footer_legal_links',
+                'label' => 'Footer Legal Links',
+                'name' => 'footer_legal_links',
+                'type' => 'repeater',
+                'instructions' => 'Link mostrati nella barra bassa del footer. Se compilati, sostituiscono i tre link legacy hardcoded.',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'layout' => 'row',
+                'button_label' => 'Aggiungi link legale',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_footer_legal_link',
+                        'label' => 'Link',
+                        'name' => 'link',
+                        'type' => 'link',
+                        'required' => 0,
+                        'wrapper' => [
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ],
+                        'return_format' => 'array',
+                    ],
+                ],
+            ],
         ],
         'location' => [
             [
@@ -1041,6 +1270,36 @@ add_action('acf/init', static function (): void {
         'description' => '',
         'show_in_rest' => 0,
     ]);
+
+    ilpra_2026_seed_footer_option_repeater(
+        'footer_other_information_links',
+        'field_ilpra_2026_footer_other_information_links',
+        ilpra_2026_extract_footer_widget_links(3)
+    );
+    ilpra_2026_seed_footer_option_repeater(
+        'footer_welcome_links',
+        'field_ilpra_2026_footer_welcome_links',
+        ilpra_2026_extract_footer_widget_links(5)
+    );
+    ilpra_2026_seed_footer_option_repeater(
+        'footer_branches_links',
+        'field_ilpra_2026_footer_branches_links',
+        ilpra_2026_extract_footer_widget_links(6)
+    );
+    ilpra_2026_seed_footer_option_repeater(
+        'footer_accreditations_links',
+        'field_ilpra_2026_footer_accreditations_links',
+        ilpra_2026_extract_footer_widget_links(4)
+    );
+    ilpra_2026_seed_footer_option_repeater(
+        'footer_legal_links',
+        'field_ilpra_2026_footer_legal_links',
+        [
+            ilpra_2026_make_seed_footer_link_row('Privacy Policy', home_url('/privacy-policy/')),
+            ilpra_2026_make_seed_footer_link_row('Cookie Policy', home_url('/cookie-policy/')),
+            ilpra_2026_make_seed_footer_link_row('Quality Policy', home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')),
+        ]
+    );
 
     acf_add_local_field_group([
         'key' => 'group_ilpra_2026_packaging_machine_faq',

@@ -255,32 +255,6 @@ function ilpra_2026_render_footer_navigation(): void
     ]);
 }
 
-function ilpra_2026_get_legacy_footer_widget_map(): array
-{
-    return [
-        'footer-widget-1' => [2],
-        'footer-widget-2' => [3],
-        'footer-widget-3' => [4],
-        'footer-widget-4' => [5],
-        'footer-widget-5' => [6],
-    ];
-}
-
-function ilpra_2026_render_legacy_custom_html_widget(int $widget_id): void
-{
-    $widgets = get_option('widget_custom_html');
-
-    if (empty($widgets[$widget_id]['content'])) {
-        return;
-    }
-
-    echo '<section class="widget widget_custom_html widget_custom_html--legacy">';
-    echo '<div class="textwidget custom-html-widget">';
-    echo ilpra_2026_prepare_footer_links(do_shortcode((string) $widgets[$widget_id]['content']));
-    echo '</div>';
-    echo '</section>';
-}
-
 function ilpra_2026_prepare_footer_links(string $html): string
 {
     return preg_replace_callback('/<a\b([^>]*)>/i', static function (array $matches): string {
@@ -298,22 +272,105 @@ function ilpra_2026_prepare_footer_links(string $html): string
     }, $html) ?? $html;
 }
 
+function ilpra_2026_get_footer_link_rows(string $field_name): array
+{
+    if (!function_exists('get_field')) {
+        return [];
+    }
+
+    $rows = get_field($field_name, 'option');
+
+    return is_array($rows) ? $rows : [];
+}
+
+function ilpra_2026_get_footer_link_markup(array $row): string
+{
+    $link = $row['link'] ?? null;
+    $label = '';
+    $url = '';
+    $target = '_blank';
+
+    if (is_array($link)) {
+        $label = trim((string) ($link['title'] ?? ''));
+        $url = trim((string) ($link['url'] ?? ''));
+        $target = trim((string) ($link['target'] ?? '_blank')) ?: '_blank';
+    }
+
+    if ($label === '' && is_string($row['label'] ?? null)) {
+        $label = trim((string) $row['label']);
+    }
+
+    if ($url === '' && is_string($row['url'] ?? null)) {
+        $url = trim((string) $row['url']);
+    }
+
+    if ($label === '') {
+        return '';
+    }
+
+    if ($url === '') {
+        return '<span>' . esc_html($label) . '</span>';
+    }
+
+    return sprintf(
+        '<a href="%1$s" target="%2$s" rel="noreferrer">%3$s</a>',
+        esc_url($url),
+        esc_attr($target),
+        esc_html($label)
+    );
+}
+
+function ilpra_2026_render_footer_links_group(string $field_name): bool
+{
+    $rows = ilpra_2026_get_footer_link_rows($field_name);
+
+    if (empty($rows)) {
+        return false;
+    }
+
+    $items = [];
+
+    foreach ($rows as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $markup = ilpra_2026_get_footer_link_markup($row);
+
+        if ($markup !== '') {
+            $items[] = '<li>' . $markup . '</li>';
+        }
+    }
+
+    if (empty($items)) {
+        return false;
+    }
+
+    echo '<ul class="menu">';
+    echo implode('', $items);
+    echo '</ul>';
+
+    return true;
+}
+
 function ilpra_2026_render_footer_sidebar(string $sidebar_id): void
 {
+    $field_map = [
+        'footer-widget-2' => 'footer_other_information_links',
+        'footer-widget-3' => 'footer_accreditations_links',
+        'footer-widget-4' => 'footer_welcome_links',
+        'footer-widget-5' => 'footer_branches_links',
+    ];
+
+    if (!empty($field_map[$sidebar_id])) {
+        ilpra_2026_render_footer_links_group($field_map[$sidebar_id]);
+        return;
+    }
+
     if (is_active_sidebar($sidebar_id)) {
         ob_start();
         dynamic_sidebar($sidebar_id);
         echo ilpra_2026_prepare_footer_links((string) ob_get_clean());
-    }
-
-    $map = ilpra_2026_get_legacy_footer_widget_map();
-
-    if (empty($map[$sidebar_id])) {
-        return;
-    }
-
-    foreach ($map[$sidebar_id] as $widget_id) {
-        ilpra_2026_render_legacy_custom_html_widget((int) $widget_id);
     }
 }
 

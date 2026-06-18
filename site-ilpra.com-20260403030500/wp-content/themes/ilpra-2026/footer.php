@@ -8,9 +8,7 @@ $footer_welcome_heading = ilpra_2026_get_theme_string('string_footer_welcome_hea
 $footer_branches_heading = ilpra_2026_get_theme_string('string_footer_branches_heading', 'Our Global Branches', 'Le nostre sedi nel mondo');
 $footer_accreditations_heading = ilpra_2026_get_theme_string('string_footer_accreditations_heading', 'Accreditations', 'Accreditamenti');
 $footer_navigation_label = ilpra_2026_get_theme_string('string_footer_navigation_label', 'Footer Navigation', 'Navigazione footer');
-$privacy_policy_label = ilpra_2026_get_theme_string('string_privacy_policy_label', 'Privacy Policy', 'Privacy Policy');
-$cookie_policy_label = ilpra_2026_get_theme_string('string_cookie_policy_label', 'Cookie Policy', 'Cookie Policy');
-$quality_policy_label = ilpra_2026_get_theme_string('string_quality_policy_label', 'Quality Policy', 'Politica della Qualita');
+$footer_legal_links = ilpra_2026_get_footer_link_rows('footer_legal_links');
 ?>
     </main>
     <footer class="site-footer">
@@ -69,9 +67,20 @@ $quality_policy_label = ilpra_2026_get_theme_string('string_quality_policy_label
             <div class="site-footer__inner site-footer__inner--bottom">
                 <p class="site-footer__copyright">All Rights Reserved © Ilpra spa <?php echo esc_html(date('Y')); ?> Partita Iva IT 01054200157</p>
                 <nav class="site-footer__legal" aria-label="<?php echo esc_attr($footer_navigation_label); ?>">
-                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($privacy_policy_label); ?></a>
-                    <a href="<?php echo esc_url(home_url('/cookie-policy/')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($cookie_policy_label); ?></a>
-                    <a href="<?php echo esc_url(home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')); ?>" target="_blank" rel="noreferrer"><?php echo esc_html($quality_policy_label); ?></a>
+                    <?php foreach ($footer_legal_links as $footer_legal_link_row) : ?>
+                        <?php
+                        if (!is_array($footer_legal_link_row)) {
+                            continue;
+                        }
+
+                        $footer_legal_link_markup = ilpra_2026_get_footer_link_markup($footer_legal_link_row);
+
+                        if ($footer_legal_link_markup === '') {
+                            continue;
+                        }
+                        ?>
+                        <?php echo $footer_legal_link_markup; ?>
+                    <?php endforeach; ?>
                 </nav>
                 <div class="site-footer__socials">
                     <a href="https://www.linkedin.com/company/ilpra-s-p-a-/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
