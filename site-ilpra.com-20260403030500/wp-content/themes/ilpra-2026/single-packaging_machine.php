@@ -371,7 +371,7 @@ get_header();
 
                         <div class="pm-accordion__content">
                             <div class="pm-accordion__inner">
-                                <div class="tm-faq">
+                                <div class="tm-faq" data-tm-faq>
                                     <?php foreach ($machine_faq_items as $faq_item) : ?>
                                         <?php
                                         $question = trim((string) ($faq_item['question'] ?? ''));
@@ -381,14 +381,14 @@ get_header();
                                             continue;
                                         }
                                         ?>
-                                        <article class="pm-accordion__item">
-                                            <button class="pm-accordion__header" type="button" aria-expanded="false">
-                                                <span class="pm-accordion__title"><?php echo esc_html($question); ?></span>
-                                                <span class="pm-accordion__icon"></span>
+                                        <article class="tm-faq__item">
+                                            <button class="tm-faq__toggle" type="button" aria-expanded="false">
+                                                <span class="tm-faq__question"><?php echo esc_html($question); ?></span>
+                                                <span class="tm-faq__icon"></span>
                                             </button>
 
-                                            <div class="pm-accordion__content">
-                                                <div class="pm-accordion__inner">
+                                            <div class="tm-faq__content">
+                                                <div class="tm-faq__content-inner">
                                                     <div class="tm-faq__answer"><?php echo wp_kses_post($answer); ?></div>
                                                 </div>
                                             </div>

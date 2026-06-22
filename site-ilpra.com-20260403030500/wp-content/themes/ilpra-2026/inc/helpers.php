@@ -353,11 +353,39 @@ function ilpra_2026_render_footer_links_group(string $field_name): bool
     return true;
 }
 
+function ilpra_2026_render_footer_accreditations_group(): bool
+{
+    $image_id = function_exists('get_field') ? (int) get_field('footer_accreditations_image', 'option') : 0;
+    $has_links = false;
+
+    if ($image_id <= 0 && empty(ilpra_2026_get_footer_link_rows('footer_accreditations_links'))) {
+        return false;
+    }
+
+    echo '<section class="widget widget_custom_html widget_custom_html--legacy">';
+    echo '<div class="textwidget custom-html-widget">';
+
+    if ($image_id > 0) {
+        echo wp_get_attachment_image($image_id, 'full');
+    }
+
+    $has_links = ilpra_2026_render_footer_links_group('footer_accreditations_links');
+
+    echo '</div>';
+    echo '</section>';
+
+    return $image_id > 0 || $has_links;
+}
+
 function ilpra_2026_render_footer_sidebar(string $sidebar_id): void
 {
+    if ($sidebar_id === 'footer-widget-3') {
+        ilpra_2026_render_footer_accreditations_group();
+        return;
+    }
+
     $field_map = [
         'footer-widget-2' => 'footer_other_information_links',
-        'footer-widget-3' => 'footer_accreditations_links',
         'footer-widget-4' => 'footer_welcome_links',
         'footer-widget-5' => 'footer_branches_links',
     ];

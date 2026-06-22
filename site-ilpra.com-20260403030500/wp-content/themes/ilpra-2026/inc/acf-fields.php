@@ -80,6 +80,34 @@ add_action('acf/init', static function (): void {
         }
     }
 
+    if (!function_exists('ilpra_2026_extract_footer_widget_first_image_id')) {
+        function ilpra_2026_extract_footer_widget_first_image_id(int $widget_id): int
+        {
+            $widgets = get_option('widget_custom_html');
+            $html = (string) ($widgets[$widget_id]['content'] ?? '');
+
+            if ($html === '') {
+                return 0;
+            }
+
+            if (!preg_match('/<img\b[^>]*src=(["\'])(.*?)\1/i', $html, $matches)) {
+                return 0;
+            }
+
+            $image_url = trim((string) ($matches[2] ?? ''));
+
+            if ($image_url === '') {
+                return 0;
+            }
+
+            if (strpos($image_url, '/') === 0) {
+                $image_url = home_url($image_url);
+            }
+
+            return function_exists('attachment_url_to_postid') ? (int) attachment_url_to_postid($image_url) : 0;
+        }
+    }
+
     if (!function_exists('ilpra_2026_seed_footer_option_repeater')) {
         function ilpra_2026_seed_footer_option_repeater(string $field_name, string $field_key, array $rows): void
         {
@@ -94,6 +122,23 @@ add_action('acf/init', static function (): void {
             }
 
             update_field($field_key, $rows, 'option');
+        }
+    }
+
+    if (!function_exists('ilpra_2026_seed_footer_option_image')) {
+        function ilpra_2026_seed_footer_option_image(string $field_name, string $field_key, int $image_id): void
+        {
+            if ($image_id <= 0 || !function_exists('get_field') || !function_exists('update_field')) {
+                return;
+            }
+
+            $existing_value = get_field($field_name, 'option');
+
+            if (!empty($existing_value)) {
+                return;
+            }
+
+            update_field($field_key, $image_id, 'option');
         }
     }
 
@@ -1132,6 +1177,23 @@ add_action('acf/init', static function (): void {
                 ],
             ],
             [
+                'key' => 'field_ilpra_2026_footer_accreditations_image',
+                'label' => 'Footer Accreditations Image',
+                'name' => 'footer_accreditations_image',
+                'type' => 'image',
+                'instructions' => 'Immagine mostrata nella colonna "Accreditations".',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => [
+                    'width' => '50',
+                    'class' => '',
+                    'id' => '',
+                ],
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ],
+            [
                 'key' => 'field_ilpra_2026_footer_accreditations_links',
                 'label' => 'Footer Accreditations Links',
                 'name' => 'footer_accreditations_links',
@@ -1285,6 +1347,11 @@ add_action('acf/init', static function (): void {
         'footer_branches_links',
         'field_ilpra_2026_footer_branches_links',
         ilpra_2026_extract_footer_widget_links(6)
+    );
+    ilpra_2026_seed_footer_option_image(
+        'footer_accreditations_image',
+        'field_ilpra_2026_footer_accreditations_image',
+        ilpra_2026_extract_footer_widget_first_image_id(4)
     );
     ilpra_2026_seed_footer_option_repeater(
         'footer_accreditations_links',

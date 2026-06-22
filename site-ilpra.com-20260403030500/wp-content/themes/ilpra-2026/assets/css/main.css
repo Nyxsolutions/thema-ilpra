@@ -1866,17 +1866,53 @@ a.tm-product-card {
 }
 
 .tm-faq {
-  margin-top: 56px;
+  margin-top: 24px;
 }
 
-.tm-faq__header {
-  margin-bottom: 18px;
+.tm-faq__item {
+  border-bottom: 1px solid #999999;
 }
 
-.tm-faq__title {
-  margin: 0;
-  font-size: clamp(1.8rem, 2.3vw, 2.4rem);
-  line-height: 1.1;
+.tm-faq__item:last-child {
+  border-bottom: 0;
+}
+
+.tm-faq__toggle {
+  width: 100%;
+  padding: 28px 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tm-faq__question {
+  color: #000000;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tm-faq__icon::before {
+  content: "+";
+  color: #000000;
+  font-size: 24px;
+}
+
+.tm-faq__item.is-open .tm-faq__icon::before {
+  content: "−";
+}
+
+.tm-faq__content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease;
+}
+
+.tm-faq__content-inner {
+  padding: 20px 0 40px;
 }
 
 .tm-faq__answer {

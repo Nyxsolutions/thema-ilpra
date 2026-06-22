@@ -336,6 +336,52 @@ document.querySelectorAll('.pm-accordion').forEach((accordion) => {
   });
 });
 
+document.querySelectorAll('[data-tm-faq]').forEach((faqGroup) => {
+  const items = faqGroup.querySelectorAll('.tm-faq__item');
+
+  const setOpenState = (item, shouldOpen) => {
+    const content = item.querySelector('.tm-faq__content');
+    const trigger = item.querySelector('.tm-faq__toggle');
+
+    item.classList.toggle('is-open', shouldOpen);
+
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', String(shouldOpen));
+    }
+
+    if (content) {
+      content.style.maxHeight = shouldOpen ? `${content.scrollHeight}px` : '0px';
+    }
+  };
+
+  items.forEach((item) => {
+    const trigger = item.querySelector('.tm-faq__toggle');
+
+    if (!trigger) {
+      return;
+    }
+
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+
+      items.forEach((otherItem) => setOpenState(otherItem, false));
+
+      if (!isOpen) {
+        setOpenState(item, true);
+        requestAnimationFrame(() => setOpenState(item, true));
+      }
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    const openItem = faqGroup.querySelector('.tm-faq__item.is-open');
+
+    if (openItem) {
+      setOpenState(openItem, true);
+    }
+  });
+});
+
 document.querySelectorAll('[data-pm-details]').forEach((detailsSection) => {
   const detailCards = Array.from(detailsSection.querySelectorAll('[data-detail-target]'));
   const detailPreviews = Array.from(detailsSection.querySelectorAll('[data-detail-preview]'));
