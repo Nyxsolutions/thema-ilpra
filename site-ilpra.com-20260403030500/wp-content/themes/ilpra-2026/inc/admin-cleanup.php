@@ -123,7 +123,7 @@ function ilpra_2026_is_packaging_machines_edit_screen(): bool
         return false;
     }
 
-    return $post->post_name === 'packaging-machines';
+    return in_array($post->post_name, ilpra_2026_get_packaging_machines_page_aliases(), true);
 }
 
 add_action('admin_menu', static function (): void {

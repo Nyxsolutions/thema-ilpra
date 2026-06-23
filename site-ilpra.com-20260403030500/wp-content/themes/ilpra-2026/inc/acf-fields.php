@@ -2331,7 +2331,7 @@ function ilpra_2026_is_packaging_machines_page(int $post_id): bool
         return false;
     }
 
-    return $post->post_name === 'packaging-machines';
+    return in_array($post->post_name, ilpra_2026_get_packaging_machines_page_aliases(), true);
 }
 
 function ilpra_2026_get_packaging_machines_acf_defaults(int $post_id = 0): array

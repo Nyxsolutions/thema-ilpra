@@ -85,7 +85,7 @@ $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label
                                 ?>
                                 <a href="<?php echo esc_url($term_url); ?>" class="bi-pill<?php echo $is_active ? ' is-active' : ''; ?>">
                                     <?php if ($term_icon_url !== '') : ?>
-                                        <img src="<?php echo esc_url($term_icon_url); ?>" alt="" aria-hidden="true">
+                                        <img src="<?php echo esc_url($term_icon_url); ?>" alt="" aria-hidden="true" draggable="false">
                                     <?php endif; ?>
                                     <span><?php echo esc_html(ilpra_2026_format_packaging_term_label($term->name)); ?></span>
                                 </a>

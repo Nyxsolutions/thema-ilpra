@@ -2013,6 +2013,9 @@ a.tm-product-card {
   height: 42px;
   flex: 0 0 auto;
   object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .bi-pill span {

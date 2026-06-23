@@ -93,6 +93,20 @@ function ilpra_2026_get_machine_series_taxonomy_slug(): string
     return ilpra_2026_get_taxonomy_rewrite_slug('tipologia_confezionatrice', 'packaging-machines');
 }
 
+function ilpra_2026_get_packaging_machines_page_aliases(): array
+{
+    $aliases = [
+        'packaging-machines',
+        ilpra_2026_get_machine_series_taxonomy_slug(),
+    ];
+
+    $aliases = array_filter(array_map(static function ($slug): string {
+        return sanitize_title((string) $slug);
+    }, $aliases));
+
+    return array_values(array_unique($aliases));
+}
+
 function ilpra_2026_get_slug_config_hash(): string
 {
     $payload = [
