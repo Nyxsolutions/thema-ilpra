@@ -338,6 +338,7 @@ document.querySelectorAll('.pm-accordion').forEach((accordion) => {
 
 document.querySelectorAll('[data-tm-faq]').forEach((faqGroup) => {
   const items = faqGroup.querySelectorAll('.tm-faq__item');
+  const outerAccordionContent = faqGroup.closest('.pm-accordion__inner')?.parentElement;
 
   const setOpenState = (item, shouldOpen) => {
     const content = item.querySelector('.tm-faq__content');
@@ -351,6 +352,12 @@ document.querySelectorAll('[data-tm-faq]').forEach((faqGroup) => {
 
     if (content) {
       content.style.maxHeight = shouldOpen ? `${content.scrollHeight}px` : '0px';
+    }
+
+    if (outerAccordionContent && outerAccordionContent.classList.contains('pm-accordion__content')) {
+      requestAnimationFrame(() => {
+        outerAccordionContent.style.maxHeight = `${outerAccordionContent.scrollHeight}px`;
+      });
     }
   };
 

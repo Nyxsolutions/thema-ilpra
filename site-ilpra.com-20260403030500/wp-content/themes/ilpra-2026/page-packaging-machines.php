@@ -194,7 +194,7 @@ get_header();
         ];
     };
 
-    $added_term_slugs = [];
+    $legacy_sections_by_slug = [];
 
     foreach ($legacy_machine_sections as $legacy_section) {
         if (!is_array($legacy_section)) {
@@ -203,28 +203,20 @@ get_header();
 
         $legacy_link_slug = $normalize_url_path_slug((string) ($legacy_section['link']['url'] ?? ''));
 
-        if ($legacy_link_slug === '' || !isset($series_terms_by_slug[$legacy_link_slug])) {
+        if ($legacy_link_slug === '') {
             continue;
         }
 
-        $term = $series_terms_by_slug[$legacy_link_slug];
-        $series_card = $build_series_card($term, $legacy_section);
-
-        if ($series_card === null) {
-            continue;
-        }
-
-        $series_cards[] = $series_card;
-        $added_term_slugs[$term->slug] = true;
+        $legacy_sections_by_slug[$legacy_link_slug] = $legacy_section;
     }
 
     if (!is_wp_error($series_terms) && !empty($series_terms)) {
         foreach ($series_terms as $term) {
-            if (!$term instanceof WP_Term || isset($added_term_slugs[$term->slug])) {
+            if (!$term instanceof WP_Term) {
                 continue;
             }
 
-            $series_card = $build_series_card($term);
+            $series_card = $build_series_card($term, $legacy_sections_by_slug[$term->slug] ?? null);
 
             if ($series_card === null || empty($series_card['has_editorial_content'])) {
                 continue;

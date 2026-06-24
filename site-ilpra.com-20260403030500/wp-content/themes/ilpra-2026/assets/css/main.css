@@ -1867,14 +1867,11 @@ a.tm-product-card {
 
 .tm-faq {
   margin-top: 24px;
+  padding-bottom: 16px;
 }
 
 .tm-faq__item {
-  border-bottom: 1px solid #999999;
-}
-
-.tm-faq__item:last-child {
-  border-bottom: 0;
+  border-top: 1px solid #999999;
 }
 
 .tm-faq__toggle {
@@ -1912,7 +1909,11 @@ a.tm-product-card {
 }
 
 .tm-faq__content-inner {
-  padding: 20px 0 40px;
+  padding: 0 0 28px;
+}
+
+.tm-faq__item:last-child .tm-faq__content-inner {
+  padding-bottom: 40px;
 }
 
 .tm-faq__answer {
