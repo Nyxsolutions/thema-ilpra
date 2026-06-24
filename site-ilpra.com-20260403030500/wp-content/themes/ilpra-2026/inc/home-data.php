@@ -90,6 +90,122 @@ function ilpra_2026_get_homepage_front_page_id(): int
     return function_exists('get_option') ? (int) get_option('page_on_front') : 0;
 }
 
+function ilpra_2026_find_homepage_machine_series_term(array $slug_candidates = [], array $name_candidates = []): ?WP_Term
+{
+    $taxonomy = 'tipologia_confezionatrice';
+
+    foreach ($slug_candidates as $slug_candidate) {
+        $slug_candidate = sanitize_title((string) $slug_candidate);
+
+        if ($slug_candidate === '') {
+            continue;
+        }
+
+        $term = get_term_by('slug', $slug_candidate, $taxonomy);
+
+        if ($term instanceof WP_Term) {
+            return $term;
+        }
+    }
+
+    $terms = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'orderby' => 'term_order',
+        'order' => 'ASC',
+    ]);
+
+    if (is_wp_error($terms) || empty($terms)) {
+        return null;
+    }
+
+    $normalized_name_candidates = array_filter(array_map(static function ($candidate): string {
+        return sanitize_title((string) $candidate);
+    }, $name_candidates));
+
+    if (empty($normalized_name_candidates)) {
+        return null;
+    }
+
+    foreach ($terms as $term) {
+        if (!$term instanceof WP_Term) {
+            continue;
+        }
+
+        if (in_array(sanitize_title($term->name), $normalized_name_candidates, true)) {
+            return $term;
+        }
+    }
+
+    return null;
+}
+
+function ilpra_2026_get_homepage_machine_card_url(array $machine): string
+{
+    $current_url = trim((string) ($machine['url'] ?? ''));
+    $slug_candidates = [];
+    $name_candidates = [];
+
+    if ($current_url !== '') {
+        $path = (string) wp_parse_url($current_url, PHP_URL_PATH);
+        $path = trim($path, '/');
+
+        if ($path !== '') {
+            $segments = explode('/', $path);
+            $current_slug = sanitize_title((string) end($segments));
+            $series_base_slug = sanitize_title((string) ($segments[count($segments) - 2] ?? ''));
+
+            if ($current_slug === 'end-of-line' && $series_base_slug === 'macchine-confezionatrici') {
+                return home_url('/macchine-confezionatrici/fine-linea/');
+            }
+
+            $slug_candidates[] = $current_slug;
+        }
+    }
+
+    if (!empty($machine['term_candidates']) && is_array($machine['term_candidates'])) {
+        $slug_candidates = array_merge($slug_candidates, $machine['term_candidates']);
+    }
+
+    $title = trim((string) ($machine['title'] ?? ''));
+
+    if ($title !== '') {
+        $name_candidates[] = $title;
+    }
+
+    if (!empty($machine['term_name_candidates']) && is_array($machine['term_name_candidates'])) {
+        $name_candidates = array_merge($name_candidates, $machine['term_name_candidates']);
+    }
+
+    $term = ilpra_2026_find_homepage_machine_series_term($slug_candidates, $name_candidates);
+
+    if (!$term instanceof WP_Term) {
+        return $current_url;
+    }
+
+    $term_link = get_term_link($term);
+
+    if (is_wp_error($term_link)) {
+        return $current_url;
+    }
+
+    return $term_link;
+}
+
+function ilpra_2026_normalize_homepage_machine_cards(array $machines): array
+{
+    foreach ($machines as $index => $machine) {
+        if (!is_array($machine)) {
+            continue;
+        }
+
+        $machines[$index]['url'] = ilpra_2026_get_homepage_machine_card_url($machine);
+        unset($machines[$index]['term_candidates'], $machines[$index]['term_name_candidates']);
+    }
+
+    return $machines;
+}
+
 function ilpra_2026_get_homepage_default_data(): array
 {
     return [
@@ -134,36 +250,48 @@ function ilpra_2026_get_homepage_default_data(): array
                 'title' => 'Tray sealers',
                 'content' => 'Semi-automatic - Automatic - In Line',
                 'url' => home_url('/packaging-machines/foodpack-traysealers/'),
+                'term_candidates' => ['foodpack-traysealers', 'termosaldatrici'],
+                'term_name_candidates' => ['Tray sealers', 'Termosaldatrici'],
             ],
             [
                 'image_id' => 15507,
                 'title' => 'Fill Sealers',
                 'content' => 'Rotary - In Line',
                 'url' => home_url('/packaging-machines/fill-seal-pot-fillers/'),
+                'term_candidates' => ['fill-seal-pot-fillers', 'fill-seal'],
+                'term_name_candidates' => ['Fill Sealers', 'Fill Seal'],
             ],
             [
                 'image_id' => 15494,
                 'title' => 'Thermoformers',
                 'content' => 'Compact - Customisable',
                 'url' => home_url('/packaging-machines/formpack-thermoformers/'),
+                'term_candidates' => ['formpack-thermoformers', 'termoformatrici'],
+                'term_name_candidates' => ['Thermoformers', 'Termoformatrici'],
             ],
             [
                 'image_id' => 15500,
                 'title' => 'Form Fill Seal Machines',
                 'content' => 'Automatic',
                 'url' => home_url('/packaging-machines/form-fill-seal/'),
+                'term_candidates' => ['form-fill-seal'],
+                'term_name_candidates' => ['Form Fill Seal Machines', 'Form Fill Seal'],
             ],
             [
                 'image_id' => 15496,
                 'title' => 'End of Line Machinery',
                 'content' => 'Picking & Palletization',
                 'url' => home_url('/packaging-machines/end-of-line/'),
+                'term_candidates' => ['fine-linea', 'end-of-line'],
+                'term_name_candidates' => ['End of Line Machinery', 'Fine Linea', 'Macchine di fine linea'],
             ],
             [
                 'image_id' => 15686,
                 'title' => 'ILPRA Group - Packaging Equipment',
                 'content' => 'ILPRA Group - Packaging Equipment',
                 'url' => home_url('/packaging-machines/ilpragroup-packagingequipment/'),
+                'term_candidates' => ['ilpragroup-packagingequipment', 'ilpra-group'],
+                'term_name_candidates' => ['ILPRA Group - Packaging Equipment', 'ILPRA Group'],
             ],
         ],
         'news_intro' => [
@@ -236,6 +364,7 @@ function ilpra_2026_get_homepage_data(): array
 
     if (!function_exists('get_field') || $front_page_id <= 0) {
         return array_merge($defaults, [
+            'machines' => ilpra_2026_normalize_homepage_machine_cards($defaults['machines']),
             'fairs' => $fairs,
             'search_template_id' => 5061,
         ]);
@@ -259,6 +388,7 @@ function ilpra_2026_get_homepage_data(): array
         get_field('home_machine_items', $front_page_id),
         $defaults['machines']
     );
+    $machines = ilpra_2026_normalize_homepage_machine_cards($machines);
 
     foreach ($industries as $index => $industry) {
         if (isset($industry['button'])) {
