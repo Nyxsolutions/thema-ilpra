@@ -4257,3 +4257,17 @@ a.tm-product-card {
     font-size: 10px;
   }
 }
+
+.page-template-template-landing .site-header,
+.page-template-template-landing .site-footer,
+.page-template-template-landing .chat-wa-nyx {
+  display: none !important;
+}
+
+.page-template-template-landing .site-main {
+  width: 100%;
+}
+
+.page-template-template-landing .landing-entry {
+  margin-top: 0;
+}
