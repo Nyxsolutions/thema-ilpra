@@ -2927,6 +2927,88 @@ add_action('acf/init', static function (): void {
     ]);
 
     acf_add_local_field_group([
+        'key' => 'group_ilpra_2026_environmental_energy_table',
+        'title' => 'ESG - Environmental Energy Table',
+        'fields' => [
+            [
+                'key' => 'field_ilpra_2026_environmental_energy_table_button_label',
+                'label' => 'Etichetta pulsante',
+                'name' => 'environmental_energy_table_button_label',
+                'type' => 'text',
+                'instructions' => 'Testo del pulsante che apre la tabella energetica.',
+            ],
+            [
+                'key' => 'field_ilpra_2026_environmental_energy_table_indicator_heading',
+                'label' => 'Intestazione indicatore',
+                'name' => 'environmental_energy_table_indicator_heading',
+                'type' => 'text',
+                'instructions' => 'Prima colonna della tabella, ad esempio: Indicatore.',
+            ],
+            [
+                'key' => 'field_ilpra_2026_environmental_energy_table_value_one_heading',
+                'label' => 'Intestazione valore 1',
+                'name' => 'environmental_energy_table_value_one_heading',
+                'type' => 'text',
+                'instructions' => 'Seconda colonna della tabella, ad esempio: 2025 (kWh).',
+            ],
+            [
+                'key' => 'field_ilpra_2026_environmental_energy_table_value_two_heading',
+                'label' => 'Intestazione valore 2',
+                'name' => 'environmental_energy_table_value_two_heading',
+                'type' => 'text',
+                'instructions' => 'Terza colonna della tabella, ad esempio: 2024 (kWh).',
+            ],
+            [
+                'key' => 'field_ilpra_2026_environmental_energy_table_rows',
+                'label' => 'Righe tabella energia',
+                'name' => 'environmental_energy_table_rows',
+                'type' => 'repeater',
+                'layout' => 'table',
+                'button_label' => 'Aggiungi riga',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_ilpra_2026_environmental_energy_table_row_indicator',
+                        'label' => 'Indicatore',
+                        'name' => 'indicator',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '50'],
+                    ],
+                    [
+                        'key' => 'field_ilpra_2026_environmental_energy_table_row_value_one',
+                        'label' => 'Valore 1',
+                        'name' => 'value_one',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '25'],
+                    ],
+                    [
+                        'key' => 'field_ilpra_2026_environmental_energy_table_row_value_two',
+                        'label' => 'Valore 2',
+                        'name' => 'value_two',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '25'],
+                    ],
+                ],
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'sustainability.php',
+                ],
+            ],
+        ],
+        'menu_order' => 1,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+        'show_in_rest' => 0,
+    ]);
+
+    acf_add_local_field_group([
         'key' => 'group_ilpra_2026_packaging_machines_page_content',
         'title' => 'Packaging Machines Page Content',
         'fields' => [

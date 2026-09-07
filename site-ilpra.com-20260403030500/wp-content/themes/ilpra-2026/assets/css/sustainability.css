@@ -277,6 +277,54 @@
   font-weight: 700;
 }
 
+.sustainability-energy-table {
+  margin: 20px 0 24px;
+}
+
+.sustainability-energy-table summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.sustainability-energy-table summary::-webkit-details-marker {
+  display: none;
+}
+
+.sustainability-energy-table__content {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.sustainability-energy-table table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--ilpra-color-text);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.sustainability-energy-table th,
+.sustainability-energy-table td {
+  padding: 12px 14px;
+  border: 1px solid #d8dde2;
+  text-align: left;
+}
+
+.sustainability-energy-table thead th {
+  background: #f4f6f3;
+  font-weight: 700;
+}
+
+.sustainability-energy-table tbody th {
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .sustainability-energy-table table {
+    min-width: 560px;
+  }
+}
+
 @media (max-width: 920px) {
   .page-template-sustainability .site-main {
     padding-top: 12px;

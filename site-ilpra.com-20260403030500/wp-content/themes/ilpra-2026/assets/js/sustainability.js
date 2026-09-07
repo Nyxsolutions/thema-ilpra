@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabs = Array.from(document.querySelectorAll('.sustainability-tabs-list a'));
   const panels = Array.from(document.querySelectorAll('[data-sustainability-panel]'));
   const tabsWrapper = document.querySelector('#tabs_wrapper');
+  const siteHeader = document.querySelector('.site-header');
 
   const showPanel = (key) => {
     panels.forEach((panel) => {
@@ -17,6 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const scrollToPanelContent = (panel) => {
+    const panelPadding = Number.parseFloat(window.getComputedStyle(panel).paddingTop) || 0;
+    const headerHeight = siteHeader?.getBoundingClientRect().height || 0;
+    const tabsAreSticky = tabsWrapper && window.getComputedStyle(tabsWrapper).position === 'sticky';
+    const tabsHeight = tabsAreSticky ? tabsWrapper.getBoundingClientRect().height : 0;
+    const breathingRoom = 28;
+    const panelContentTop = panel.getBoundingClientRect().top + window.scrollY + panelPadding;
+    const scrollTop = Math.max(0, panelContentTop - headerHeight - tabsHeight - breathingRoom);
+
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+  };
+
   if (tabs.length && panels.length) {
     showPanel('sustainability');
 
@@ -29,11 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        showPanel(target);
+        const panel = panels.find((item) => item.dataset.sustainabilityPanel === target);
 
-        if (tabsWrapper) {
-          tabsWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!panel) {
+          return;
         }
+
+        showPanel(target);
+        scrollToPanelContent(panel);
       });
     });
   }

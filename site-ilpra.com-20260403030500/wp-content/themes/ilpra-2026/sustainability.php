@@ -281,12 +281,71 @@ function ilpra_2026_get_sustainability_data(int $post_id): array
             'logo_id' => $quote_logo_id,
             'logo_url' => !$quote_logo_id ? $defaults['quote']['logo_url'] : '',
         ],
+        'environmental_energy_table' => ilpra_2026_get_environmental_energy_table($post_id),
         'panels' => [
             'sustainability' => ilpra_2026_get_sustainability_sections_from_acf($post_id, 'sustainability_sections', $defaults['panels']['sustainability']),
             'environmental' => ilpra_2026_get_sustainability_sections_from_acf($post_id, 'environmental_sections', $defaults['panels']['environmental']),
             'social' => ilpra_2026_get_sustainability_sections_from_acf($post_id, 'social_sections', $defaults['panels']['social']),
             'governance' => ilpra_2026_get_sustainability_sections_from_acf($post_id, 'governance_sections', $defaults['panels']['governance']),
         ],
+    ];
+}
+
+function ilpra_2026_get_environmental_energy_table(int $post_id): array
+{
+    $fallback = [
+        'button_label' => 'Energy data',
+        'indicator_heading' => 'Indicator',
+        'value_one_heading' => '2025 (kWh)',
+        'value_two_heading' => '2024 (kWh)',
+        'rows' => [
+            ['indicator' => 'Total photovoltaic generation', 'value_one' => '856,195', 'value_two' => '712,310'],
+            ['indicator' => 'Self-consumed energy', 'value_one' => '652,829', 'value_two' => '503,060'],
+            ['indicator' => 'Energy fed into the grid', 'value_one' => '203,366', 'value_two' => '209,250'],
+            ['indicator' => 'Energy purchased from the grid', 'value_one' => '595,349', 'value_two' => '596,955'],
+            ['indicator' => 'Total electricity consumption', 'value_one' => '1,248,178', 'value_two' => '1,100,015'],
+            ['indicator' => 'Share of energy demand covered by photovoltaic generation', 'value_one' => '52.3%', 'value_two' => '46.0%'],
+        ],
+    ];
+
+    if (!function_exists('get_field')) {
+        return $fallback;
+    }
+
+    $rows = get_field('environmental_energy_table_rows', $post_id);
+
+    if (!is_array($rows) || empty($rows)) {
+        return $fallback;
+    }
+
+    $table_rows = [];
+
+    foreach ($rows as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $indicator = trim((string) ($row['indicator'] ?? ''));
+        $value_one = trim((string) ($row['value_one'] ?? ''));
+        $value_two = trim((string) ($row['value_two'] ?? ''));
+
+        if ($indicator === '' && $value_one === '' && $value_two === '') {
+            continue;
+        }
+
+        $table_rows[] = compact('indicator', 'value_one', 'value_two');
+    }
+
+    if (empty($table_rows)) {
+        return $fallback;
+    }
+
+    return [
+        'button_label' => trim((string) get_field('environmental_energy_table_button_label', $post_id)) ?: $fallback['button_label'],
+        'indicator_heading' => trim((string) get_field('environmental_energy_table_indicator_heading', $post_id)) ?: $fallback['indicator_heading'],
+        'value_one_heading' => trim((string) get_field('environmental_energy_table_value_one_heading', $post_id)) ?: $fallback['value_one_heading'],
+        'value_two_heading' => trim((string) get_field('environmental_energy_table_value_two_heading', $post_id)) ?: $fallback['value_two_heading'],
+        'rows' => $table_rows,
     ];
 }
 
@@ -309,10 +368,43 @@ function ilpra_2026_render_sustainability_image(array $section): void
     }
 }
 
-function ilpra_2026_render_sustainability_sections(array $sections): void
+function ilpra_2026_render_environmental_energy_table(array $table): void
 {
-    foreach ($sections as $section) {
+    if (empty($table['rows'])) {
+        return;
+    }
+    ?>
+    <details class="sustainability-energy-table">
+        <summary class="services_button"><?php echo esc_html((string) $table['button_label']); ?></summary>
+        <div class="sustainability-energy-table__content">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"><?php echo esc_html((string) $table['indicator_heading']); ?></th>
+                        <th scope="col"><?php echo esc_html((string) $table['value_one_heading']); ?></th>
+                        <th scope="col"><?php echo esc_html((string) $table['value_two_heading']); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($table['rows'] as $row) : ?>
+                        <tr>
+                            <th scope="row"><?php echo esc_html((string) $row['indicator']); ?></th>
+                            <td><?php echo esc_html((string) $row['value_one']); ?></td>
+                            <td><?php echo esc_html((string) $row['value_two']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </details>
+    <?php
+}
+
+function ilpra_2026_render_sustainability_sections(array $sections, ?array $energy_table = null): void
+{
+    foreach ($sections as $index => $section) {
         $is_left = ($section['image_position'] ?? 'right') === 'left';
+        $has_energy_table = $index === 0 && !empty($energy_table['rows']);
         ?>
         <section class="nine_section_wrapper">
             <div class="nine_section">
@@ -333,11 +425,15 @@ function ilpra_2026_render_sustainability_sections(array $sections): void
                                 <?php echo wp_kses_post((string) $section['content']); ?>
                             <?php endif; ?>
 
+                            <?php if ($has_energy_table) : ?>
+                                <?php ilpra_2026_render_environmental_energy_table($energy_table); ?>
+                            <?php endif; ?>
+
                             <?php if (!empty($section['note'])) : ?>
                                 <span style="font-size:11px;"><?php echo nl2br(esc_html((string) $section['note'])); ?></span>
                             <?php endif; ?>
 
-                            <?php if (!empty($section['link']['url']) && !empty($section['link']['label'])) : ?>
+                            <?php if (!$has_energy_table && !empty($section['link']['url']) && !empty($section['link']['label'])) : ?>
                                 <a
                                     href="<?php echo esc_url((string) $section['link']['url']); ?>"
                                     class="services_button"
@@ -392,7 +488,7 @@ $sustainability = ilpra_2026_get_sustainability_data(get_the_ID());
             <div id="intro">
                 <section id="home">
                     <div class="home_box bounce_fade">
-                        <span class="slider_text1"><?php echo esc_html($sustainability['hero']['title']); ?></span>
+                        <h1 class="slider_text1"><?php echo esc_html($sustainability['hero']['title']); ?></h1>
                         <span class="slider_text2"><b><?php echo esc_html($sustainability['hero']['text']); ?></b></span>
                     </div>
                 </section>
@@ -415,7 +511,7 @@ $sustainability = ilpra_2026_get_sustainability_data(get_the_ID());
             </div>
 
             <div id="environmental" class="sustainability-panel" data-sustainability-panel="environmental" hidden>
-                <?php ilpra_2026_render_sustainability_sections($sustainability['panels']['environmental']); ?>
+                <?php ilpra_2026_render_sustainability_sections($sustainability['panels']['environmental'], $sustainability['environmental_energy_table']); ?>
                 <?php ilpra_2026_render_sustainability_quote($sustainability['quote']); ?>
             </div>
 
