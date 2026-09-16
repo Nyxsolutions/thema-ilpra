@@ -3009,6 +3009,40 @@ add_action('acf/init', static function (): void {
     ]);
 
     acf_add_local_field_group([
+        'key' => 'group_ilpra_2026_careers_content',
+        'title' => 'Career',
+        'fields' => [
+            [
+                'key' => 'field_ilpra_2026_careers_intro_text',
+                'label' => 'Testo introduttivo Career',
+                'name' => 'careers_intro_text',
+                'type' => 'wysiwyg',
+                'instructions' => 'Testo nella colonna sinistra della pagina Career. Puoi usare paragrafi e grassetto.',
+                'tabs' => 'visual',
+                'toolbar' => 'basic',
+                'media_upload' => 0,
+                'delay' => 0,
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'ilpra-theme-strings',
+                ],
+            ],
+        ],
+        'menu_order' => 1,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+        'show_in_rest' => 0,
+    ]);
+
+    acf_add_local_field_group([
         'key' => 'group_ilpra_2026_packaging_machines_page_content',
         'title' => 'Packaging Machines Page Content',
         'fields' => [

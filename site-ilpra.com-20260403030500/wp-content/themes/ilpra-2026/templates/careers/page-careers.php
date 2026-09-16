@@ -8,6 +8,12 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
+
+$careers_intro_fallback = '<p>Joining the ILPRA Group means becoming part of a historic organization, founded in 1955, that is open, solid, and constantly evolving. We have always invested in research and development of innovative solutions, creating cutting-edge products for the packaging sector.</p>'
+    . '<p>For over 70 years, we have been a global benchmark, synonymous with experience, quality, and reliability.</p>'
+    . '<p>Do you want to join the ILPRA world? Fill out the application form. If your profile matches our open positions, we will contact you.</p>'
+    . '<p><strong>ILPRA guarantees equal opportunities:</strong> all job postings are open to candidates of all genders, in compliance with current regulations.</p>';
+$careers_intro_text = function_exists('get_field') ? (string) get_field('careers_intro_text', 'option') : '';
 ?>
 <section class="pm-careers">
     <div class="container-career">
@@ -58,10 +64,7 @@ get_header();
     <div class="pm-career-apply">
         <div class="pm-career-apply-grid">
             <div class="pm-career-apply-text">
-                <p><?php esc_html_e('Joining the ILPRA Group means becoming part of a historic organization, founded in 1955, that is open, solid, and constantly evolving. We have always invested in research and development of innovative solutions, creating cutting-edge products for the packaging sector.', 'ilpra-2026'); ?></p>
-                <p><?php esc_html_e('For over 70 years, we have been a global benchmark, synonymous with experience, quality, and reliability.', 'ilpra-2026'); ?></p>
-                <p><?php esc_html_e('Do you want to join the ILPRA world? Fill out the application form. If your profile matches our open positions, we will contact you.', 'ilpra-2026'); ?></p>
-                <p><strong><?php esc_html_e('ILPRA guarantees equal opportunities:', 'ilpra-2026'); ?></strong> <?php esc_html_e('all job postings are open to candidates of all genders, in compliance with current regulations.', 'ilpra-2026'); ?></p>
+                <?php echo wp_kses_post($careers_intro_text !== '' ? $careers_intro_text : $careers_intro_fallback); ?>
             </div>
             <div class="pm-career-apply-form">
                 <?php echo do_shortcode('[elementor-template id="16214"]'); ?>
