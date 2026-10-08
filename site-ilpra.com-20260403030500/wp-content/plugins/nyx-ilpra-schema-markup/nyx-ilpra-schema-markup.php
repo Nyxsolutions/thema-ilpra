@@ -2,7 +2,7 @@
 /**
  * Plugin Name: NYX ILPRA Schema Markup
  * Description: JSON-LD dinamico per Organization, Product delle macchine e NewsArticle delle news ILPRA.
- * Version: 1.0.0
+ * Version: 1.2.0
  * Author: NYX Solutions
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -16,11 +16,34 @@ final class NYX_ILPRA_Schema_Markup
 {
     private const OPTION_NAME = 'nyx_ilpra_schema_settings';
 
+    /** @var object|null */
+    private $slim_seo_container = null;
+
     public function __construct()
     {
         add_action('admin_init', [$this, 'register_settings']);
         add_action('admin_menu', [$this, 'register_settings_page']);
+        add_action('slim_seo_init', [$this, 'configure_slim_seo'], 1);
         add_action('wp_head', [$this, 'print_schema_markup'], 20);
+    }
+
+    /**
+     * Slim SEO remains responsible for meta tags, canonical URLs and social tags.
+     * The NYX plugin is the single source of JSON-LD to avoid duplicate entities.
+     *
+     * @param object $container Slim SEO's service container.
+     */
+    public function configure_slim_seo($container): void
+    {
+        if (!is_object($container)) {
+            return;
+        }
+
+        $this->slim_seo_container = $container;
+
+        if (method_exists($container, 'disable')) {
+            $container->disable('schema');
+        }
     }
 
     public function register_settings(): void
@@ -156,10 +179,17 @@ final class NYX_ILPRA_Schema_Markup
         $this->render_json_ld($this->get_organization_schema());
 
         if (is_singular('packaging_machine')) {
-            $schema = $this->get_product_schema((int) get_queried_object_id());
+            $post_id = (int) get_queried_object_id();
+            $schema = $this->get_product_schema($post_id);
 
             if ($schema !== []) {
                 $this->render_json_ld($schema);
+            }
+
+            $faq_schema = $this->get_machine_faq_schema($post_id);
+
+            if ($faq_schema !== []) {
+                $this->render_json_ld($faq_schema);
             }
         }
 
@@ -285,7 +315,7 @@ final class NYX_ILPRA_Schema_Markup
                 '@id' => $url,
             ],
             'headline' => get_the_title($post_id),
-            'description' => $this->get_post_description($post_id),
+            'description' => $this->get_news_description($post_id),
             'datePublished' => get_post_time('c', true, $post_id),
             'dateModified' => get_post_modified_time('c', true, $post_id),
             'inLanguage' => $settings['site_language'],
@@ -299,7 +329,6 @@ final class NYX_ILPRA_Schema_Markup
                 '@id' => $organization_id,
                 'name' => $settings['organization_name'],
             ],
-            'keywords' => $this->get_article_keywords($post_id),
         ];
 
         $image = $this->get_featured_image_schema($post_id);
@@ -309,6 +338,69 @@ final class NYX_ILPRA_Schema_Markup
         }
 
         return $this->remove_empty_values($schema);
+    }
+
+    private function get_machine_faq_schema(int $post_id): array
+    {
+        if ($post_id <= 0 || !function_exists('get_field')) {
+            return [];
+        }
+
+        $faq_items = get_field('machine_faq_items', $post_id);
+
+        if (!is_array($faq_items) || $faq_items === []) {
+            return [];
+        }
+
+        $questions = [];
+
+        foreach ($faq_items as $faq_item) {
+            if (!is_array($faq_item)) {
+                continue;
+            }
+
+            $question = $this->get_schema_text($faq_item['question'] ?? '');
+            $answer = $this->get_schema_text($faq_item['answer'] ?? '');
+
+            if ($question === '' || $answer === '') {
+                continue;
+            }
+
+            $questions[] = [
+                '@type' => 'Question',
+                'name' => $question,
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $answer,
+                ],
+            ];
+        }
+
+        if ($questions === []) {
+            return [];
+        }
+
+        $settings = $this->get_settings();
+        $url = get_permalink($post_id);
+
+        if ($url === '') {
+            return [];
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            '@id' => trailingslashit($url) . '#faq',
+            'url' => $url,
+            'inLanguage' => $settings['site_language'],
+            'about' => [
+                '@id' => trailingslashit($url) . '#product',
+            ],
+            'publisher' => [
+                '@id' => trailingslashit($settings['organization_url']) . '#organization',
+            ],
+            'mainEntity' => $questions,
+        ];
     }
 
     private function get_machine_technical_properties(int $post_id): array
@@ -366,15 +458,58 @@ final class NYX_ILPRA_Schema_Markup
 
     private function get_machine_category(int $post_id): string
     {
-        foreach (['categoria_confezionatrice', 'tipologia_confezionatrice', 'categorie_confezionatrici', 'tipologie_confezionatrici'] as $taxonomy) {
+        // The packaging-machine series taxonomy is the product category.
+        // Generic group labels (for example "ILPRA Group") are not product categories.
+        foreach (['tipologia_confezionatrice', 'tipologie_confezionatrici', 'categoria_confezionatrice', 'categorie_confezionatrici'] as $taxonomy) {
             $terms = get_the_terms($post_id, $taxonomy);
 
-            if (is_array($terms) && !empty($terms)) {
-                return (string) $terms[0]->name;
+            if (!is_array($terms) || empty($terms)) {
+                continue;
+            }
+
+            foreach ($terms as $term) {
+                if (!$term instanceof WP_Term || $this->is_generic_machine_category($term)) {
+                    continue;
+                }
+
+                return (string) $term->name;
             }
         }
 
         return '';
+    }
+
+    private function is_generic_machine_category(WP_Term $term): bool
+    {
+        return in_array(sanitize_title($term->slug), [
+            'ilpra-group',
+            'ilpra-group-packaging-equipment',
+        ], true);
+    }
+
+    private function get_news_description(int $post_id): string
+    {
+        if (is_object($this->slim_seo_container) && method_exists($this->slim_seo_container, 'get_service')) {
+            $description_service = $this->slim_seo_container->get_service('meta_description');
+
+            if (is_object($description_service) && method_exists($description_service, 'get_rendered_singular_value')) {
+                $description = trim(wp_strip_all_tags((string) $description_service->get_rendered_singular_value($post_id)));
+
+                if ($description !== '') {
+                    return $description;
+                }
+            }
+        }
+
+        return $this->get_post_description($post_id);
+    }
+
+    private function get_schema_text($value): string
+    {
+        $text = wp_strip_all_tags((string) $value);
+        $text = html_entity_decode($text, ENT_QUOTES, get_bloginfo('charset') ?: 'UTF-8');
+
+        return trim((string) preg_replace('/\\s+/u', ' ', $text));
     }
 
     private function get_post_description(int $post_id, array $acf_fields = []): string
@@ -390,6 +525,9 @@ final class NYX_ILPRA_Schema_Markup
         }
 
         $excerpt = trim(wp_strip_all_tags((string) get_the_excerpt($post_id)));
+
+        // WordPress appends this marker to automatically shortened excerpts.
+        $excerpt = preg_replace('/\\s*(?:\\[\\x{2026}\\]|\\x{2026}|\\.\\.\\.)\\s*$/u', '', $excerpt) ?? $excerpt;
 
         if ($excerpt !== '') {
             return $excerpt;
@@ -417,25 +555,6 @@ final class NYX_ILPRA_Schema_Markup
             'width' => (int) $image[1],
             'height' => (int) $image[2],
         ];
-    }
-
-    private function get_article_keywords(int $post_id): array
-    {
-        $keywords = [];
-
-        foreach (['category', 'post_tag'] as $taxonomy) {
-            $terms = get_the_terms($post_id, $taxonomy);
-
-            if (!is_array($terms)) {
-                continue;
-            }
-
-            foreach ($terms as $term) {
-                $keywords[] = $term->name;
-            }
-        }
-
-        return array_values(array_unique(array_filter($keywords)));
     }
 
     private function get_postal_address(array $settings, string $prefix): array
