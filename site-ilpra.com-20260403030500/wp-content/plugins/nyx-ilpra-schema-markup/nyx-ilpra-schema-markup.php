@@ -2,7 +2,7 @@
 /**
  * Plugin Name: NYX ILPRA Schema Markup
  * Description: JSON-LD dinamico per Organization, Product delle macchine e NewsArticle delle news ILPRA.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: NYX Solutions
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -178,6 +178,15 @@ final class NYX_ILPRA_Schema_Markup
 
         $this->render_json_ld($this->get_organization_schema());
 
+        if (is_tax(['tipologia_confezionatrice', 'tipologie_confezionatrici', 'categoria_confezionatrice', 'categorie_confezionatrici'])) {
+            $term = get_queried_object();
+            $faq_schema = $term instanceof WP_Term ? $this->get_category_faq_schema($term) : [];
+
+            if ($faq_schema !== []) {
+                $this->render_json_ld($faq_schema);
+            }
+        }
+
         if (is_singular('packaging_machine')) {
             $post_id = (int) get_queried_object_id();
             $schema = $this->get_product_schema($post_id);
@@ -352,29 +361,7 @@ final class NYX_ILPRA_Schema_Markup
             return [];
         }
 
-        $questions = [];
-
-        foreach ($faq_items as $faq_item) {
-            if (!is_array($faq_item)) {
-                continue;
-            }
-
-            $question = $this->get_schema_text($faq_item['question'] ?? '');
-            $answer = $this->get_schema_text($faq_item['answer'] ?? '');
-
-            if ($question === '' || $answer === '') {
-                continue;
-            }
-
-            $questions[] = [
-                '@type' => 'Question',
-                'name' => $question,
-                'acceptedAnswer' => [
-                    '@type' => 'Answer',
-                    'text' => $answer,
-                ],
-            ];
-        }
+        $questions = $this->get_faq_questions($faq_items);
 
         if ($questions === []) {
             return [];
@@ -401,6 +388,74 @@ final class NYX_ILPRA_Schema_Markup
             ],
             'mainEntity' => $questions,
         ];
+    }
+
+    private function get_category_faq_schema(WP_Term $term): array
+    {
+        if (!function_exists('get_field')) {
+            return [];
+        }
+
+        $faq_items = get_field('category_faq_items', 'term_' . $term->term_id);
+
+        if (!is_array($faq_items) || $faq_items === []) {
+            return [];
+        }
+
+        $questions = $this->get_faq_questions($faq_items);
+
+        if ($questions === []) {
+            return [];
+        }
+
+        $url = get_term_link($term);
+
+        if (is_wp_error($url) || $url === '') {
+            return [];
+        }
+
+        $settings = $this->get_settings();
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            '@id' => trailingslashit($url) . '#faq',
+            'url' => $url,
+            'inLanguage' => $settings['site_language'],
+            'publisher' => [
+                '@id' => trailingslashit($settings['organization_url']) . '#organization',
+            ],
+            'mainEntity' => $questions,
+        ];
+    }
+
+    private function get_faq_questions(array $faq_items): array
+    {
+        $questions = [];
+
+        foreach ($faq_items as $faq_item) {
+            if (!is_array($faq_item)) {
+                continue;
+            }
+
+            $question = $this->get_schema_text($faq_item['question'] ?? '');
+            $answer = $this->get_schema_text($faq_item['answer'] ?? '');
+
+            if ($question === '' || $answer === '') {
+                continue;
+            }
+
+            $questions[] = [
+                '@type' => 'Question',
+                'name' => $question,
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $answer,
+                ],
+            ];
+        }
+
+        return $questions;
     }
 
     private function get_machine_technical_properties(int $post_id): array

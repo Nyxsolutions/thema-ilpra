@@ -23,7 +23,7 @@ Su `it.ilpra.com`:
 
 - `Organization`: in tutto il sito, con ID canonico `https://ilpra.com/#organization`.
 - `Product`: in ogni singola `packaging_machine`. Legge titolo, URL, immagine, descrizione, categoria macchina e tabella tecnica ACF `dati_tecnici`. Le etichette generiche, come `ILPRA Group`, non vengono usate come categoria prodotto.
-- `FAQPage`: in ogni singola `packaging_machine` che contiene almeno una FAQ completa nel repeater ACF `machine_faq_items`. Usa le stesse domande e risposte visibili nella pagina e si collega al relativo `Product`.
+- `FAQPage`: in ogni singola `packaging_machine` che contiene almeno una FAQ completa nel repeater ACF `machine_faq_items`. Usa le stesse domande e risposte visibili nella pagina e si collega al relativo `Product`. Viene generato anche nelle categorie macchina che hanno FAQ nel repeater ACF `category_faq_items`.
 - `NewsArticle`: nei post WordPress con categoria `news`. Legge titolo, URL, immagine, date, lingua e la stessa meta description elaborata da Slim SEO.
 
 Quando Slim SEO e attivo, il plugin ne disabilita solo il modulo `schema`: title, meta description, canonical, Open Graph e sitemap restano gestiti da Slim SEO. In questo modo il JSON-LD viene stampato solo dal plugin NYX e non ci sono entita duplicate.
