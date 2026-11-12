@@ -294,7 +294,51 @@ function ilpra_2026_get_footer_link_rows(string $field_name): array
 
     $rows = get_field($field_name, 'option');
 
-    return is_array($rows) ? $rows : [];
+    $rows = is_array($rows) ? $rows : [];
+
+    if ($field_name !== 'footer_legal_links') {
+        return $rows;
+    }
+
+    $is_italian = ilpra_2026_is_italian_locale();
+    $quality_title = $is_italian ? 'Qualità' : 'Quality';
+    $quality_url = home_url($is_italian ? '/qualita/' : '/quality/');
+    $quality_policy_titles = $is_italian
+        ? ['Quality Policy', 'Qualità Policy', 'Politica Qualità', 'Politica della Qualità']
+        : ['Quality Policy'];
+    $quality_policy_position = null;
+    $has_quality_link = false;
+
+    foreach ($rows as $index => $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $link = $row['link'] ?? [];
+        $title = trim((string) (is_array($link) ? ($link['title'] ?? '') : ($row['label'] ?? '')));
+        $url = trim((string) (is_array($link) ? ($link['url'] ?? '') : ($row['url'] ?? '')));
+
+        if (in_array($title, $quality_policy_titles, true)) {
+            $quality_policy_position = $index;
+        }
+
+        if ($title === $quality_title || untrailingslashit($url) === untrailingslashit($quality_url)) {
+            $has_quality_link = true;
+        }
+    }
+
+    // Existing ACF rows are not reseeded after deployment, so add the new link at runtime.
+    if ($quality_policy_position !== null && !$has_quality_link) {
+        array_splice($rows, $quality_policy_position + 1, 0, [[
+            'link' => [
+                'title' => $quality_title,
+                'url' => $quality_url,
+                'target' => '_self',
+            ],
+        ]]);
+    }
+
+    return $rows;
 }
 
 function ilpra_2026_get_footer_link_markup(array $row): string

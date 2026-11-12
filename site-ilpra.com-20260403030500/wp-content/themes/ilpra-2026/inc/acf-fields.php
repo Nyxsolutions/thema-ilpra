@@ -1365,6 +1365,11 @@ add_action('acf/init', static function (): void {
             ilpra_2026_make_seed_footer_link_row('Privacy Policy', home_url('/privacy-policy/')),
             ilpra_2026_make_seed_footer_link_row('Cookie Policy', home_url('/cookie-policy/')),
             ilpra_2026_make_seed_footer_link_row('Quality Policy', home_url('/wp-content/uploads/2026/05/Quality_Policy-2026.pdf')),
+            ilpra_2026_make_seed_footer_link_row(
+                ilpra_2026_is_italian_locale() ? 'Qualità' : 'Quality',
+                home_url(ilpra_2026_is_italian_locale() ? '/qualita/' : '/quality/'),
+                '_self'
+            ),
         ]
     );
 
