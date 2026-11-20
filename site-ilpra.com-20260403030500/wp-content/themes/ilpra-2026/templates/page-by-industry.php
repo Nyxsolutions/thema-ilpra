@@ -62,6 +62,10 @@ $by_industry_navigation_label = ilpra_2026_get_theme_string('string_by_industry_
 $previous_industries_label = ilpra_2026_get_theme_string('string_previous_industries_label', 'Previous industries', 'Settori precedenti');
 $next_industries_label = ilpra_2026_get_theme_string('string_next_industries_label', 'Next industries', 'Settori successivi');
 $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label', 'View Solutions', 'Scopri soluzioni');
+$quote_title = ilpra_2026_get_theme_string('string_quote_button_label', 'Request a Quote', 'Richiedi un preventivo');
+$quote_description = ilpra_2026_is_italian_locale()
+    ? 'Contatta il nostro team per richiedere un preventivo gratuito. I nostri esperti ti aiuteranno a configurare la soluzione migliore per la tua linea produttiva.'
+    : 'Get in touch here with our team to request a free quote. Our expert team will help you configure the best solution for your production line.';
 ?>
 <section class="by-industry-page">
     <div class="by-industry-page__inner">
@@ -170,7 +174,15 @@ $view_solutions_label = ilpra_2026_get_theme_string('string_view_solutions_label
     <section id="bi-contact" class="bi-contact">
         <div class="bi-contact__inner">
             <div class="bi-contact__form">
-                <?php echo do_shortcode('[elementor-template id="15850"]'); ?>
+                <div class="dynamics-contact__layout">
+                    <div class="dynamics-contact__copy">
+                        <h2><?php echo esc_html($quote_title); ?></h2>
+                        <p><?php echo esc_html($quote_description); ?></p>
+                    </div>
+                    <div class="dynamics-contact__form">
+                        <?php ilpra_2026_render_dynamics_form(); ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

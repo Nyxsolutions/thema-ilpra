@@ -2181,12 +2181,40 @@ a.tm-product-card {
 }
 
 .bi-contact__form {
-  padding: 0;
+  padding: 64px 24px;
   border-radius: 28px;
   background: linear-gradient(135deg, #9f3b2d 0%, #101820 62%);
   overflow: hidden;
 }
 
+.dynamics-contact__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.dynamics-contact__copy {
+  color: #ffffff;
+}
+
+.dynamics-contact__copy h2 {
+  margin: 0 0 20px;
+  color: inherit;
+  font-size: clamp(2rem, 3vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.dynamics-contact__copy p {
+  max-width: 480px;
+  margin: 0;
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.dynamics-contact__form,
 .bi-contact__form > .elementor {
   width: 100%;
 }
@@ -2743,6 +2771,13 @@ a.tm-product-card {
   background: #ffffff;
 }
 
+.pm-contact-form .pm-inner {
+  padding: 64px 24px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #9f3b2d 0%, #101820 62%);
+  overflow: hidden;
+}
+
 .pm-contact-form .elementor-upload-field {
   width: 100%;
   min-height: 108px;
@@ -2794,6 +2829,221 @@ a.tm-product-card {
 .pm-career-single-form .elementor-field-group input[type="file"] {
   color: #ffffff !important;
   background: transparent !important;
+}
+
+/* Microsoft Dynamics 365 forms */
+form.marketingForm {
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 28px 30px !important;
+  box-sizing: border-box !important;
+  border: 1px solid #e2e5e9 !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.04) !important;
+  color: #30343a !important;
+  font-family: Arial, sans-serif !important;
+}
+
+form.marketingForm .innerSection,
+form.marketingForm .emptyContainer,
+form.marketingForm .columnContainer {
+  border: 0 !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+form.marketingForm [data-layout="true"],
+form.marketingForm [data-section="true"],
+form.marketingForm .innerSection,
+form.marketingForm .columnContainer {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+form.marketingForm .columnContainer {
+  flex: 1 1 100% !important;
+}
+
+form.marketingForm .textFormFieldBlock,
+form.marketingForm .lookupFormFieldBlock,
+form.marketingForm .optionSetFormFieldBlock,
+form.marketingForm .emailFormFieldBlock,
+form.marketingForm .phoneFormFieldBlock {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+}
+
+form.marketingForm [data-hide="hide"],
+form.marketingForm [style*="display: none"] {
+  display: none !important;
+}
+
+form.marketingForm .textFormFieldBlock > label,
+form.marketingForm .lookupFormFieldBlock > label,
+form.marketingForm .optionSetFormFieldBlock > label {
+  display: block !important;
+  margin: 0 0 5px !important;
+  padding: 0 !important;
+  color: #30343a !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 18px !important;
+}
+
+form.marketingForm input[type="text"],
+form.marketingForm input[type="email"],
+form.marketingForm input[type="tel"],
+form.marketingForm input[type="url"],
+form.marketingForm select,
+form.marketingForm textarea {
+  display: block !important;
+  width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 9px 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid #d9dde2 !important;
+  border-radius: 5px !important;
+  background: #fafafa !important;
+  box-shadow: none !important;
+  color: #30343a !important;
+  font-size: 13px !important;
+  line-height: 20px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form.marketingForm textarea {
+  height: auto !important;
+  min-height: 100px !important;
+  resize: vertical !important;
+}
+
+form.marketingForm input::placeholder,
+form.marketingForm textarea::placeholder {
+  color: #9299a2 !important;
+  opacity: 1 !important;
+}
+
+form.marketingForm input:focus,
+form.marketingForm select:focus,
+form.marketingForm textarea:focus {
+  outline: none !important;
+  border-color: #003860 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(0, 56, 96, 0.08) !important;
+}
+
+form.marketingForm [data-editorblocktype="Text"] {
+  margin: 12px 0 !important;
+  padding: 0 !important;
+}
+
+form.marketingForm [data-editorblocktype="Text"] p {
+  margin: 0 !important;
+  line-height: 1.6 !important;
+}
+
+form.marketingForm [data-editorblocktype="Text"] span,
+form.marketingForm [data-editorblocktype="Text"] a {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+}
+
+form.marketingForm .consentBlock {
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+}
+
+form.marketingForm .consentBlock > div {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+}
+
+form.marketingForm .consentBlock input[type="checkbox"] {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+  accent-color: #003860;
+}
+
+form.marketingForm .consentBlock label {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #555555 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+}
+
+form.marketingForm .submitButtonWrapper {
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+form.marketingForm .submitButton {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 44px !important;
+  padding: 12px 32px !important;
+  border: 1px solid #ea580f !important;
+  border-radius: 5px !important;
+  background: #ea580f !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  transition: background 0.2s ease, border-color 0.2s ease !important;
+}
+
+form.marketingForm .submitButton:hover {
+  border-color: #c2410c !important;
+  background: #c2410c !important;
+}
+
+form.marketingForm .submitButton:focus-visible {
+  outline: 3px solid rgba(234, 88, 15, 0.3) !important;
+  outline-offset: 3px !important;
+}
+
+form.marketingForm .submitButton span {
+  color: #ffffff !important;
+}
+
+@media (max-width: 767px) {
+  form.marketingForm {
+    padding: 20px 16px !important;
+    border-radius: 7px !important;
+  }
+
+  form.marketingForm input[type="text"],
+  form.marketingForm input[type="email"],
+  form.marketingForm input[type="tel"],
+  form.marketingForm input[type="url"],
+  form.marketingForm select,
+  form.marketingForm textarea {
+    font-size: 16px !important;
+  }
+
+  form.marketingForm .submitButton {
+    width: 100% !important;
+  }
 }
 
 .home-fair-card {
@@ -3440,7 +3690,24 @@ a.tm-product-card {
   }
 
   .bi-contact__form {
-    padding: 0;
+    padding: 44px 16px;
+  }
+
+  .dynamics-contact__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dynamics-contact__copy {
+    text-align: center;
+  }
+
+  .dynamics-contact__copy p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .pm-contact-form .pm-inner {
+    padding: 44px 16px;
   }
 
   .home-hero__panel {
